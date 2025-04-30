@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_5f177a5febfd1b8c9f506eba298bb88a {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+        
+    <script src="https://cdn.jsdelivr.net/gh/python-visualization/folium@main/folium/templates/leaflet_heat.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/leaflet.markercluster.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/MarkerCluster.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/MarkerCluster.Default.css"/>
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_5f177a5febfd1b8c9f506eba298bb88a" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_5f177a5febfd1b8c9f506eba298bb88a = L.map(
+                "map_5f177a5febfd1b8c9f506eba298bb88a",
+                {
+                    center: [51.5074, -0.1278],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 13,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_8bb081eec007ed329179c6a4b05eb203 = L.tileLayer(
+                "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 20,
+  "maxNativeZoom": 20,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e",
+  "subdomains": "abcd",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_8bb081eec007ed329179c6a4b05eb203.addTo(map_5f177a5febfd1b8c9f506eba298bb88a);
+        
+    
+            var heat_map_399eb3cce147e8a864435690c0d6172b = L.heatLayer(
+                [[51.510014, -0.081516], [51.512652, -0.092719], [51.517058, -0.083296], [51.512678, -0.079444], [51.516386, -0.108965], [51.516814, -0.08162], [51.51768, -0.078484], [51.516814, -0.08162], [51.522233, -0.107382], [51.521463, -0.107054], [51.516814, -0.08162], [51.516347, -0.104887], [51.51768, -0.078484], [51.517032, -0.089451], [51.517576, -0.079786], [51.512598, -0.084967], [51.512598, -0.084967], [51.509757, -0.083386], [51.511625, -0.081549], [51.512856, -0.073254], [51.51768, -0.078484], [51.515606, -0.094094], [51.516233, -0.077392], [51.509775, -0.085014], [51.512181, -0.077649], [51.512181, -0.077649], [51.512598, -0.084967], [51.512598, -0.084967], [51.509775, -0.085014], [51.509775, -0.085014], [51.512181, -0.077649], [51.512135, -0.078127], [51.512598, -0.084967], [51.517149, -0.08776], [51.517149, -0.08776], [51.518189, -0.082628], [51.517149, -0.08776], [51.513915, -0.07318], [51.512598, -0.084967], [51.504848, -0.090033], [51.504848, -0.090033], [51.515606, -0.094094], [51.512856, -0.073254], [51.516966, -0.1059], [51.516814, -0.08162], [51.517576, -0.079786], [51.50932, -0.084701], [51.517431, -0.082458], [51.50995, -0.078665], [51.513952, -0.085833], [51.512598, -0.084967], [51.512598, -0.084967], [51.516233, -0.077392], [51.510828, -0.086166], [51.509547, -0.076031], [51.513952, -0.085833], [51.51868, -0.085173], [51.516351, -0.082965], [51.516351, -0.082965], [51.513627, -0.076435], [51.514203, -0.094628], [51.52181, -0.097929], [51.516814, -0.08162], [51.516351, -0.082965], [51.516351, -0.082965], [51.52181, -0.097929], [51.51442, -0.09472], [51.514151, -0.074958], [51.517032, -0.089451], [51.511625, -0.081549], [51.513297, -0.101959], [51.510671, -0.084284], [51.509848, -0.104494], [51.509848, -0.104494], [51.509848, -0.104494], [51.509848, -0.104494], [51.509848, -0.104494], [51.511616, -0.086551], [51.517244, -0.080376], [51.517244, -0.080376], [51.517431, -0.082458], [51.512598, -0.084967], [51.516814, -0.08162], [51.517244, -0.080376], [51.50993, -0.068161], [51.516814, -0.08162], [51.517149, -0.08776], [51.516814, -0.08162], [51.515033, -0.07825], [51.515033, -0.07825], [51.515033, -0.07825], [51.516814, -0.08162], [51.513435, -0.075146], [51.510913, -0.101395], [51.513435, -0.075146], [51.511165, -0.100822], [51.514203, -0.094628], [51.511165, -0.100822], [51.509344, -0.080665], [51.510913, -0.101395], [51.516393, -0.087763], [51.518511, -0.08531], [51.518511, -0.08531], [51.511053, -0.075722], [51.512598, -0.084967], [51.520206, -0.097736], [51.518864, -0.097562], [51.522233, -0.107382], [51.510671, -0.084284], [51.516814, -0.08162], [51.510014, -0.081516], [51.516497, -0.094115], [51.512598, -0.084967], [51.515739, -0.100632], [51.515739, -0.100632], [51.514203, -0.094628], [51.517431, -0.082458], [51.517431, -0.082458], [51.517431, -0.082458], [51.518189, -0.082628], [51.518029, -0.082722], [51.517431, -0.082458], [51.517431, -0.082458], [51.515196, -0.071772], [51.521463, -0.107054], [51.507808, -0.07913], [51.513627, -0.076435], [51.518262, -0.088203], [51.507808, -0.07913], [51.509344, -0.080665], [51.515037, -0.102794], [51.515037, -0.102794], [51.515037, -0.102794], [51.513524, -0.090506], [51.516814, -0.08162], [51.51868, -0.085173], [51.516347, -0.104887], [51.513885, -0.102741], [51.510913, -0.08315], [51.526294, -0.052807], [51.518864, -0.097562], [51.518864, -0.097562], [51.512952, -0.096814], [51.516014, -0.081091], [51.516014, -0.081091], [51.516014, -0.081091], [51.516014, -0.081091], [51.516014, -0.081091], [51.516014, -0.081091], [51.516014, -0.081091], [51.516014, -0.081091], [51.515307, -0.097277], [51.515307, -0.097277], [51.517431, -0.082458], [51.513171, -0.077694], [51.514763, -0.075508], [51.515037, -0.102794], [51.515037, -0.102794], [51.515037, -0.102794], [51.514158, -0.100179], [51.50932, -0.084701], [51.509344, -0.080665], [51.512598, -0.084967], [51.520658, -0.094546], [51.506338, -0.088227]],
+                {
+  "minOpacity": 0.5,
+  "maxZoom": 18,
+  "radius": 15,
+  "blur": 15,
+}
+            );
+        
+    
+            heat_map_399eb3cce147e8a864435690c0d6172b.addTo(map_5f177a5febfd1b8c9f506eba298bb88a);
+        
+    
+            var marker_cluster_76597559f1d408b82050a4302a1b44cb = L.markerClusterGroup(
+                {
+}
+            );
+        
+    
+            var marker_f5c8c906082304affd136f4a99ad73dd = L.marker(
+                [51.510014, -0.081516],
+                {
+}
+            ).addTo(marker_cluster_76597559f1d408b82050a4302a1b44cb);
+        
+    
+            var icon_1f2469451b5b66443e7936d486ff2972 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_7f0899ca359f5960c5709aceacfa1d82 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_9fdeb14bee723a497e28d35ffa2e5a11 = $(`<div id="html_9fdeb14bee723a497e28d35ffa2e5a11" style="width: 100.0%; height: 100.0%;">         Date: 2022-03-01T05:02:30+00:00<br>         Object of search: Article for use in theft<br>         Outcome: Arrest<br>         </div>`)[0];
+                popup_7f0899ca359f5960c5709aceacfa1d82.setContent(html_9fdeb14bee723a497e28d35ffa2e5a11);
+            
+        
+
+        marker_f5c8c906082304affd136f4a99ad73dd.bindPopup(popup_7f0899ca359f5960c5709aceacfa1d82)
+        ;
+
+        
+    
+    
+                marker_f5c8c906082304affd136f4a99ad73dd.setIcon(icon_1f2469451b5b66443e7936d486ff2972);
+            
+    
+            var marker_4e545f210799eafddedb9912ee169bb9 = L.marker(
+                [51.512598, -0.084967],
+                {
+}
+            ).addTo(marker_cluster_76597559f1d408b82050a4302a1b44cb);
+        
+    
+            var icon_3f841a0c633c8b512f53b10f1f91d252 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_ebc2137d336f9c0d8aba325a0f442fa0 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_aef375e4dcdc4a15128c2e6685864327 = $(`<div id="html_aef375e4dcdc4a15128c2e6685864327" style="width: 100.0%; height: 100.0%;">         Date: 2022-03-04T06:41:08+00:00<br>         Object of search: Article for use in theft<br>         Outcome: Arrest<br>         </div>`)[0];
+                popup_ebc2137d336f9c0d8aba325a0f442fa0.setContent(html_aef375e4dcdc4a15128c2e6685864327);
+            
+        
+
+        marker_4e545f210799eafddedb9912ee169bb9.bindPopup(popup_ebc2137d336f9c0d8aba325a0f442fa0)
+        ;
+
+        
+    
+    
+                marker_4e545f210799eafddedb9912ee169bb9.setIcon(icon_3f841a0c633c8b512f53b10f1f91d252);
+            
+    
+            var marker_6458b15bacefe2f236b16bba2e19d8df = L.marker(
+                [51.512598, -0.084967],
+                {
+}
+            ).addTo(marker_cluster_76597559f1d408b82050a4302a1b44cb);
+        
+    
+            var icon_21ab9b2418dd360ae8a0146a0568f624 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_46b8892d39e9afbe8c93023932de95c5 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_f10522ccba9489c0ddb0d61126297376 = $(`<div id="html_f10522ccba9489c0ddb0d61126297376" style="width: 100.0%; height: 100.0%;">         Date: 2022-03-04T07:24:46+00:00<br>         Object of search: Article for use in theft<br>         Outcome: Arrest<br>         </div>`)[0];
+                popup_46b8892d39e9afbe8c93023932de95c5.setContent(html_f10522ccba9489c0ddb0d61126297376);
+            
+        
+
+        marker_6458b15bacefe2f236b16bba2e19d8df.bindPopup(popup_46b8892d39e9afbe8c93023932de95c5)
+        ;
+
+        
+    
+    
+                marker_6458b15bacefe2f236b16bba2e19d8df.setIcon(icon_21ab9b2418dd360ae8a0146a0568f624);
+            
+    
+            var marker_294ce018ec03d201c1159bb615a2fe89 = L.marker(
+                [51.504848, -0.090033],
+                {
+}
+            ).addTo(marker_cluster_76597559f1d408b82050a4302a1b44cb);
+        
+    
+            var icon_bf1b4790b22063c0bd7c751edefdc732 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_4b667493c9bd2e66d41ba597ddc27969 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_cd14596b61877fdfdd51db1ae0f0fcd7 = $(`<div id="html_cd14596b61877fdfdd51db1ae0f0fcd7" style="width: 100.0%; height: 100.0%;">         Date: 2022-03-06T03:51:24+00:00<br>         Object of search: Controlled drugs<br>         Outcome: Arrest<br>         </div>`)[0];
+                popup_4b667493c9bd2e66d41ba597ddc27969.setContent(html_cd14596b61877fdfdd51db1ae0f0fcd7);
+            
+        
+
+        marker_294ce018ec03d201c1159bb615a2fe89.bindPopup(popup_4b667493c9bd2e66d41ba597ddc27969)
+        ;
+
+        
+    
+    
+                marker_294ce018ec03d201c1159bb615a2fe89.setIcon(icon_bf1b4790b22063c0bd7c751edefdc732);
+            
+    
+            var marker_4239218cc860c4f974647cd566205a83 = L.marker(
+                [51.504848, -0.090033],
+                {
+}
+            ).addTo(marker_cluster_76597559f1d408b82050a4302a1b44cb);
+        
+    
+            var icon_8fdc8142b7281e30d768d27e8541d4c8 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_d3811f38c6f03842ff090591e6363528 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_236cf5795e3e182bb47c1969a1e7d211 = $(`<div id="html_236cf5795e3e182bb47c1969a1e7d211" style="width: 100.0%; height: 100.0%;">         Date: 2022-03-06T07:24:19+00:00<br>         Object of search: Controlled drugs<br>         Outcome: Arrest<br>         </div>`)[0];
+                popup_d3811f38c6f03842ff090591e6363528.setContent(html_236cf5795e3e182bb47c1969a1e7d211);
+            
+        
+
+        marker_4239218cc860c4f974647cd566205a83.bindPopup(popup_d3811f38c6f03842ff090591e6363528)
+        ;
+
+        
+    
+    
+                marker_4239218cc860c4f974647cd566205a83.setIcon(icon_8fdc8142b7281e30d768d27e8541d4c8);
+            
+    
+            var marker_1b54c9909b4275247e3fb97f5cbe52c6 = L.marker(
+                [51.516966, -0.1059],
+                {
+}
+            ).addTo(marker_cluster_76597559f1d408b82050a4302a1b44cb);
+        
+    
+            var icon_9954702b393621338b4db4c6be8c8f51 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_f7908b92f15daaf77144ef9c2c312e1d = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_de3a6f91d5e92a0a17028f9c61a61dcc = $(`<div id="html_de3a6f91d5e92a0a17028f9c61a61dcc" style="width: 100.0%; height: 100.0%;">         Date: 2022-03-07T05:01:09+00:00<br>         Object of search: Article for use in theft<br>         Outcome: Arrest<br>         </div>`)[0];
+                popup_f7908b92f15daaf77144ef9c2c312e1d.setContent(html_de3a6f91d5e92a0a17028f9c61a61dcc);
+            
+        
+
+        marker_1b54c9909b4275247e3fb97f5cbe52c6.bindPopup(popup_f7908b92f15daaf77144ef9c2c312e1d)
+        ;
+
+        
+    
+    
+                marker_1b54c9909b4275247e3fb97f5cbe52c6.setIcon(icon_9954702b393621338b4db4c6be8c8f51);
+            
+    
+            var marker_0151e1a1729e6a038db8267fbc03b56d = L.marker(
+                [51.510828, -0.086166],
+                {
+}
+            ).addTo(marker_cluster_76597559f1d408b82050a4302a1b44cb);
+        
+    
+            var icon_e9edc114a0334bc9082a2296bc60896a = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_44810205139ab56f4984d05b28130c8b = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_28d68da5263c7c4158db94a6a719ab90 = $(`<div id="html_28d68da5263c7c4158db94a6a719ab90" style="width: 100.0%; height: 100.0%;">         Date: 2022-03-10T07:47:46+00:00<br>         Object of search: Stolen goods<br>         Outcome: Arrest<br>         </div>`)[0];
+                popup_44810205139ab56f4984d05b28130c8b.setContent(html_28d68da5263c7c4158db94a6a719ab90);
+            
+        
+
+        marker_0151e1a1729e6a038db8267fbc03b56d.bindPopup(popup_44810205139ab56f4984d05b28130c8b)
+        ;
+
+        
+    
+    
+                marker_0151e1a1729e6a038db8267fbc03b56d.setIcon(icon_e9edc114a0334bc9082a2296bc60896a);
+            
+    
+            var marker_81900b31bdac5349da6753b107a7d57d = L.marker(
+                [51.513952, -0.085833],
+                {
+}
+            ).addTo(marker_cluster_76597559f1d408b82050a4302a1b44cb);
+        
+    
+            var icon_27f32e9b7f45caac5af4c8ee9cde961c = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_4ca262350189c78d317e0699bc2ea4d3 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_e64e248d3ac8fcb771c476e50461c7ee = $(`<div id="html_e64e248d3ac8fcb771c476e50461c7ee" style="width: 100.0%; height: 100.0%;">         Date: 2022-03-11T02:01:13+00:00<br>         Object of search: Stolen goods<br>         Outcome: Arrest<br>         </div>`)[0];
+                popup_4ca262350189c78d317e0699bc2ea4d3.setContent(html_e64e248d3ac8fcb771c476e50461c7ee);
+            
+        
+
+        marker_81900b31bdac5349da6753b107a7d57d.bindPopup(popup_4ca262350189c78d317e0699bc2ea4d3)
+        ;
+
+        
+    
+    
+                marker_81900b31bdac5349da6753b107a7d57d.setIcon(icon_27f32e9b7f45caac5af4c8ee9cde961c);
+            
+    
+            var marker_73a9e0b86564a0feb925699118454983 = L.marker(
+                [51.513627, -0.076435],
+                {
+}
+            ).addTo(marker_cluster_76597559f1d408b82050a4302a1b44cb);
+        
+    
+            var icon_6ca752c3394ba499036cc8d40a227f57 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_e31b0e3810fb908ba765ec468c2c9822 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_fee0e758147ab34ed882873b6de3a575 = $(`<div id="html_fee0e758147ab34ed882873b6de3a575" style="width: 100.0%; height: 100.0%;">         Date: 2022-03-11T08:12:13+00:00<br>         Object of search: Article for use in theft<br>         Outcome: Arrest<br>         </div>`)[0];
+                popup_e31b0e3810fb908ba765ec468c2c9822.setContent(html_fee0e758147ab34ed882873b6de3a575);
+            
+        
+
+        marker_73a9e0b86564a0feb925699118454983.bindPopup(popup_e31b0e3810fb908ba765ec468c2c9822)
+        ;
+
+        
+    
+    
+                marker_73a9e0b86564a0feb925699118454983.setIcon(icon_6ca752c3394ba499036cc8d40a227f57);
+            
+    
+            var marker_8eae950d3f09f6d21a71a89f8d76bab1 = L.marker(
+                [51.52181, -0.097929],
+                {
+}
+            ).addTo(marker_cluster_76597559f1d408b82050a4302a1b44cb);
+        
+    
+            var icon_1827351424d4ee5e9851256b9a05eb95 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_0970313da3f8cbad2fde46f1b0f90acd = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_a1ca90d13930de614148930ba9339459 = $(`<div id="html_a1ca90d13930de614148930ba9339459" style="width: 100.0%; height: 100.0%;">         Date: 2022-03-11T09:01:52+00:00<br>         Object of search: Controlled drugs<br>         Outcome: Arrest<br>         </div>`)[0];
+                popup_0970313da3f8cbad2fde46f1b0f90acd.setContent(html_a1ca90d13930de614148930ba9339459);
+            
+        
+
+        marker_8eae950d3f09f6d21a71a89f8d76bab1.bindPopup(popup_0970313da3f8cbad2fde46f1b0f90acd)
+        ;
+
+        
+    
+    
+                marker_8eae950d3f09f6d21a71a89f8d76bab1.setIcon(icon_1827351424d4ee5e9851256b9a05eb95);
+            
+    
+            var marker_7e55fe8bfbe522bc1cd8dd8d3e4555f5 = L.marker(
+                [51.52181, -0.097929],
+                {
+}
+            ).addTo(marker_cluster_76597559f1d408b82050a4302a1b44cb);
+        
+    
+            var icon_0d1ef70d96bd65cadc8961d09eab59a4 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_f4d384bbacdbf87a4b914d9529813e3a = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_df8bba3b63864b93a14fcdcbe6c34f2c = $(`<div id="html_df8bba3b63864b93a14fcdcbe6c34f2c" style="width: 100.0%; height: 100.0%;">         Date: 2022-03-12T09:44:19+00:00<br>         Object of search: Controlled drugs<br>         Outcome: Arrest<br>         </div>`)[0];
+                popup_f4d384bbacdbf87a4b914d9529813e3a.setContent(html_df8bba3b63864b93a14fcdcbe6c34f2c);
+            
+        
+
+        marker_7e55fe8bfbe522bc1cd8dd8d3e4555f5.bindPopup(popup_f4d384bbacdbf87a4b914d9529813e3a)
+        ;
+
+        
+    
+    
+                marker_7e55fe8bfbe522bc1cd8dd8d3e4555f5.setIcon(icon_0d1ef70d96bd65cadc8961d09eab59a4);
+            
+    
+            var marker_8ca5a944898fb04fabdc17d870390662 = L.marker(
+                [51.517244, -0.080376],
+                {
+}
+            ).addTo(marker_cluster_76597559f1d408b82050a4302a1b44cb);
+        
+    
+            var icon_431f9ee85bc24e0f6cf696906c6dbb90 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_bf066f389433c4d43df09cbbcafb2b4d = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_ba65e49fada6e92d7e82f6b88c24d121 = $(`<div id="html_ba65e49fada6e92d7e82f6b88c24d121" style="width: 100.0%; height: 100.0%;">         Date: 2022-03-14T07:21:33+00:00<br>         Object of search: Article for use in theft<br>         Outcome: Arrest<br>         </div>`)[0];
+                popup_bf066f389433c4d43df09cbbcafb2b4d.setContent(html_ba65e49fada6e92d7e82f6b88c24d121);
+            
+        
+
+        marker_8ca5a944898fb04fabdc17d870390662.bindPopup(popup_bf066f389433c4d43df09cbbcafb2b4d)
+        ;
+
+        
+    
+    
+                marker_8ca5a944898fb04fabdc17d870390662.setIcon(icon_431f9ee85bc24e0f6cf696906c6dbb90);
+            
+    
+            var marker_ca081491b519a1d17c26c4c58b182e66 = L.marker(
+                [51.516814, -0.08162],
+                {
+}
+            ).addTo(marker_cluster_76597559f1d408b82050a4302a1b44cb);
+        
+    
+            var icon_0b9123ecafbfae3d8a6ec2a35d8a97a9 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_34f86f4463b39c2e84eb6f868384922b = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_fd9e1becc65d98ba59253981a8b0034a = $(`<div id="html_fd9e1becc65d98ba59253981a8b0034a" style="width: 100.0%; height: 100.0%;">         Date: 2022-03-16T07:54:21+00:00<br>         Object of search: Stolen goods<br>         Outcome: Arrest<br>         </div>`)[0];
+                popup_34f86f4463b39c2e84eb6f868384922b.setContent(html_fd9e1becc65d98ba59253981a8b0034a);
+            
+        
+
+        marker_ca081491b519a1d17c26c4c58b182e66.bindPopup(popup_34f86f4463b39c2e84eb6f868384922b)
+        ;
+
+        
+    
+    
+                marker_ca081491b519a1d17c26c4c58b182e66.setIcon(icon_0b9123ecafbfae3d8a6ec2a35d8a97a9);
+            
+    
+            var marker_92feb5ccf6d0dad715ad20d4691ffe65 = L.marker(
+                [51.514203, -0.094628],
+                {
+}
+            ).addTo(marker_cluster_76597559f1d408b82050a4302a1b44cb);
+        
+    
+            var icon_a6e6dd8aa968d0e9951dd71035f68614 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_31724d014b87232107d24c9bb2f2b3af = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_16123997b86f95e26fac6ebb0a82e579 = $(`<div id="html_16123997b86f95e26fac6ebb0a82e579" style="width: 100.0%; height: 100.0%;">         Date: 2022-03-17T06:12:52+00:00<br>         Object of search: Stolen goods<br>         Outcome: Arrest<br>         </div>`)[0];
+                popup_31724d014b87232107d24c9bb2f2b3af.setContent(html_16123997b86f95e26fac6ebb0a82e579);
+            
+        
+
+        marker_92feb5ccf6d0dad715ad20d4691ffe65.bindPopup(popup_31724d014b87232107d24c9bb2f2b3af)
+        ;
+
+        
+    
+    
+                marker_92feb5ccf6d0dad715ad20d4691ffe65.setIcon(icon_a6e6dd8aa968d0e9951dd71035f68614);
+            
+    
+            var marker_42364a291ef03fe69f8394b777bff738 = L.marker(
+                [51.510913, -0.101395],
+                {
+}
+            ).addTo(marker_cluster_76597559f1d408b82050a4302a1b44cb);
+        
+    
+            var icon_695462a2db3eeab4b69e632e3becfa93 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_6aee9a64d973790eaac3fd659de9d474 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_fccfa8642a18990f4c88f46612c34a72 = $(`<div id="html_fccfa8642a18990f4c88f46612c34a72" style="width: 100.0%; height: 100.0%;">         Date: 2022-03-17T06:22:37+00:00<br>         Object of search: Controlled drugs<br>         Outcome: Caution (simple or conditional)<br>         </div>`)[0];
+                popup_6aee9a64d973790eaac3fd659de9d474.setContent(html_fccfa8642a18990f4c88f46612c34a72);
+            
+        
+
+        marker_42364a291ef03fe69f8394b777bff738.bindPopup(popup_6aee9a64d973790eaac3fd659de9d474)
+        ;
+
+        
+    
+    
+                marker_42364a291ef03fe69f8394b777bff738.setIcon(icon_695462a2db3eeab4b69e632e3becfa93);
+            
+    
+            var marker_dcef164cdb51a0fa31b7f5d741767c5c = L.marker(
+                [51.522233, -0.107382],
+                {
+}
+            ).addTo(marker_cluster_76597559f1d408b82050a4302a1b44cb);
+        
+    
+            var icon_0fb21625017b62283345e28a0dd71452 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_6c0d3a9ffb3f7df677a302e6d77e78ce = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_eb66b14c478f58798172306915008272 = $(`<div id="html_eb66b14c478f58798172306915008272" style="width: 100.0%; height: 100.0%;">         Date: 2022-03-19T02:18:45+00:00<br>         Object of search: Controlled drugs<br>         Outcome: Arrest<br>         </div>`)[0];
+                popup_6c0d3a9ffb3f7df677a302e6d77e78ce.setContent(html_eb66b14c478f58798172306915008272);
+            
+        
+
+        marker_dcef164cdb51a0fa31b7f5d741767c5c.bindPopup(popup_6c0d3a9ffb3f7df677a302e6d77e78ce)
+        ;
+
+        
+    
+    
+                marker_dcef164cdb51a0fa31b7f5d741767c5c.setIcon(icon_0fb21625017b62283345e28a0dd71452);
+            
+    
+            var marker_6b6bdb0f07087263a34abf7bb0be54fb = L.marker(
+                [51.521463, -0.107054],
+                {
+}
+            ).addTo(marker_cluster_76597559f1d408b82050a4302a1b44cb);
+        
+    
+            var icon_5a333334edea6996db7a3541373be677 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_089ccb3da54e984cde3b2d9cefa9b180 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_4533e931adaf1f5aeb8fd92e4b42d6ee = $(`<div id="html_4533e931adaf1f5aeb8fd92e4b42d6ee" style="width: 100.0%; height: 100.0%;">         Date: 2022-03-23T06:06:05+00:00<br>         Object of search: Controlled drugs<br>         Outcome: Arrest<br>         </div>`)[0];
+                popup_089ccb3da54e984cde3b2d9cefa9b180.setContent(html_4533e931adaf1f5aeb8fd92e4b42d6ee);
+            
+        
+
+        marker_6b6bdb0f07087263a34abf7bb0be54fb.bindPopup(popup_089ccb3da54e984cde3b2d9cefa9b180)
+        ;
+
+        
+    
+    
+                marker_6b6bdb0f07087263a34abf7bb0be54fb.setIcon(icon_5a333334edea6996db7a3541373be677);
+            
+    
+            var marker_5a7a0cea7d99237fdea5e236e2eff21c = L.marker(
+                [51.507808, -0.07913],
+                {
+}
+            ).addTo(marker_cluster_76597559f1d408b82050a4302a1b44cb);
+        
+    
+            var icon_8e204cdbd8b42630b2911fa4633f53d3 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_b0415ae4108859da0ccae616a1680be3 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_8ecf4d452beb83693a7851e72fc4c3a8 = $(`<div id="html_8ecf4d452beb83693a7851e72fc4c3a8" style="width: 100.0%; height: 100.0%;">         Date: 2022-03-23T08:00:27+00:00<br>         Object of search: Article for use in theft<br>         Outcome: Arrest<br>         </div>`)[0];
+                popup_b0415ae4108859da0ccae616a1680be3.setContent(html_8ecf4d452beb83693a7851e72fc4c3a8);
+            
+        
+
+        marker_5a7a0cea7d99237fdea5e236e2eff21c.bindPopup(popup_b0415ae4108859da0ccae616a1680be3)
+        ;
+
+        
+    
+    
+                marker_5a7a0cea7d99237fdea5e236e2eff21c.setIcon(icon_8e204cdbd8b42630b2911fa4633f53d3);
+            
+    
+            var marker_b3257b4c53b36b4e42a4c8c2225cabdd = L.marker(
+                [51.509344, -0.080665],
+                {
+}
+            ).addTo(marker_cluster_76597559f1d408b82050a4302a1b44cb);
+        
+    
+            var icon_6c75074c78436025ec2e6940fe9ae9f3 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_4a5427ff7e735c1bf78bdaac657612fa = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_ba5b8e269e91e694a489d48a0a9439e7 = $(`<div id="html_ba5b8e269e91e694a489d48a0a9439e7" style="width: 100.0%; height: 100.0%;">         Date: 2022-03-23T08:16:13+00:00<br>         Object of search: Article for use in theft<br>         Outcome: Arrest<br>         </div>`)[0];
+                popup_4a5427ff7e735c1bf78bdaac657612fa.setContent(html_ba5b8e269e91e694a489d48a0a9439e7);
+            
+        
+
+        marker_b3257b4c53b36b4e42a4c8c2225cabdd.bindPopup(popup_4a5427ff7e735c1bf78bdaac657612fa)
+        ;
+
+        
+    
+    
+                marker_b3257b4c53b36b4e42a4c8c2225cabdd.setIcon(icon_6c75074c78436025ec2e6940fe9ae9f3);
+            
+    
+            var marker_446e221a8d45414847d04466d0ad9f9d = L.marker(
+                [51.516814, -0.08162],
+                {
+}
+            ).addTo(marker_cluster_76597559f1d408b82050a4302a1b44cb);
+        
+    
+            var icon_276609be70022a2193b303426eea9681 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_f556d13b636727bdfd4b002e5b207d3a = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_f72172116552a74a0079959dabc005bb = $(`<div id="html_f72172116552a74a0079959dabc005bb" style="width: 100.0%; height: 100.0%;">         Date: 2022-03-24T04:27:18+00:00<br>         Object of search: Stolen goods<br>         Outcome: Arrest<br>         </div>`)[0];
+                popup_f556d13b636727bdfd4b002e5b207d3a.setContent(html_f72172116552a74a0079959dabc005bb);
+            
+        
+
+        marker_446e221a8d45414847d04466d0ad9f9d.bindPopup(popup_f556d13b636727bdfd4b002e5b207d3a)
+        ;
+
+        
+    
+    
+                marker_446e221a8d45414847d04466d0ad9f9d.setIcon(icon_276609be70022a2193b303426eea9681);
+            
+    
+            var marker_677f01c083361325fcad419cbbfa930e = L.marker(
+                [51.515307, -0.097277],
+                {
+}
+            ).addTo(marker_cluster_76597559f1d408b82050a4302a1b44cb);
+        
+    
+            var icon_fa9bc3328930d628b9d154b910647a98 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_d3e3cec4fe34334a1e90631dfaa753c6 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_6d8acc4c8defa9dbd670af8a698d07ce = $(`<div id="html_6d8acc4c8defa9dbd670af8a698d07ce" style="width: 100.0%; height: 100.0%;">         Date: 2022-03-26T08:43:00+00:00<br>         Object of search: Controlled drugs<br>         Outcome: Arrest<br>         </div>`)[0];
+                popup_d3e3cec4fe34334a1e90631dfaa753c6.setContent(html_6d8acc4c8defa9dbd670af8a698d07ce);
+            
+        
+
+        marker_677f01c083361325fcad419cbbfa930e.bindPopup(popup_d3e3cec4fe34334a1e90631dfaa753c6)
+        ;
+
+        
+    
+    
+                marker_677f01c083361325fcad419cbbfa930e.setIcon(icon_fa9bc3328930d628b9d154b910647a98);
+            
+    
+            var marker_bf1b02ed130d1be47a1227c37e4ecbad = L.marker(
+                [51.515307, -0.097277],
+                {
+}
+            ).addTo(marker_cluster_76597559f1d408b82050a4302a1b44cb);
+        
+    
+            var icon_7b1a05dbb5c078fffd355056b8bf3a02 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_194ed539781a89b1f8631fe1d4075a53 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_2df69242446c096e7cd190d6a2ed768d = $(`<div id="html_2df69242446c096e7cd190d6a2ed768d" style="width: 100.0%; height: 100.0%;">         Date: 2022-03-26T08:59:32+00:00<br>         Object of search: Controlled drugs<br>         Outcome: Arrest<br>         </div>`)[0];
+                popup_194ed539781a89b1f8631fe1d4075a53.setContent(html_2df69242446c096e7cd190d6a2ed768d);
+            
+        
+
+        marker_bf1b02ed130d1be47a1227c37e4ecbad.bindPopup(popup_194ed539781a89b1f8631fe1d4075a53)
+        ;
+
+        
+    
+    
+                marker_bf1b02ed130d1be47a1227c37e4ecbad.setIcon(icon_7b1a05dbb5c078fffd355056b8bf3a02);
+            
+    
+            var marker_696c37c198780a3f195c5cb9d63ac57f = L.marker(
+                [51.514763, -0.075508],
+                {
+}
+            ).addTo(marker_cluster_76597559f1d408b82050a4302a1b44cb);
+        
+    
+            var icon_76f9f318e1faef461426f80d3fb969f3 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_2cbcbbe338d81d65409996ada5e55ba1 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_e6085d7356156838ae3389368380eefa = $(`<div id="html_e6085d7356156838ae3389368380eefa" style="width: 100.0%; height: 100.0%;">         Date: 2022-03-29T00:03:46+00:00<br>         Object of search: Controlled drugs<br>         Outcome: Arrest<br>         </div>`)[0];
+                popup_2cbcbbe338d81d65409996ada5e55ba1.setContent(html_e6085d7356156838ae3389368380eefa);
+            
+        
+
+        marker_696c37c198780a3f195c5cb9d63ac57f.bindPopup(popup_2cbcbbe338d81d65409996ada5e55ba1)
+        ;
+
+        
+    
+    
+                marker_696c37c198780a3f195c5cb9d63ac57f.setIcon(icon_76f9f318e1faef461426f80d3fb969f3);
+            
+    
+            var marker_06c6e626c03374a9836b6d4e7cf0f31f = L.marker(
+                [51.514158, -0.100179],
+                {
+}
+            ).addTo(marker_cluster_76597559f1d408b82050a4302a1b44cb);
+        
+    
+            var icon_8dc92c7c526f4eac42a23800f8fcd3e0 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_e83972556c5a4df86235fdaf7090cead = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_4a765e9eef3d6343e290a38343ae1377 = $(`<div id="html_4a765e9eef3d6343e290a38343ae1377" style="width: 100.0%; height: 100.0%;">         Date: 2022-03-30T03:23:30+00:00<br>         Object of search: Stolen goods<br>         Outcome: Arrest<br>         </div>`)[0];
+                popup_e83972556c5a4df86235fdaf7090cead.setContent(html_4a765e9eef3d6343e290a38343ae1377);
+            
+        
+
+        marker_06c6e626c03374a9836b6d4e7cf0f31f.bindPopup(popup_e83972556c5a4df86235fdaf7090cead)
+        ;
+
+        
+    
+    
+                marker_06c6e626c03374a9836b6d4e7cf0f31f.setIcon(icon_8dc92c7c526f4eac42a23800f8fcd3e0);
+            
+    
+            var marker_dd54fe091999daa4bd9e7fa310fe670d = L.marker(
+                [51.512598, -0.084967],
+                {
+}
+            ).addTo(marker_cluster_76597559f1d408b82050a4302a1b44cb);
+        
+    
+            var icon_656be9f384a6e484f30996fd1ee1f8f9 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_63cd5532414a4f951de805ec5dd33928 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_524d07fdf803cb77877a6e78ecd2c7ab = $(`<div id="html_524d07fdf803cb77877a6e78ecd2c7ab" style="width: 100.0%; height: 100.0%;">         Date: 2022-03-31T02:45:28+00:00<br>         Object of search: Stolen goods<br>         Outcome: Arrest<br>         </div>`)[0];
+                popup_63cd5532414a4f951de805ec5dd33928.setContent(html_524d07fdf803cb77877a6e78ecd2c7ab);
+            
+        
+
+        marker_dd54fe091999daa4bd9e7fa310fe670d.bindPopup(popup_63cd5532414a4f951de805ec5dd33928)
+        ;
+
+        
+    
+    
+                marker_dd54fe091999daa4bd9e7fa310fe670d.setIcon(icon_656be9f384a6e484f30996fd1ee1f8f9);
+            
+    
+            marker_cluster_76597559f1d408b82050a4302a1b44cb.addTo(map_5f177a5febfd1b8c9f506eba298bb88a);
+        
+</script>
+</html>
