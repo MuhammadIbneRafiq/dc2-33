@@ -248,9 +248,27 @@ const policeIcon = L.divIcon({
   iconAnchor: [10, 10]
 });
 
-const MapComponent = ({ onLSOASelect, showPoliceAllocation, selectedLSOA }) => {
+// Add police vehicle emoji icon
+const vehicleIcon = L.divIcon({
+  html: '🚓',
+  className: 'police-marker',
+  iconSize: [22, 22],
+  iconAnchor: [11, 11]
+});
+
+const MapComponent = ({ onLSOASelect, showPoliceAllocation, selectedLSOA, policeAllocationData }) => {
   const mapRef = useRef(null);
   const [selectedLSOAData, setSelectedLSOAData] = useState(null);
+  const [isLoadingPoliceData, setIsLoadingPoliceData] = useState(false);
+  
+  // Update loading state when police data changes
+  useEffect(() => {
+    if (showPoliceAllocation && !policeAllocationData) {
+      setIsLoadingPoliceData(true);
+    } else {
+      setIsLoadingPoliceData(false);
+    }
+  }, [showPoliceAllocation, policeAllocationData]);
   
   // Style function for LSOA areas
   const getAreaStyle = (feature) => {
@@ -326,6 +344,13 @@ const MapComponent = ({ onLSOASelect, showPoliceAllocation, selectedLSOA }) => {
       </div>
       
       <div className="flex-1 min-h-[400px] relative">
+        {isLoadingPoliceData && (
+          <div className="absolute top-2 right-2 z-[1000] bg-gray-800/80 text-white text-xs py-1 px-3 rounded-full flex items-center">
+            <div className="w-3 h-3 border-2 border-t-blue-500 border-blue-500/20 rounded-full animate-spin mr-2"></div>
+            Loading police units...
+          </div>
+        )}
+        
         <MapContainer
           center={[51.505, -0.09]}
           zoom={11}
@@ -376,15 +401,15 @@ const MapComponent = ({ onLSOASelect, showPoliceAllocation, selectedLSOA }) => {
               </FeatureGroup>
             </LayersControl.Overlay>
             
-            {showPoliceAllocation && (
-              <LayersControl.Overlay name="Police Allocation" checked>
+            {showPoliceAllocation && policeAllocationData && (
+              <LayersControl.Overlay name="Police Units" checked>
                 <FeatureGroup>
-                  {policeAllocations.map((allocation, index) => (
-                    <React.Fragment key={index}>
+                  {policeAllocationData.map((unit) => (
+                    <React.Fragment key={unit.unit_id}>
                       {/* Police coverage circle */}
                       <CircleMarker
-                        center={allocation.position}
-                        radius={allocation.coverage / 2}
+                        center={[unit.lat, unit.lon]}
+                        radius={unit.patrol_radius * 10}  
                         pathOptions={{
                           fillColor: '#3b82f6',
                           fillOpacity: 0.2,
@@ -394,24 +419,25 @@ const MapComponent = ({ onLSOASelect, showPoliceAllocation, selectedLSOA }) => {
                       >
                         <Popup>
                           <div>
-                            <h3 className="font-semibold">Police Allocation</h3>
-                            <p className="text-sm">Officer ID: {allocation.officerId}</p>
-                            <p className="text-sm">Coverage: {allocation.coverage} km</p>
-                            <p className="text-sm">Patrol Type: {allocation.patrolType}</p>
-                            <p className="text-sm">Effectiveness: {allocation.effectivenessScore}%</p>
+                            <h3 className="font-semibold">Police Unit #{unit.unit_id}</h3>
+                            <p className="text-sm">Est. Burglaries: {unit.estimated_burglaries.toLocaleString()}</p>
+                            <p className="text-sm">Patrol Radius: {unit.patrol_radius} km</p>
+                            <p className="text-sm">Patrol Type: {unit.patrol_type}</p>
+                            <p className="text-sm">Effectiveness: {unit.effectiveness_score}%</p>
                           </div>
                         </Popup>
                       </CircleMarker>
                       
-                      {/* Police officer emoji marker */}
+                      {/* Police officer/vehicle emoji marker */}
                       <Marker
-                        position={allocation.position}
-                        icon={policeIcon}
+                        position={[unit.lat, unit.lon]}
+                        icon={unit.patrol_type === 'Vehicle' ? vehicleIcon : policeIcon}
                       >
                         <Popup>
                           <div>
-                            <h3 className="font-semibold">Officer {allocation.officerId}</h3>
-                            <p className="text-sm">Patrol Type: {allocation.patrolType}</p>
+                            <h3 className="font-semibold">Unit #{unit.unit_id}</h3>
+                            <p className="text-sm">Patrol Type: {unit.patrol_type}</p>
+                            <p className="text-sm">Area Burglaries: {unit.estimated_burglaries.toLocaleString()}</p>
                           </div>
                         </Popup>
                       </Marker>

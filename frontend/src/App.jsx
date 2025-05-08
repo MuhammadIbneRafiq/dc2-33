@@ -13,10 +13,16 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
   const [activeView, setActiveView] = useState('dashboard');
+  const [policeAllocationData, setPoliceAllocationData] = useState(null);
 
   // Toggle police allocation view
   const handleTogglePoliceAllocation = () => {
     setShowPoliceAllocation(!showPoliceAllocation);
+  };
+
+  // Handle when police data is loaded from the PoliceAllocation component
+  const handlePoliceDataLoaded = (data) => {
+    setPoliceAllocationData(data);
   };
 
   // Handle when an LSOA is selected on the map
@@ -158,8 +164,17 @@ function App() {
                     onLSOASelect={handleLSOASelect} 
                     showPoliceAllocation={showPoliceAllocation}
                     selectedLSOA={selectedLSOA}
+                    policeAllocationData={policeAllocationData}
                   />
                 </div>
+              </div>
+              
+              <div className="mt-6">
+                <PoliceAllocation 
+                  showPoliceAllocation={showPoliceAllocation} 
+                  onTogglePoliceAllocation={handleTogglePoliceAllocation}
+                  onPoliceDataLoaded={handlePoliceDataLoaded}
+                />
               </div>
               
               <div className="mt-6">
@@ -190,6 +205,7 @@ function App() {
                 onLSOASelect={handleLSOASelect} 
                 showPoliceAllocation={showPoliceAllocation}
                 selectedLSOA={selectedLSOA}
+                policeAllocationData={policeAllocationData}
               />
               
               <div className="mt-6">
@@ -214,6 +230,15 @@ function App() {
                   onLSOASelect={handleLSOASelect} 
                   showPoliceAllocation={true}
                   selectedLSOA={selectedLSOA}
+                  policeAllocationData={policeAllocationData}
+                />
+              </div>
+              
+              <div className="mt-6">
+                <PoliceAllocation 
+                  showPoliceAllocation={showPoliceAllocation} 
+                  onTogglePoliceAllocation={handleTogglePoliceAllocation}
+                  onPoliceDataLoaded={handlePoliceDataLoaded}
                 />
               </div>
               

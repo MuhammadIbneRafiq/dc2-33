@@ -15,6 +15,18 @@ const EmmieScorecard = ({ selectedLSOA }) => {
       try {
         setIsLoading(true);
         const emmieData = await getEmmieScores();
+        
+        // Ensure each section has at least an empty items array to prevent mapping errors
+        if (emmieData) {
+          Object.keys(emmieData).forEach(key => {
+            if (!emmieData[key]) {
+              emmieData[key] = { title: key.charAt(0).toUpperCase() + key.slice(1), items: [] };
+            } else if (!emmieData[key].items) {
+              emmieData[key].items = [];
+            }
+          });
+        }
+        
         setEmmieFramework(emmieData);
         setIsLoading(false);
       } catch (error) {
@@ -150,7 +162,7 @@ const EmmieScorecard = ({ selectedLSOA }) => {
       
       {/* Tabs */}
       <div className="flex border-b border-gray-700">
-        {Object.keys(emmieFramework).map(key => (
+        {emmieFramework && Object.keys(emmieFramework).map(key => (
           <button
             key={key}
             className={`py-2 px-4 text-sm font-medium transition-colors ${
@@ -169,27 +181,36 @@ const EmmieScorecard = ({ selectedLSOA }) => {
       <div className="p-2 bg-gray-900">
         <table className="w-full">
           <tbody>
-            {emmieFramework[expandedSection]?.items.map((item, index) => (
-              <motion.tr 
-                key={index}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                className="border-b border-gray-800"
-              >
-                <td className="py-2 px-3 text-sm text-white">
-                  <div className="flex flex-col">
-                    <span>{item.name}</span>
-                    {item.description && (
-                      <span className="text-xs text-gray-400">{item.description}</span>
-                    )}
-                  </div>
+            {emmieFramework && emmieFramework[expandedSection] && emmieFramework[expandedSection].items && 
+             emmieFramework[expandedSection].items.length > 0 ? (
+              emmieFramework[expandedSection].items.map((item, index) => (
+                <motion.tr 
+                  key={index}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  className="border-b border-gray-800"
+                >
+                  <td className="py-2 px-3 text-sm text-white">
+                    <div className="flex flex-col">
+                      <span>{item.name}</span>
+                      {item.description && (
+                        <span className="text-xs text-gray-400">{item.description}</span>
+                      )}
+                    </div>
+                  </td>
+                  <td className="py-2 px-3 text-right">
+                    {renderStars(item.score)}
+                  </td>
+                </motion.tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="2" className="py-4 text-center text-gray-400">
+                  No items available for this section
                 </td>
-                <td className="py-2 px-3 text-right">
-                  {renderStars(item.score)}
-                </td>
-              </motion.tr>
-            ))}
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
