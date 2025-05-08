@@ -69,7 +69,7 @@ const SidebarPoliceControl = ({
         <div className="space-y-3">
           <div>
             <div className="flex items-center justify-between mb-1">
-              <label className="text-xs text-gray-300">Units Patrolling:</label>
+              <label className="text-xs text-gray-300">Officers Patrolling:</label>
               <div className="flex items-center">
                 <button 
                   onClick={() => setOfficerCount(Math.max(1, officerCount - 1))}
@@ -86,11 +86,6 @@ const SidebarPoliceControl = ({
                 >
                   +
                 </button>
-                <select className="ml-2 w-24 text-xs bg-gray-800 border border-gray-700 rounded-sm p-1 text-white">
-                  <option>vehicles</option>
-                  <option>officers</option>
-                  <option>teams</option>
-                </select>
               </div>
             </div>
           </div>
