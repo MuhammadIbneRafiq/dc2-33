@@ -17,6 +17,7 @@ from scipy import stats
 from sklearn.cluster import KMeans
 from sklearn.preprocessing import StandardScaler
 import warnings
+import argparse
 
 # Suppress warnings for cleaner output
 warnings.filterwarnings('ignore')
@@ -27,24 +28,32 @@ sns.set_palette('viridis')
 
 # Base directory for data storage
 base_dir = Path(r'./cleaned_monthly_burglary_data')
+spatial_base_dir = Path(r'./cleaned_spatial_monthly_burglary_data')
 
-def load_cleaned_data():
-    """Load all cleaned burglary data files and combine them"""
+def load_cleaned_data(use_spatial=False):
+    """Load all cleaned burglary data files and combine them
+    
+    Args:
+        use_spatial (bool): If True, load data from spatial_base_dir, otherwise from base_dir
+    """
     all_data = []
     
+    # Select the appropriate directory
+    directory = spatial_base_dir if use_spatial else base_dir
+    
     # Check if directory exists
-    if not base_dir.exists():
-        raise FileNotFoundError(f"Directory {base_dir} does not exist")
+    if not directory.exists():
+        raise FileNotFoundError(f"Directory {directory} does not exist")
     
     # Print out the files we're loading
-    print(f"Loading files from {base_dir}:")
-    for file in base_dir.glob('*.csv'):
+    print(f"Loading files from {directory}:")
+    for file in directory.glob('*.csv'):
         print(f"  - {file.name}")
         df = pd.read_csv(file)
         all_data.append(df)
     
     if not all_data:
-        raise ValueError(f"No CSV files found in {base_dir}")
+        raise ValueError(f"No CSV files found in {directory}")
     
     combined_df = pd.concat(all_data, ignore_index=True)
     print(f"Successfully loaded {len(all_data)} files with {len(combined_df)} total records")
@@ -1136,9 +1145,14 @@ def perform_predictive_modeling(df, viz_dir):
         print(f"Error in predictive modeling: {e}")
 
 def main():
+    # Parse command line arguments
+    parser = argparse.ArgumentParser(description='Analyze burglary data.')
+    parser.add_argument('--spatial', action='store_true', help='Use spatial data instead of regular data')
+    args = parser.parse_args()
+    
     print("Loading cleaned burglary data...")
     try:
-        df = load_cleaned_data()
+        df = load_cleaned_data(use_spatial=args.spatial)
         
         print("Preprocessing data...")
         df = preprocess_data(df)
@@ -1147,7 +1161,13 @@ def main():
         analyze_basic_stats(df)
         
         print("Creating visualizations...")
-        viz_dir = base_dir.parent / 'visualizations'
+        # Update the visualization directory based on which data source we're using
+        data_dir = spatial_base_dir if args.spatial else base_dir
+        viz_dir = data_dir.parent / 'eda_on_cleaned_data'
+        if args.spatial:
+            viz_dir = viz_dir / 'spatial'
+        viz_dir.mkdir(exist_ok=True, parents=True)
+        
         create_visualizations(df, viz_dir)
         
         print("\nAnalysis complete. Visualizations have been saved to", viz_dir)
