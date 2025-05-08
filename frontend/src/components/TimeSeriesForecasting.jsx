@@ -11,6 +11,7 @@ import {
   Legend,
   Filler
 } from 'chart.js';
+import { getBurglaryTimeSeries, getBurglaryForecast } from '../api/backendService';
 
 ChartJS.register(
   CategoryScale,
@@ -27,87 +28,100 @@ const TimeSeriesForecasting = ({ selectedLSOA }) => {
   const [forecastData, setForecastData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [timeRange, setTimeRange] = useState('3m');
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    // In a real app, this would be an API call to backend ARIMA model
-    // For now, we'll simulate the data
-    setIsLoading(true);
+    const loadData = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+        
+        // Determine how many months of historical data to fetch based on selected time range
+        const monthsToShow = timeRange === '3m' ? 3 : timeRange === '6m' ? 6 : timeRange === '1y' ? 12 : 36;
+        
+        // Fetch historical time series data
+        const timeSeriesData = await getBurglaryTimeSeries(selectedLSOA);
+        
+        // Determine how many forecast periods to request
+        const forecastPeriods = 6;
+        
+        // Fetch forecast data
+        const forecast = await getBurglaryForecast(selectedLSOA, forecastPeriods);
+        
+        // Process data for visualization
+        const processedData = processDataForVisualization(timeSeriesData, forecast, monthsToShow);
+        setForecastData(processedData);
+        
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error loading forecast data:", error);
+        setError("Failed to load forecast data. Please try again later.");
+        setIsLoading(false);
+      }
+    };
     
-    setTimeout(() => {
-      const data = generateForecastData(selectedLSOA, timeRange);
-      setForecastData(data);
-      setIsLoading(false);
-    }, 1200);
+    loadData();
   }, [selectedLSOA, timeRange]);
 
-  const generateForecastData = (lsoa, range) => {
-    // This is a placeholder function that generates mock time series forecast data
-    // In a real app, this would come from an ARIMA model in the backend
+  const processDataForVisualization = (timeSeriesData, forecastData, monthsToShow) => {
+    // If there's no data, return null
+    if (!timeSeriesData || timeSeriesData.length === 0) {
+      return null;
+    }
     
-    const seed = lsoa ? lsoa.charCodeAt(6) * lsoa.charCodeAt(8) : 42;
-    const rng = (min, max) => Math.floor(seed % 17 * (Math.random() + 0.5) * (max - min) / 17) + min;
-
-    // Generate historical data (past months)
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const currentMonth = new Date().getMonth();
+    // Sort time series data by date
+    const sortedTimeSeries = [...timeSeriesData].sort((a, b) => new Date(a.date) - new Date(b.date));
     
-    // Determine the number of months to show based on the selected range
-    let monthsToShow = 3;
-    if (range === '6m') monthsToShow = 6;
-    if (range === '1y') monthsToShow = 12;
-    if (range === 'all') monthsToShow = 36;
-
-    // Generate labels for the chart (past and future months)
+    // Take only the last X months based on timeRange
+    const recentTimeSeries = sortedTimeSeries.slice(-monthsToShow);
+    
+    // Prepare labels and data arrays
     const labels = [];
     const historicalData = [];
-    const forecastData = [];
-    const confidenceUpperBound = [];
-    const confidenceLowerBound = [];
-
-    // Past data (actual)
-    for (let i = monthsToShow; i >= 1; i--) {
-      const monthIndex = (currentMonth - i + 12) % 12;
-      labels.push(months[monthIndex]);
-      const value = rng(20, 80);
-      historicalData.push(value);
-      forecastData.push(null); // No forecast for historical data
-      confidenceUpperBound.push(null);
-      confidenceLowerBound.push(null);
+    const forecastValues = [];
+    const upperBound = [];
+    const lowerBound = [];
+    
+    // Add historical data
+    recentTimeSeries.forEach(point => {
+      // Extract month and year from date (assumed format: YYYY-MM or YYYY-MM-DD)
+      const dateStr = point.date;
+      const date = new Date(dateStr);
+      const monthYear = date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+      
+      labels.push(monthYear);
+      historicalData.push(point.burglary_count);
+      forecastValues.push(null);
+      upperBound.push(null);
+      lowerBound.push(null);
+    });
+    
+    // Add forecast data if available
+    if (forecastData && forecastData.forecast) {
+      // Get the last date from historical data
+      const lastDate = new Date(recentTimeSeries[recentTimeSeries.length - 1].date);
+      
+      // Add forecasted points
+      for (let i = 0; i < forecastData.forecast.length; i++) {
+        // Calculate next month date
+        const forecastDate = new Date(lastDate);
+        forecastDate.setMonth(forecastDate.getMonth() + i + 1);
+        const monthYear = forecastDate.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+        
+        labels.push(`${monthYear} (forecast)`);
+        historicalData.push(null);
+        forecastValues.push(forecastData.forecast[i]);
+        upperBound.push(forecastData.upper_bound[i]);
+        lowerBound.push(forecastData.lower_bound[i]);
+      }
     }
-
-    // Current month (actual)
-    labels.push(months[currentMonth]);
-    const currentValue = rng(20, 80);
-    historicalData.push(currentValue);
-    forecastData.push(currentValue);
-    confidenceUpperBound.push(null);
-    confidenceLowerBound.push(null);
-
-    // Future months (forecasted)
-    for (let i = 1; i <= 6; i++) {
-      const monthIndex = (currentMonth + i) % 12;
-      labels.push(months[monthIndex] + ' (forecast)');
-      
-      // Apply ARIMA-like forecast with some randomness and trend
-      const prevValue = i === 1 ? currentValue : forecastData[forecastData.length - 1];
-      const trend = Math.sin(i * 0.5) * 5; // Seasonal component
-      const randomNoise = (Math.random() - 0.5) * 10;
-      const forecast = Math.max(10, Math.round(prevValue * 0.85 + trend + randomNoise));
-      
-      historicalData.push(null); // No historical data for future
-      forecastData.push(forecast);
-      
-      // Add confidence intervals
-      confidenceUpperBound.push(forecast + rng(5, 15));
-      confidenceLowerBound.push(Math.max(0, forecast - rng(5, 15)));
-    }
-
+    
     return {
       labels,
       historicalData,
-      forecastData,
-      confidenceUpperBound,
-      confidenceLowerBound
+      forecastData: forecastValues,
+      confidenceUpperBound: upperBound,
+      confidenceLowerBound: lowerBound
     };
   };
 
@@ -126,12 +140,34 @@ const TimeSeriesForecasting = ({ selectedLSOA }) => {
     );
   }
   
+  if (error) {
+    return (
+      <div className="dashboard-card h-64 flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-red-500 text-xl mb-2">⚠️</div>
+          <p className="text-gray-300">{error}</p>
+        </div>
+      </div>
+    );
+  }
+  
+  if (!forecastData) {
+    return (
+      <div className="dashboard-card h-64 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-gray-400">No data available for this area.</p>
+          <p className="text-sm text-gray-500">Please select a different LSOA or time range.</p>
+        </div>
+      </div>
+    );
+  }
+  
   const chartData = {
-    labels: forecastData?.labels || [],
+    labels: forecastData.labels || [],
     datasets: [
       {
         label: 'Historical Burglary Counts',
-        data: forecastData?.historicalData || [],
+        data: forecastData.historicalData || [],
         borderColor: 'rgba(59, 130, 246, 1)',
         backgroundColor: 'rgba(59, 130, 246, 0.1)',
         pointBackgroundColor: 'rgba(59, 130, 246, 1)',
@@ -141,7 +177,7 @@ const TimeSeriesForecasting = ({ selectedLSOA }) => {
       },
       {
         label: 'ARIMA Forecast',
-        data: forecastData?.forecastData || [],
+        data: forecastData.forecastData || [],
         borderColor: 'rgba(139, 92, 246, 1)',
         backgroundColor: 'rgba(139, 92, 246, 0.1)',
         pointBackgroundColor: 'rgba(139, 92, 246, 1)',
@@ -152,7 +188,7 @@ const TimeSeriesForecasting = ({ selectedLSOA }) => {
       },
       {
         label: 'Upper Confidence Bound',
-        data: forecastData?.confidenceUpperBound || [],
+        data: forecastData.confidenceUpperBound || [],
         borderColor: 'rgba(139, 92, 246, 0.3)',
         backgroundColor: 'transparent',
         pointBackgroundColor: 'transparent',
@@ -163,7 +199,7 @@ const TimeSeriesForecasting = ({ selectedLSOA }) => {
       },
       {
         label: 'Lower Confidence Bound',
-        data: forecastData?.confidenceLowerBound || [],
+        data: forecastData.confidenceLowerBound || [],
         borderColor: 'rgba(139, 92, 246, 0.3)',
         backgroundColor: 'rgba(139, 92, 246, 0.1)',
         pointBackgroundColor: 'transparent',
@@ -241,6 +277,19 @@ const TimeSeriesForecasting = ({ selectedLSOA }) => {
     }
   };
 
+  // Determine if forecast shows an increase or decrease
+  const forecastTrend = () => {
+    if (!forecastData?.forecastData) return 'unknown';
+    
+    const forecastValues = forecastData.forecastData.filter(val => val !== null);
+    if (forecastValues.length < 2) return 'unknown';
+    
+    const firstValue = forecastValues[0];
+    const lastValue = forecastValues[forecastValues.length - 1];
+    
+    return lastValue > firstValue ? 'an increase' : 'a decrease';
+  };
+
   return (
     <div className="dashboard-card">
       <div className="flex items-center justify-between card-header px-4 py-3">
@@ -299,11 +348,7 @@ const TimeSeriesForecasting = ({ selectedLSOA }) => {
               </p>
               <p>
                 {selectedLSOA ? 
-                  `The model predicts ${
-                    forecastData?.forecastData?.[forecastData?.forecastData?.length - 1] - forecastData?.forecastData?.[forecastData?.forecastData?.length - 6] > 0 
-                      ? 'an increase' 
-                      : 'a decrease'
-                  } in burglaries for ${selectedLSOA} over the next 6 months.` :
+                  `The model predicts ${forecastTrend()} in burglaries for ${selectedLSOA} over the next 6 months.` :
                   'Select a region on the map for area-specific forecasting.'}
               </p>
             </div>

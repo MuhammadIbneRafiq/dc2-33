@@ -1,54 +1,75 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { getEmmieScores, getLsoaWellbeingData } from '../api/backendService';
 
 const EmmieScorecard = ({ selectedLSOA }) => {
   const [expandedSection, setExpandedSection] = useState('intervention');
+  const [emmieFramework, setEmmieFramework] = useState(null);
+  const [housingData, setHousingData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // This is mock data - in a real application, this would come from the backend based on the CSV data
-  const emmieFramework = {
-    intervention: {
-      title: 'Intervention',
-      items: [
-        { name: 'Deploy CCTV/Varifi', score: 4 },
-        { name: 'Foot patrol', score: 4 },
-      ]
-    },
-    prevention: {
-      title: 'Prevention',
-      items: [
-        { name: 'Target hardening', score: 5 },
-        { name: 'Environmental design', score: 4 },
-      ]
-    },
-    diversion: {
-      title: 'Diversion',
-      items: [
-        { name: 'Community engagement', score: 3 },
-        { name: 'Youth programs', score: 3 },
-      ]
-    }
-  };
-
-  // Mock housing and wellbeing data for the selected LSOA
-  // In a real app, this would be loaded from the CSV data
-  const getHousingData = (lsoa) => {
-    if (!lsoa) return null;
-    
-    // Generate deterministic but seemingly random data based on LSOA code
-    const seed = lsoa.charCodeAt(6) * lsoa.charCodeAt(8);
-    const rng = (min, max) => Math.floor(seed % 17 * (Math.random() + 0.5) * (max - min) / 17) + min;
-    
-    return {
-      imdScore: rng(1, 10), // Index of Multiple Deprivation score (1-10)
-      housingDensity: rng(10, 100), // Housing density per hectare
-      socialHousingPercent: rng(5, 45), // % of social housing
-      crimeRank: rng(1, 32), // Crime rank in London (1-32)
-      wellbeingScore: rng(3, 9) / 10, // Wellbeing score (0.3-0.9)
-      riskLevel: seed % 3 // 0 = low, 1 = medium, 2 = high
+  // Load EMMIE framework data
+  useEffect(() => {
+    const loadEmmieData = async () => {
+      try {
+        setIsLoading(true);
+        const emmieData = await getEmmieScores();
+        setEmmieFramework(emmieData);
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error loading EMMIE data:", error);
+        setError("Failed to load intervention data");
+        setIsLoading(false);
+      }
     };
-  };
+    
+    loadEmmieData();
+  }, []);
 
-  const housingData = getHousingData(selectedLSOA);
+  // Load wellbeing data when LSOA changes
+  useEffect(() => {
+    const loadWellbeingData = async () => {
+      if (!selectedLSOA) {
+        setHousingData(null);
+        return;
+      }
+      
+      try {
+        setIsLoading(true);
+        const wellbeingData = await getLsoaWellbeingData(selectedLSOA);
+        
+        if (wellbeingData) {
+          // Process wellbeing data into the format we need
+          setHousingData({
+            imdScore: Math.round(wellbeingData.imd_score * 10) / 10,
+            housingDensity: Math.round(wellbeingData.housing_score),
+            socialHousingPercent: Math.round(wellbeingData.income_score * 100),
+            crimeRank: Math.round(wellbeingData.crime_score * 30) + 1,
+            wellbeingScore: (10 - wellbeingData.imd_score) / 10, // Invert so higher is better
+            riskLevel: getLocalRiskLevel(wellbeingData.crime_score)
+          });
+        } else {
+          setHousingData(null);
+        }
+        
+        setIsLoading(false);
+      } catch (error) {
+        console.error(`Error loading wellbeing data for LSOA ${selectedLSOA}:`, error);
+        setError(`Failed to load data for ${selectedLSOA}`);
+        setIsLoading(false);
+      }
+    };
+    
+    loadWellbeingData();
+  }, [selectedLSOA]);
+
+  // Helper function to determine risk level
+  const getLocalRiskLevel = (crimeScore) => {
+    if (crimeScore > 0.8) return 2; // High
+    if (crimeScore > 0.4) return 1; // Medium
+    return 0; // Low
+  };
 
   const renderStars = (score) => {
     const stars = [];
@@ -88,6 +109,38 @@ const EmmieScorecard = ({ selectedLSOA }) => {
     );
   };
 
+  if (isLoading) {
+    return (
+      <div className="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden mb-4 p-4">
+        <div className="flex justify-center items-center py-8">
+          <div className="w-6 h-6 border-2 border-blue-500 border-t-blue-100 rounded-full animate-spin"></div>
+          <span className="ml-2 text-gray-400">Loading data...</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden mb-4 p-4">
+        <div className="text-center py-6">
+          <div className="text-red-500 text-xl mb-2">⚠️</div>
+          <p className="text-gray-300">{error}</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!emmieFramework) {
+    return (
+      <div className="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden mb-4 p-4">
+        <div className="text-center py-6">
+          <p className="text-gray-400">EMMIE framework data unavailable.</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden mb-4">
       <h3 className="text-white text-base font-semibold p-3 border-b border-gray-700 flex items-center">
@@ -107,7 +160,7 @@ const EmmieScorecard = ({ selectedLSOA }) => {
             }`}
             onClick={() => setExpandedSection(key)}
           >
-            {emmieFramework[key].title}
+            {emmieFramework[key]?.title || key.charAt(0).toUpperCase() + key.slice(1)}
           </button>
         ))}
       </div>
@@ -116,7 +169,7 @@ const EmmieScorecard = ({ selectedLSOA }) => {
       <div className="p-2 bg-gray-900">
         <table className="w-full">
           <tbody>
-            {emmieFramework[expandedSection].items.map((item, index) => (
+            {emmieFramework[expandedSection]?.items.map((item, index) => (
               <motion.tr 
                 key={index}
                 initial={{ opacity: 0, y: 10 }}
@@ -124,7 +177,14 @@ const EmmieScorecard = ({ selectedLSOA }) => {
                 transition={{ delay: index * 0.1 }}
                 className="border-b border-gray-800"
               >
-                <td className="py-2 px-3 text-sm text-white">{item.name}</td>
+                <td className="py-2 px-3 text-sm text-white">
+                  <div className="flex flex-col">
+                    <span>{item.name}</span>
+                    {item.description && (
+                      <span className="text-xs text-gray-400">{item.description}</span>
+                    )}
+                  </div>
+                </td>
                 <td className="py-2 px-3 text-right">
                   {renderStars(item.score)}
                 </td>
@@ -147,7 +207,7 @@ const EmmieScorecard = ({ selectedLSOA }) => {
               <div className="font-mono text-white">{selectedLSOA}</div>
             </div>
             
-            {housingData && (
+            {housingData ? (
               <motion.div 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -190,6 +250,10 @@ const EmmieScorecard = ({ selectedLSOA }) => {
                   Moderators, Implementation and Economic impact for crime reduction strategies.
                 </div>
               </motion.div>
+            ) : (
+              <div className="text-center py-4 text-gray-400">
+                <p>Loading wellbeing data for this area...</p>
+              </div>
             )}
           </div>
         ) : (

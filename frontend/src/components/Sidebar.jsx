@@ -45,7 +45,7 @@ const Sidebar = ({
             whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.2 }}
           >
-            <span className="text-blue-500 mr-2">CF</span>
+
             <motion.span 
               className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400"
               variants={logoTextVariants}
@@ -82,45 +82,49 @@ const Sidebar = ({
         <p className="text-xs text-gray-400 mb-4">Filter dashboard by division, crime type, or time period.</p>
       </motion.div>
 
-      <motion.div 
-        className="px-4 mb-4"
-        variants={logoTextVariants}
-      >
-        <h4 className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">Police Division</h4>
-        <select className="w-full rounded-sm bg-gray-800 border border-gray-700 px-2 py-1 text-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500/50">
-          <option>All</option>
-          <option>Central</option>
-          <option>North</option>
-          <option>South</option>
-        </select>
-      </motion.div>
-
-      {/* Navigation */}
-      <nav className="pt-2">
-        <div className="px-4 mb-2">
-          <h3 className="text-xs font-medium text-gray-400 uppercase tracking-wider">Navigation</h3>
+      {/* Navigation Menu */}
+      <nav className="pt-4">
+        <div className="px-4 mb-3">
+          <h3 className="text-xs font-medium text-gray-400 uppercase tracking-wider flex items-center">
+            <span className="mr-2">🧭</span>
+            Navigation
+          </h3>
         </div>
-        <ul>
+        <div className="space-y-2 px-2">
           {navItems.map((item) => (
-            <motion.li 
-              key={item.id} 
-              className="mb-1 px-2"
-              whileHover={{ x: 5 }}
-              transition={{ duration: 0.2 }}
+            <motion.div
+              key={item.id}
+              whileHover={{ x: 8 }}
+              transition={{
+                type: "spring", 
+                stiffness: 400,
+                damping: 20
+              }}
             >
               <button
-                className={`flex items-center w-full px-2 py-2 rounded-md text-sm font-medium transition-colors duration-150 
-                  ${activeView === item.id 
-                    ? 'bg-blue-700/20 text-blue-400 border-l-2 border-blue-500' 
-                    : 'text-gray-400 hover:text-gray-100 hover:bg-gray-800/50'}`}
+                className={`
+                  flex items-center w-full px-4 py-3
+                  rounded-xl text-sm font-medium
+                  transition-all duration-300 ease-out
+                  backdrop-blur-sm
+                  ${activeView === item.id
+                    ? 'bg-gradient-to-r from-blue-600/40 to-indigo-500/20 text-blue-300 shadow-lg shadow-blue-900/30 border-l-2 border-blue-400 hover:from-blue-500/50 hover:to-indigo-400/30'
+                    : 'text-gray-400 hover:text-gray-200 hover:bg-gray-800/90 hover:shadow-lg hover:shadow-gray-900/30 hover:border-l-2 hover:border-gray-600'
+                  }
+                `}
                 onClick={() => setActiveView(item.id)}
               >
-                <span className="mr-2">{item.icon}</span>
-                <motion.span variants={logoTextVariants}>{item.name}</motion.span>
+                <span className="text-xl mr-4 opacity-90">{item.icon}</span>
+                <motion.span
+                  variants={logoTextVariants}
+                  className="font-medium tracking-wide"
+                >
+                  {item.name}
+                </motion.span>
               </button>
-            </motion.li>
+            </motion.div>
           ))}
-        </ul>
+        </div>
       </nav>
       
       {/* Police Control Section */}

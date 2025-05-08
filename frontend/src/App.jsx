@@ -305,7 +305,6 @@ function App() {
               <div className="text-gray-300 space-y-2">
                 <p>This interactive dashboard combines real London burglary data with police resource allocation optimization.</p>
                 <p>The map highlights burglary trends across LSOAs (Lower Super Output Areas). Select an area to view historical data and projected impact of optimal police allocation.</p>
-                <p>Toggle the "Police Allocation" feature to visualize how K-means clustering can be used to allocate police resources for maximum crime reduction.</p>
               </div>
               
               <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -323,7 +322,7 @@ function App() {
                     Resource Optimization
                   </div>
                   <p className="text-gray-400 text-sm">
-                    See how K-means clustering optimizes police allocation for crime reduction.
+                      Apply CPTED, Cinta's research on how Crime patrolling with smaller forces actually works and allocating enough rest periods
                   </p>
                 </div>
                 
