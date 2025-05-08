@@ -217,7 +217,6 @@ const EmmieScorecard = ({ selectedLSOA }) => {
       
       <h3 className="text-white text-base font-semibold p-3 border-t border-b border-gray-700 flex items-center">
         <span className="text-green-400 mr-2">📊</span>
-        Live Patrol Feed
       </h3>
       
       <div className="p-3 bg-gray-900 text-sm">

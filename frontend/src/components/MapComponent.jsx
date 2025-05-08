@@ -32,6 +32,37 @@ const MapStyleLayer = () => {
   return null;
 };
 
+// Helper component to handle zoom-dependent marker sizing
+const ZoomDependentMarkers = ({ children }) => {
+  const map = useMap();
+  const [zoom, setZoom] = useState(map.getZoom());
+  
+  useEffect(() => {
+    const updateZoom = () => {
+      setZoom(map.getZoom());
+    };
+    
+    map.on('zoomend', updateZoom);
+    
+    return () => {
+      map.off('zoomend', updateZoom);
+    };
+  }, [map]);
+  
+  // Pass the current zoom level to all children
+  return React.Children.map(children, child => {
+    return React.cloneElement(child, { currentZoom: zoom });
+  });
+};
+
+// Function to calculate marker size based on zoom level
+const getZoomDependentSize = (baseSize, zoom) => {
+  // Scale factor increases as zoom level increases
+  // Start scaling from zoom level 12 onwards
+  const scaleFactor = zoom >= 12 ? 1 + (zoom - 12) * 0.3 : 1;
+  return Math.round(baseSize * scaleFactor);
+};
+
 // London coordinates for burglary heatmap points
 const londonBurglaryPoints = [
   // City of London and central
@@ -240,21 +271,59 @@ const policeAllocations = [
   { position: [51.573, 0.132], officerId: 'F-052', coverage: 6, patrolType: 'Community', effectivenessScore: 74 },
 ];
 
-// Add police officer emoji icon
-const policeIcon = L.divIcon({
-  html: '👮',
-  className: 'police-marker',
-  iconSize: [20, 20],
-  iconAnchor: [10, 10]
-});
+// Add police officer emoji icon with dynamic sizing
+const createPoliceIcon = (zoom = 11) => {
+  const size = getZoomDependentSize(20, zoom);
+  return L.divIcon({
+    html: '👮',
+    className: 'police-marker',
+    iconSize: [size, size],
+    iconAnchor: [size/2, size/2]
+  });
+};
 
-// Add police vehicle emoji icon
-const vehicleIcon = L.divIcon({
-  html: '🚓',
-  className: 'police-marker',
-  iconSize: [22, 22],
-  iconAnchor: [11, 11]
-});
+// Add police vehicle emoji icon with dynamic sizing
+const createVehicleIcon = (zoom = 11) => {
+  const size = getZoomDependentSize(22, zoom);
+  return L.divIcon({
+    html: '🚓',
+    className: 'police-marker',
+    iconSize: [size, size],
+    iconAnchor: [size/2, size/2]
+  });
+};
+
+// Initial icons (will be replaced by dynamic ones)
+const policeIcon = createPoliceIcon();
+const vehicleIcon = createVehicleIcon();
+
+// DynamicCircleMarker component for zoom-dependent sizing
+const DynamicCircleMarker = ({ center, baseRadius, currentZoom = 11, pathOptions, children }) => {
+  // Calculate radius based on zoom level
+  const radius = getZoomDependentSize(baseRadius, currentZoom);
+  
+  return (
+    <CircleMarker
+      center={center}
+      radius={radius}
+      pathOptions={pathOptions}
+    >
+      {children}
+    </CircleMarker>
+  );
+};
+
+// DynamicMarker component for zoom-dependent emoji icons
+const DynamicMarker = ({ position, patrolType, currentZoom = 11, children }) => {
+  // Create the appropriate icon based on patrol type and current zoom
+  const icon = patrolType === 'Vehicle' ? createVehicleIcon(currentZoom) : createPoliceIcon(currentZoom);
+  
+  return (
+    <Marker position={position} icon={icon}>
+      {children}
+    </Marker>
+  );
+};
 
 const MapComponent = ({ onLSOASelect, showPoliceAllocation, selectedLSOA, policeAllocationData }) => {
   const mapRef = useRef(null);
@@ -376,74 +445,78 @@ const MapComponent = ({ onLSOASelect, showPoliceAllocation, selectedLSOA, police
             </LayersControl.Overlay>
             
             <LayersControl.Overlay name="Burglary Hotspots" checked>
-              <FeatureGroup>
-                {londonBurglaryPoints.map((point, index) => (
-                  <CircleMarker 
-                    key={index}
-                    center={[point[0], point[1]]}
-                    radius={point[2] / 10}
-                    pathOptions={{
-                      fillColor: '#ef4444',
-                      fillOpacity: 0.6,
-                      color: '#b91c1c',
-                      weight: 1
-                    }}
-                  >
-                    <Popup>
-                      <div>
-                        <h3 className="font-semibold">Burglary Hotspot</h3>
-                        <p className="text-sm">Incidents: {point[2]}</p>
-                        <p className="text-sm">Location: {point[0].toFixed(4)}, {point[1].toFixed(4)}</p>
-                      </div>
-                    </Popup>
-                  </CircleMarker>
-                ))}
-              </FeatureGroup>
+              <ZoomDependentMarkers>
+                <FeatureGroup>
+                  {londonBurglaryPoints.map((point, index) => (
+                    <DynamicCircleMarker 
+                      key={index}
+                      center={[point[0], point[1]]}
+                      baseRadius={point[2] / 10}
+                      pathOptions={{
+                        fillColor: '#ef4444',
+                        fillOpacity: 0.6,
+                        color: '#b91c1c',
+                        weight: 1
+                      }}
+                    >
+                      <Popup>
+                        <div>
+                          <h3 className="font-semibold">Burglary Hotspot</h3>
+                          <p className="text-sm">Incidents: {point[2]}</p>
+                          <p className="text-sm">Location: {point[0].toFixed(4)}, {point[1].toFixed(4)}</p>
+                        </div>
+                      </Popup>
+                    </DynamicCircleMarker>
+                  ))}
+                </FeatureGroup>
+              </ZoomDependentMarkers>
             </LayersControl.Overlay>
             
             {showPoliceAllocation && policeAllocationData && (
               <LayersControl.Overlay name="Police Units" checked>
-                <FeatureGroup>
-                  {policeAllocationData.map((unit) => (
-                    <React.Fragment key={unit.unit_id}>
-                      {/* Police coverage circle */}
-                      <CircleMarker
-                        center={[unit.lat, unit.lon]}
-                        radius={unit.patrol_radius * 10}  
-                        pathOptions={{
-                          fillColor: '#3b82f6',
-                          fillOpacity: 0.2,
-                          color: '#2563eb',
-                          weight: 1
-                        }}
-                      >
-                        <Popup>
-                          <div>
-                            <h3 className="font-semibold">Police Unit #{unit.unit_id}</h3>
-                            <p className="text-sm">Est. Burglaries: {unit.estimated_burglaries.toLocaleString()}</p>
-                            <p className="text-sm">Patrol Radius: {unit.patrol_radius} km</p>
-                            <p className="text-sm">Patrol Type: {unit.patrol_type}</p>
-                            <p className="text-sm">Effectiveness: {unit.effectiveness_score}%</p>
-                          </div>
-                        </Popup>
-                      </CircleMarker>
-                      
-                      {/* Police officer/vehicle emoji marker */}
-                      <Marker
-                        position={[unit.lat, unit.lon]}
-                        icon={unit.patrol_type === 'Vehicle' ? vehicleIcon : policeIcon}
-                      >
-                        <Popup>
-                          <div>
-                            <h3 className="font-semibold">Unit #{unit.unit_id}</h3>
-                            <p className="text-sm">Patrol Type: {unit.patrol_type}</p>
-                            <p className="text-sm">Area Burglaries: {unit.estimated_burglaries.toLocaleString()}</p>
-                          </div>
-                        </Popup>
-                      </Marker>
-                    </React.Fragment>
-                  ))}
-                </FeatureGroup>
+                <ZoomDependentMarkers>
+                  <FeatureGroup>
+                    {policeAllocationData.map((unit) => (
+                      <React.Fragment key={unit.unit_id}>
+                        {/* Police coverage circle */}
+                        <DynamicCircleMarker
+                          center={[unit.lat, unit.lon]}
+                          baseRadius={unit.patrol_radius * 10}  
+                          pathOptions={{
+                            fillColor: '#3b82f6',
+                            fillOpacity: 0.2,
+                            color: '#2563eb',
+                            weight: 1
+                          }}
+                        >
+                          <Popup>
+                            <div>
+                              <h3 className="font-semibold">Police Unit #{unit.unit_id}</h3>
+                              <p className="text-sm">Est. Burglaries: {unit.estimated_burglaries.toLocaleString()}</p>
+                              <p className="text-sm">Patrol Radius: {unit.patrol_radius} km</p>
+                              <p className="text-sm">Patrol Type: {unit.patrol_type}</p>
+                              <p className="text-sm">Effectiveness: {unit.effectiveness_score}%</p>
+                            </div>
+                          </Popup>
+                        </DynamicCircleMarker>
+                        
+                        {/* Police officer/vehicle emoji marker */}
+                        <DynamicMarker
+                          position={[unit.lat, unit.lon]}
+                          patrolType={unit.patrol_type}
+                        >
+                          <Popup>
+                            <div>
+                              <h3 className="font-semibold">Unit #{unit.unit_id}</h3>
+                              <p className="text-sm">Patrol Type: {unit.patrol_type}</p>
+                              <p className="text-sm">Area Burglaries: {unit.estimated_burglaries.toLocaleString()}</p>
+                            </div>
+                          </Popup>
+                        </DynamicMarker>
+                      </React.Fragment>
+                    ))}
+                  </FeatureGroup>
+                </ZoomDependentMarkers>
               </LayersControl.Overlay>
             )}
           </LayersControl>
