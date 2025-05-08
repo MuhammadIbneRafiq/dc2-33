@@ -71,7 +71,7 @@ const londonBurglaryPoints = [
   [51.442, -0.091, 31]
 ];
 
-// Mock London LSOA GeoJSON data with more realistic styling
+// Mock London LSOA GeoJSON data
 const mockLondonLSOAs = {
   type: 'FeatureCollection',
   features: [
@@ -230,7 +230,7 @@ const mockLondonLSOAs = {
   ]
 };
 
-// Mock police allocation points with improved accuracy and data
+// Mock police allocation points
 const policeAllocations = [
   { position: [51.513, -0.092], officerId: 'A-137', coverage: 10, patrolType: 'Foot', effectivenessScore: 86 },
   { position: [51.517, -0.099], officerId: 'B-244', coverage: 12, patrolType: 'Vehicle', effectivenessScore: 92 },
@@ -317,17 +317,17 @@ const MapComponent = ({ onLSOASelect, showPoliceAllocation, selectedLSOA }) => {
         )}
       </div>
       
-      <div className="flex-1 min-h-[400px]">
+      <div className="flex-1 min-h-[400px] relative">
         <MapContainer
           center={[51.505, -0.09]}
           zoom={11}
           scrollWheelZoom={true}
-          style={{ height: "100%", width: "100%", background: "#111827" }}
+          style={{ height: "100%", width: "100%", background: "#111827", position: "absolute" }}
           ref={mapRef}
         >
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-            url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             className="dark-map-tiles"
           />
           
