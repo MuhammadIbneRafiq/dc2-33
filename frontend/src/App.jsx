@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import MapComponent from './components/MapComponent'
 import BurglaryChart from './components/BurglaryChart'
 import PoliceAllocation from './components/PoliceAllocation'
+import TimeSeriesForecasting from './components/TimeSeriesForecasting'
 import Sidebar from './components/Sidebar'
 import './App.css'
 
@@ -92,7 +93,13 @@ function App() {
   return (
     <div className="main-container min-h-screen flex">
       {/* Sidebar */}
-      <Sidebar activeView={activeView} setActiveView={handleViewChange} />
+      <Sidebar 
+        activeView={activeView} 
+        setActiveView={handleViewChange} 
+        showPoliceAllocation={showPoliceAllocation}
+        onTogglePoliceAllocation={setShowPoliceAllocation}
+        selectedLSOA={selectedLSOA}
+      />
       
       {/* Main Content */}
       <div className="flex-1 flex flex-col ml-[280px]">
@@ -145,21 +152,18 @@ function App() {
           {/* Main Content based on active view */}
           {activeView === 'dashboard' && (
             <>
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div className="lg:col-span-2">
+              <div className="grid grid-cols-1 lg:grid-cols-1 gap-6">
+                <div>
                   <MapComponent 
                     onLSOASelect={handleLSOASelect} 
                     showPoliceAllocation={showPoliceAllocation}
                     selectedLSOA={selectedLSOA}
                   />
                 </div>
-                
-                <div>
-                  <PoliceAllocation 
-                    showPoliceAllocation={showPoliceAllocation}
-                    onTogglePoliceAllocation={handleTogglePoliceAllocation}
-                  />
-                </div>
+              </div>
+              
+              <div className="mt-6">
+                <TimeSeriesForecasting selectedLSOA={selectedLSOA} />
               </div>
               
               <div className="mt-6">
@@ -188,6 +192,10 @@ function App() {
                 selectedLSOA={selectedLSOA}
               />
               
+              <div className="mt-6">
+                <TimeSeriesForecasting selectedLSOA={selectedLSOA} />
+              </div>
+              
               {selectedLSOA && !isLoading && (
                 <div className="mt-6">
                   <BurglaryChart 
@@ -200,20 +208,17 @@ function App() {
           )}
           
           {activeView === 'allocation' && (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div>
-                <PoliceAllocation 
-                  showPoliceAllocation={true}
-                  onTogglePoliceAllocation={() => {}}
-                />
-              </div>
-              
+            <div className="grid grid-cols-1 lg:grid-cols-1 gap-6">
               <div>
                 <MapComponent 
                   onLSOASelect={handleLSOASelect} 
                   showPoliceAllocation={true}
                   selectedLSOA={selectedLSOA}
                 />
+              </div>
+              
+              <div className="mt-6">
+                <TimeSeriesForecasting selectedLSOA={selectedLSOA} />
               </div>
             </div>
           )}

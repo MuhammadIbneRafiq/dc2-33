@@ -240,6 +240,14 @@ const policeAllocations = [
   { position: [51.573, 0.132], officerId: 'F-052', coverage: 6, patrolType: 'Community', effectivenessScore: 74 },
 ];
 
+// Add police officer emoji icon
+const policeIcon = L.divIcon({
+  html: '👮',
+  className: 'police-marker',
+  iconSize: [20, 20],
+  iconAnchor: [10, 10]
+});
+
 const MapComponent = ({ onLSOASelect, showPoliceAllocation, selectedLSOA }) => {
   const mapRef = useRef(null);
   const [selectedLSOAData, setSelectedLSOAData] = useState(null);
@@ -372,27 +380,42 @@ const MapComponent = ({ onLSOASelect, showPoliceAllocation, selectedLSOA }) => {
               <LayersControl.Overlay name="Police Allocation" checked>
                 <FeatureGroup>
                   {policeAllocations.map((allocation, index) => (
-                    <CircleMarker
-                      key={index}
-                      center={allocation.position}
-                      radius={allocation.coverage / 2}
-                      pathOptions={{
-                        fillColor: '#3b82f6',
-                        fillOpacity: 0.4,
-                        color: '#2563eb',
-                        weight: 2
-                      }}
-                    >
-                      <Popup>
-                        <div>
-                          <h3 className="font-semibold">Police Allocation</h3>
-                          <p className="text-sm">Officer ID: {allocation.officerId}</p>
-                          <p className="text-sm">Coverage: {allocation.coverage} km</p>
-                          <p className="text-sm">Patrol Type: {allocation.patrolType}</p>
-                          <p className="text-sm">Effectiveness: {allocation.effectivenessScore}%</p>
-                        </div>
-                      </Popup>
-                    </CircleMarker>
+                    <React.Fragment key={index}>
+                      {/* Police coverage circle */}
+                      <CircleMarker
+                        center={allocation.position}
+                        radius={allocation.coverage / 2}
+                        pathOptions={{
+                          fillColor: '#3b82f6',
+                          fillOpacity: 0.2,
+                          color: '#2563eb',
+                          weight: 1
+                        }}
+                      >
+                        <Popup>
+                          <div>
+                            <h3 className="font-semibold">Police Allocation</h3>
+                            <p className="text-sm">Officer ID: {allocation.officerId}</p>
+                            <p className="text-sm">Coverage: {allocation.coverage} km</p>
+                            <p className="text-sm">Patrol Type: {allocation.patrolType}</p>
+                            <p className="text-sm">Effectiveness: {allocation.effectivenessScore}%</p>
+                          </div>
+                        </Popup>
+                      </CircleMarker>
+                      
+                      {/* Police officer emoji marker */}
+                      <Marker
+                        position={allocation.position}
+                        icon={policeIcon}
+                      >
+                        <Popup>
+                          <div>
+                            <h3 className="font-semibold">Officer {allocation.officerId}</h3>
+                            <p className="text-sm">Patrol Type: {allocation.patrolType}</p>
+                          </div>
+                        </Popup>
+                      </Marker>
+                    </React.Fragment>
                   ))}
                 </FeatureGroup>
               </LayersControl.Overlay>

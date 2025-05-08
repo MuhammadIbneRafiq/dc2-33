@@ -1,7 +1,15 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import SidebarPoliceControl from './SidebarPoliceControl';
+import EmmieScorecard from './EmmieScorecard';
 
-const Sidebar = ({ activeView, setActiveView }) => {
+const Sidebar = ({ 
+  activeView, 
+  setActiveView, 
+  showPoliceAllocation, 
+  onTogglePoliceAllocation, 
+  selectedLSOA 
+}) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   
   const navItems = [
@@ -88,7 +96,7 @@ const Sidebar = ({ activeView, setActiveView }) => {
       </motion.div>
 
       {/* Navigation */}
-      <nav className="flex-1 pt-2">
+      <nav className="pt-2">
         <div className="px-4 mb-2">
           <h3 className="text-xs font-medium text-gray-400 uppercase tracking-wider">Navigation</h3>
         </div>
@@ -114,9 +122,26 @@ const Sidebar = ({ activeView, setActiveView }) => {
           ))}
         </ul>
       </nav>
+      
+      {/* Police Control Section */}
+      <div className="border-t border-gray-800 mt-4 pt-4">
+        <SidebarPoliceControl 
+          showPoliceAllocation={showPoliceAllocation}
+          onTogglePoliceAllocation={onTogglePoliceAllocation}
+          isCollapsed={isCollapsed}
+        />
+      </div>
+      
+      {/* EMMIE Scorecard */}
+      <motion.div 
+        className="mt-4 mx-3 overflow-hidden"
+        variants={isCollapsed ? { expanded: {}, collapsed: { display: 'none' } } : {}}
+      >
+        <EmmieScorecard selectedLSOA={selectedLSOA} />
+      </motion.div>
 
       {/* Collapse/Expand toggle */}
-      <div className="p-4 border-t border-gray-800">
+      <div className="p-4 mt-auto border-t border-gray-800">
         <motion.button 
           className="flex items-center justify-center w-full p-2 rounded-md bg-gray-800 text-gray-400 hover:bg-gray-700 transition-colors"
           onClick={() => setIsCollapsed(!isCollapsed)}
