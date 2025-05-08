@@ -156,9 +156,9 @@ const BurglaryChart = ({ data, showPoliceImpact }) => {
     return (
       <div className="dashboard-card h-full p-4 flex items-center justify-center">
         <div className="text-gray-400 text-center">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 mx-auto mb-2 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          {/* <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 mx-auto mb-2 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-          </svg>
+          </svg> */}
           <p className="text-sm">Select an LSOA on the map to view burglary trends</p>
         </div>
       </div>
@@ -169,18 +169,18 @@ const BurglaryChart = ({ data, showPoliceImpact }) => {
     <div className="dashboard-card">
       <div className="flex items-center justify-between card-header px-4 py-3">
         <h3 className="text-white text-lg font-semibold flex items-center">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
+          {/* <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
             <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
-          </svg>
+          </svg> */}
           Burglary Time Trends
         </h3>
         
         {showPoliceImpact && (
           <div className="flex items-center px-3 py-1 bg-green-600/20 text-green-400 rounded-md text-sm border border-green-600/30">
             <span className="font-medium flex items-center">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+              {/* <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-              </svg>
+              </svg> */}
               Police Impact Shown
             </span>
           </div>
@@ -194,9 +194,9 @@ const BurglaryChart = ({ data, showPoliceImpact }) => {
       <div className="p-3 bg-gray-800 border-t border-gray-700">
         <div className="flex flex-wrap justify-between items-center">
           <div className="flex items-center text-sm text-gray-400">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
+            {/* <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
               <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-            </svg>
+            </svg> */}
             <span>Data shows monthly burglary counts in the selected LSOA</span>
           </div>
           
