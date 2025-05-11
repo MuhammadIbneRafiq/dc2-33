@@ -57,10 +57,12 @@ const ZoomDependentMarkers = ({ children }) => {
 
 // Function to calculate marker size based on zoom level
 const getZoomDependentSize = (baseSize, zoom) => {
-  // Scale factor increases as zoom level increases
-  // Start scaling from zoom level 12 onwards
-  const scaleFactor = zoom >= 12 ? 1 + (zoom - 12) * 0.3 : 1;
-  return Math.round(baseSize * scaleFactor);
+  // Enhanced scaling factor with more aggressive scaling at higher zoom levels
+  // Start scaling from zoom level 11 onwards
+  if (zoom <= 11) return baseSize;
+  if (zoom <= 13) return baseSize * (1 + (zoom - 11) * 0.25);
+  if (zoom <= 15) return baseSize * (1.5 + (zoom - 13) * 0.4);
+  return baseSize * (2.3 + (zoom - 15) * 0.5); // More dramatic scaling at highest zoom levels
 };
 
 // London coordinates for burglary heatmap points

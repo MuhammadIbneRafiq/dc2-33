@@ -383,3 +383,48 @@ input:checked + .toggle-slider:before {
   visibility: visible;
   opacity: 1;
 }
+
+/* Add this to your existing CSS file */
+
+.police-marker {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  transform: scale(1);
+  transform-origin: center;
+  transition: transform 0.2s ease;
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+  z-index: 1000 !important;
+}
+
+/* Fix for Leaflet popup styles in dark mode */
+.leaflet-popup-content-wrapper {
+  background-color: #1f2937;
+  color: white;
+  border-radius: 0.5rem;
+}
+
+.leaflet-popup-tip {
+  background-color: #1f2937;
+}
+
+.leaflet-popup-content h3 {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.leaflet-popup-content p {
+  margin: 0.1rem 0;
+  font-size: 0.875rem;
+}
+
+/* Add smooth transition for tiles */
+.smooth-tiles {
+  transition: opacity 0.2s ease;
+}
+
+/* Dark mode styling for map */
+.dark-map-tiles {
+  filter: brightness(0.7) contrast(1.2) saturate(0.8) invert(0.9) hue-rotate(180deg);
+}
