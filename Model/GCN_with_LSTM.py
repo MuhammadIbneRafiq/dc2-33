@@ -4,14 +4,16 @@ import numpy as np
 import geopandas as gpd
 import matplotlib.pyplot as plt
 import torch
+import torch.nn as nn
 import torch.nn.functional as F
 from torch_geometric.nn import GCNConv
 from torch_geometric.data import Data
 import networkx as nx
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
 import glob
 import warnings
 warnings.filterwarnings('ignore')
+
 
 # Set the correct paths for your project
 DATA_DIR = "."
@@ -226,70 +228,157 @@ def create_adjacency_graph(lsoa_boundaries):
     
     return G, edge_index, lsoa_to_idx
 
-# Prepare data for GCN
-def prepare_gcn_data(lsoa_features, edge_index, target_col='avg_monthly_burglaries'):
-    print("Preparing data for GCN model...")
-    
-    # Select numerical features
-    feature_cols = [col for col in lsoa_features.columns 
-                   if col != 'LSOA_code' and 
-                   lsoa_features[col].dtype in ['int64', 'float64']]
-    
-    # Normalize features
-    scaler = StandardScaler()
-    lsoa_features[feature_cols] = scaler.fit_transform(lsoa_features[feature_cols])
-    
-    # Create feature matrix
-    X = lsoa_features[feature_cols].values
-    X = torch.tensor(X, dtype=torch.float)
-    
-    # Create target vector
-    y = lsoa_features[target_col].values
-    y = torch.tensor(y, dtype=torch.float).view(-1, 1)
-    
-    # Create PyTorch Geometric Data object
-    data = Data(x=X, edge_index=edge_index, y=y)
-    
-    print(f"Prepared GCN data with {X.shape[1]} features")
-    return data, feature_cols
 
-# Define the GCN model
-class GCNModel(torch.nn.Module):
-    def __init__(self, num_features):
-        super(GCNModel, self).__init__()
-        self.conv1 = GCNConv(num_features, 64)
+# Enhanced LSTM-GCN Hybrid Model
+# Revised LSTM-GCN Model with Consistent LSTM Input
+class LSTMGCNModel(torch.nn.Module):
+    def __init__(self, num_features, sequence_length=12):
+        super(LSTMGCNModel, self).__init__()
+        
+        # Initial feature projection layer
+        self.feature_proj = torch.nn.Linear(num_features, 64)
+        
+        # GCN Layers for spatial feature extraction
+        self.conv1 = GCNConv(64, 64)
         self.conv2 = GCNConv(64, 32)
         self.conv3 = GCNConv(32, 16)
-        self.fc = torch.nn.Linear(16, 1)
+        
+        # Temporal sequence projection to match LSTM input size
+        self.temporal_proj = torch.nn.Linear(1, 16)
+        
+        # LSTM Layer for temporal pattern recognition
+        self.lstm = nn.LSTM(
+            input_size=16,  # Projected temporal features
+            hidden_size=32,  # LSTM hidden layer size
+            num_layers=2,   # Number of LSTM layers
+            batch_first=True,
+            dropout=0.2
+        )
+        
+        # Final prediction layers
+        self.fc1 = torch.nn.Linear(32, 16)
+        self.fc2 = torch.nn.Linear(16, 1)
+        
+        # Store sequence length for reshaping
+        self.sequence_length = sequence_length
     
     def forward(self, data):
         x, edge_index = data.x, data.edge_index
         
-        # First graph convolution layer with neighborhood aggregation
+        # Project initial features to consistent dimension
+        x = F.relu(self.feature_proj(x))
+        
+        # Graph Convolution Layers
         x = self.conv1(x, edge_index)
         x = F.relu(x)
         x = F.dropout(x, p=0.2, training=self.training)
         
-        # Second graph convolution layer
         x = self.conv2(x, edge_index)
         x = F.relu(x)
         
-        # Third graph convolution layer
         x = self.conv3(x, edge_index)
         x = F.relu(x)
         
-        # Final prediction layer
-        x = self.fc(x)
+        # Reshape for LSTM (separate spatial and temporal components)
+        batch_size = x.size(0)
+        
+        # Extract and project temporal sequence to match LSTM input
+        temporal_input = data.x[:, -self.sequence_length:].view(batch_size, self.sequence_length, 1)
+        temporal_input = self.temporal_proj(temporal_input)
+        
+        # LSTM Processing
+        lstm_out, (hidden, cell) = self.lstm(temporal_input)
+        
+        # Use the last hidden state for prediction
+        x = lstm_out[:, -1, :]
+        
+        # Final prediction layers
+        x = F.relu(self.fc1(x))
+        x = self.fc2(x)
         
         return x
 
-# Train the GCN model
-def train_gcn_model(model, data, epochs=100):
-    print("Training GCN model...")
+# Updated prepare_temporal_gcn_data function
+def prepare_temporal_gcn_data(lsoa_features, edge_index, monthly_counts, target_col='avg_monthly_burglaries'):
+    print("Preparing temporal data for LSTM-GCN model...")
+    
+    # Select numerical features
+    spatial_feature_cols = [col for col in lsoa_features.columns 
+                            if col not in ['LSOA_code', 'LSOA_CODE', 'lsoa_code'] and 
+                            lsoa_features[col].dtype in ['int64', 'float64']]
+    
+    # Normalize spatial features
+    from sklearn.preprocessing import StandardScaler
+    scaler = StandardScaler()
+    lsoa_features[spatial_feature_cols] = scaler.fit_transform(lsoa_features[spatial_feature_cols])
+    
+    # Prepare temporal sequences
+    def create_sequences(features, monthly_data, lsoa_code, sequence_length=12):
+        # Sort monthly data chronologically
+        monthly_sorted = monthly_data[monthly_data['LSOA_code'] == lsoa_code].sort_values(['year', 'month_num'])
+        
+        # Extract burglary counts
+        burglary_seq = monthly_sorted['burglary_count'].values
+        
+        # If not enough data, pad with zeros
+        if len(burglary_seq) < sequence_length:
+            burglary_seq = np.pad(burglary_seq, (sequence_length - len(burglary_seq), 0), mode='constant')
+        
+        # Take the last sequence_length entries
+        burglary_seq = burglary_seq[-sequence_length:]
+        
+        # Get the most recent features
+        lsoa_row = features[features['LSOA_code'] == lsoa_code][spatial_feature_cols].values[0]
+        
+        return burglary_seq, lsoa_row
+    
+    # Prepare sequences for each LSOA
+    X_sequences = []
+    X_features = []
+    y_targets = []
+    
+    # Track unique LSOAs
+    unique_lsoas = lsoa_features['LSOA_code'].unique()
+    
+    for lsoa_code in unique_lsoas:
+        try:
+            seq, features = create_sequences(lsoa_features, monthly_counts, lsoa_code)
+            target = lsoa_features[lsoa_features['LSOA_code'] == lsoa_code][target_col].values[0]
+            
+            # Combine features and sequence
+            combined_features = np.concatenate([features, seq])
+            
+            X_features.append(combined_features)
+            y_targets.append(target)
+        except Exception as e:
+            print(f"Error processing LSOA {lsoa_code}: {e}")
+    
+    # Convert to tensors
+    X_features = torch.tensor(X_features, dtype=torch.float)
+    y_targets = torch.tensor(y_targets, dtype=torch.float).view(-1, 1)
+    
+    # Create PyTorch Geometric Data object
+    data = Data(x=X_features, edge_index=edge_index, y=y_targets)
+    
+    print(f"Prepared LSTM-GCN data with {X_features.shape[1]} total features")
+    return data, spatial_feature_cols + [f'seq_{i}' for i in range(12)]
+
+# Modify train_gcn_model to support LSTM-GCN
+def train_lstm_gcn_model(model, data, epochs=100):
+    print("Training LSTM-GCN model...")
     
     # Define optimizer and loss function
-    optimizer = torch.optim.Adam(model.parameters(), lr=0.01, weight_decay=5e-4)
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.005, weight_decay=5e-4)
     criterion = torch.nn.MSELoss()
+    
+    # Learning rate scheduler
+    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
+        optimizer, 
+        mode='min', 
+        factor=0.5, 
+        patience=20
+        # verbose=True
+    )
     
     # Training loop
     model.train()
@@ -304,6 +393,10 @@ def train_gcn_model(model, data, epochs=100):
         # Backward pass
         loss.backward()
         optimizer.step()
+        
+        # Update learning rate
+        scheduler.step(loss)
+        
         losses.append(loss.item())
         
         # Print progress
@@ -312,6 +405,7 @@ def train_gcn_model(model, data, epochs=100):
     
     print(f"Final training loss: {loss.item():.4f}")
     return losses
+
 
 # Generate risk predictions
 def generate_predictions(model, data, lsoa_features):
@@ -340,21 +434,49 @@ def generate_predictions(model, data, lsoa_features):
     results['risk_score'] = ((results['predicted_risk'] - min_risk) / (max_risk - min_risk)) * 100
     
     # Save predictions to CSV
-    results.to_csv(os.path.join(RESULTS_DIR, 'risk_predictions.csv'), index=False)
+    results.to_csv(os.path.join(RESULTS_DIR, 'risk_predictions_LSTM.csv'), index=False)
     print(f"Prediction results saved at {RESULTS_DIR}")
     return results
 
-# Create risk map visualization
-def create_risk_map(boundaries, risk_data, output_file='london_burglary_risk_map.png'):
+# Robust risk map creation function
+def create_risk_map(boundaries, risk_data, output_file='london_burglary_risk_map_LSTM.png'):
     print("Creating burglary risk heatmap...")
     
     # Merge boundaries with risk predictions
     risk_map = boundaries.merge(risk_data, on='LSOA_code', how='inner')
     
-    # Classify risk into categories
-    risk_map['risk_category'] = pd.qcut(risk_map['risk_score'], 
-                                       q=5, 
-                                       labels=['Very Low', 'Low', 'Medium', 'High', 'Very High'])
+    # Handle risk score categorization more robustly
+    def custom_risk_categorization(series):
+        """
+        Create custom risk categories based on percentiles
+        to handle cases with limited unique values
+        """
+        # Calculate percentiles
+        percentiles = [0, 20, 40, 60, 80, 100]
+        
+        # Compute percentile-based bins
+        bins = np.percentile(series, percentiles)
+        
+        # Ensure unique bin edges by adding a small epsilon
+        bins = np.unique(bins)
+        if len(bins) < 2:
+            # If all values are the same, create a simple range
+            bins = [series.min(), series.max()]
+        
+        # Define labels
+        labels = ['Very Low', 'Low', 'Medium', 'High', 'Very High']
+        
+        # Adjust labels if needed
+        if len(bins) - 1 != len(labels):
+            labels = labels[:len(bins)-1]
+        
+        return pd.cut(series, 
+                     bins=bins, 
+                     labels=labels, 
+                     include_lowest=True)
+    
+    # Apply custom categorization
+    risk_map['risk_category'] = custom_risk_categorization(risk_map['risk_score'])
     
     # Set up figure and axis
     fig, ax = plt.subplots(1, 1, figsize=(15, 12))
@@ -373,7 +495,7 @@ def create_risk_map(boundaries, risk_data, output_file='london_burglary_risk_map
     
     # Add a colorbar
     sm = plt.cm.ScalarMappable(cmap='RdYlGn_r')
-    sm.set_array([])
+    sm.set_array(risk_map['risk_score'])
     cbar = fig.colorbar(sm, ax=ax)
     cbar.set_label('Risk Score (Higher = Greater Risk)', fontsize=12)
     
@@ -390,8 +512,8 @@ def create_risk_map(boundaries, risk_data, output_file='london_burglary_risk_map
     print(f"Saved risk map to {os.path.join(RESULTS_DIR, output_file)}")
     return risk_map
 
-# Visualize borough-level risk
-def visualize_borough_risk(risk_map, output_file='borough_risk_summary.png'):
+# Updated visualization function to handle potential binning issues
+def visualize_borough_risk(risk_map, output_file='borough_risk_summary_LSTM.png'):
     print("Creating borough-level risk summary...")
     
     # Calculate average risk by borough
@@ -424,13 +546,49 @@ def visualize_borough_risk(risk_map, output_file='borough_risk_summary.png'):
     print(f"Saved borough risk summary to {os.path.join(RESULTS_DIR, output_file)}")
     return borough_risk
 
-# Main execution function
+# Visualize borough-level risk
+def visualize_borough_risk(risk_map, output_file='borough_risk_summary_LSTM.png'):
+    print("Creating borough-level risk summary...")
+    
+    # Calculate average risk by borough
+    borough_risk = risk_map.groupby('borough')['risk_score'].mean().reset_index()
+    borough_risk = borough_risk.sort_values('risk_score', ascending=False)
+    
+    # Create borough-level visualization
+    fig, ax = plt.subplots(figsize=(12, 8))
+    
+    # Create the bar chart
+    bars = ax.bar(borough_risk['borough'], borough_risk['risk_score'])
+    
+    # Customize the plot
+    ax.set_xlabel('London Borough', fontsize=12)
+    ax.set_ylabel('Average Risk Score', fontsize=12)
+    ax.set_title('Average Burglary Risk by London Borough', fontsize=14)
+    ax.tick_params(axis='x', rotation=45)
+    plt.grid(axis='y', linestyle='--', alpha=0.7)
+    
+    # Add risk values on top of bars
+    for i, bar in enumerate(bars):
+        ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 1,
+               f'{borough_risk.iloc[i]["risk_score"]:.1f}',
+               ha='center', va='bottom', fontsize=9)
+    
+    plt.tight_layout()
+    plt.savefig(os.path.join(RESULTS_DIR, output_file), dpi=300, bbox_inches='tight')
+    plt.close()
+    
+    print(f"Saved borough risk summary to {os.path.join(RESULTS_DIR, output_file)}")
+    return borough_risk
+
+# Modify main function to use LSTM-GCN
 def main():
     try:
         # Load data
         lsoa_boundaries = load_borough_boundaries()
         monthly_counts = load_crime_data()
         socio_data = load_socioeconomic_data()
+        
+        print('LSOA_code' in socio_data.columns)
         
         # Ensure data consistency by finding common LSOAs
         common_lsoas = set(lsoa_boundaries['LSOA_code']).intersection(
@@ -447,28 +605,36 @@ def main():
         # Create features and graph structure
         lsoa_features = create_lsoa_features(monthly_counts, socio_data)
         G, edge_index, lsoa_to_idx = create_adjacency_graph(lsoa_boundaries)
-        data, feature_cols = prepare_gcn_data(lsoa_features, edge_index)
         
-        # Train GCN model - using fewer epochs for demo
-        model = GCNModel(num_features=len(feature_cols))
-        losses = train_gcn_model(model, data, epochs=50)
+        # Prepare temporal data for LSTM-GCN
+        data, feature_cols = prepare_temporal_gcn_data(
+            lsoa_features, 
+            edge_index, 
+            monthly_counts
+        )
+        
+        # Initialize LSTM-GCN model
+        model = LSTMGCNModel(num_features=len(feature_cols))
+        
+        # Train model with more epochs
+        losses = train_lstm_gcn_model(model, data, epochs=150)
         
         # Generate predictions and visualizations
         risk_predictions = generate_predictions(model, data, lsoa_features)
         risk_map = create_risk_map(lsoa_boundaries, risk_predictions)
         borough_summary = visualize_borough_risk(risk_map)
         
-        print("Burglary risk prediction demo completed successfully!")
+        print("LSTM-enhanced Burglary Risk Prediction completed successfully!")
         print(f"Visualization outputs saved to {RESULTS_DIR}")
         
         # Enhanced loss visualization
         plt.figure(figsize=(10, 5))
         plt.plot(losses)
-        plt.title('Training Loss for GCN Model')
+        plt.title('Training Loss for LSTM-GCN Model')
         plt.xlabel('Epochs')
         plt.ylabel('Mean Squared Error Loss')
         plt.tight_layout()
-        plt.savefig(os.path.join(RESULTS_DIR, 'gcn_loss.png'))
+        plt.savefig(os.path.join(RESULTS_DIR, 'lstm_gcn_loss.png'))
         plt.close()
         
         return {
@@ -478,19 +644,12 @@ def main():
             'training_losses': losses
         }
         
-        # Return results as demonstration artifact
-        return {
-            'model': model,
-            'risk_predictions': risk_predictions,
-            'risk_map': risk_map
-        }
-        
     except Exception as e:
         print(f"Error in processing: {str(e)}")
         import traceback
         traceback.print_exc()
         return None
-
+    
 # Execute if run directly
 if __name__ == "__main__":
     results = main()
