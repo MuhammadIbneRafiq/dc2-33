@@ -59,11 +59,14 @@ const Dashboard = () => {
         setTimeout(() => {
           setIsLoading(false);
           
-          // Check if terms have been accepted before
+          // Re-enable terms dialog but with proper positioning
           const termsAccepted = localStorage.getItem('termsAccepted');
           if (!termsAccepted) {
             setShowTermsDialog(true);
           }
+          
+          // Remove auto-acceptance since we want the popup to show
+          // localStorage.setItem('termsAccepted', 'true');
         }, 1000);
       }
     }, 800);

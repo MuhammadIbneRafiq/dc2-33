@@ -14,6 +14,28 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
 });
 
+// Add custom popup styling to ensure popups display correctly
+const customPopupStyle = `
+.leaflet-popup {
+  z-index: 1000;
+  position: absolute;
+}
+.leaflet-popup-content-wrapper {
+  background: rgba(30, 41, 59, 0.9);
+  color: white;
+  border-radius: 8px;
+  padding: 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+.leaflet-popup-content {
+  margin: 12px;
+  line-height: 1.5;
+}
+.leaflet-popup-tip {
+  background: rgba(30, 41, 59, 0.9);
+}
+`;
+
 // Helper component to set map style
 const MapStyleLayer = () => {
   const map = useMap();
@@ -27,8 +49,14 @@ const MapStyleLayer = () => {
       map.getPanes().tilePane.classList.add('smooth-tiles');
     });
     
+    // Add custom popup styles
+    const styleElement = document.createElement('style');
+    styleElement.textContent = customPopupStyle;
+    document.head.appendChild(styleElement);
+    
     return () => {
       map.off('zoomend');
+      document.head.removeChild(styleElement);
     };
   }, [map]);
   
@@ -372,6 +400,7 @@ const MapComponent = ({
       </div>
     `;
     
+    // Uncomment popup binding as requested
     layer.bindPopup(popupContent);
     
     // Add interaction handlers

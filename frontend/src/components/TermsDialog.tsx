@@ -31,7 +31,10 @@ const TermsDialog: React.FC<TermsDialogProps> = ({
   
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[600px] bg-gray-900 border border-gray-800 text-white shadow-xl">
+      <DialogContent 
+        className="sm:max-w-[600px] bg-gray-900 border border-gray-800 text-white shadow-xl z-[9999]" 
+        hideCloseButton
+      >
         <DialogHeader>
           <DialogTitle className="text-xl font-bold text-white flex items-center">
             <AlertTriangle className="w-5 h-5 text-amber-500 mr-2" />
