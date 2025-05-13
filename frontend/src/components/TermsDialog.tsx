@@ -30,9 +30,9 @@ const TermsDialog: React.FC<TermsDialogProps> = ({
   };
   
   return (
-    <Dialog open={open} onOpenChange={onClose}>
+    <Dialog open={open} onOpenChange={onClose} modal={true}>
       <DialogContent 
-        className="sm:max-w-[600px] bg-gray-900 border border-gray-800 text-white shadow-xl z-[9999]" 
+        className="sm:max-w-[600px] bg-gray-900 border border-gray-800 text-white shadow-xl z-[99999] !fixed !top-1/2 !left-1/2 !-translate-x-1/2 !-translate-y-1/2" 
         hideCloseButton
       >
         <DialogHeader>

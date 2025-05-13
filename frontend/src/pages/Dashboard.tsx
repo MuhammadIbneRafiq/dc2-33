@@ -37,7 +37,7 @@ const Dashboard = () => {
   const [loadingMessage, setLoadingMessage] = useState('Initializing application...');
   const [activeView, setActiveView] = useState('dashboard');
   const [showChatNotification, setShowChatNotification] = useState(true);
-  const [showTermsDialog, setShowTermsDialog] = useState(false);
+  const [showTermsDialog, setShowTermsDialog] = useState(true);
   const [showTutorial, setShowTutorial] = useState(false);
   
   // Handle initial loading
@@ -59,14 +59,15 @@ const Dashboard = () => {
         setTimeout(() => {
           setIsLoading(false);
           
-          // Re-enable terms dialog but with proper positioning
-          const termsAccepted = localStorage.getItem('termsAccepted');
-          if (!termsAccepted) {
-            setShowTermsDialog(true);
-          }
+          // Always show terms dialog - no condition check needed anymore
+          // const termsAccepted = localStorage.getItem('termsAccepted');
+          // if (!termsAccepted) {
+          //   setShowTermsDialog(true);
+          // }
           
-          // Remove auto-acceptance since we want the popup to show
-          // localStorage.setItem('termsAccepted', 'true');
+          // Force terms dialog to show
+          setShowTermsDialog(true);
+          
         }, 1000);
       }
     }, 800);
@@ -512,19 +513,21 @@ const Dashboard = () => {
         } : null}
       />
       
-      {/* Terms and Services Dialog */}
-      <TermsDialog
-        open={showTermsDialog}
-        onClose={() => {}}  // Prevent closing without accepting
-        onAccept={handleTermsAccept}
-        onWatchTutorial={handleWatchTutorial}
-      />
-      
       {/* Tutorial Video Dialog */}
       <TutorialVideo
         open={showTutorial}
         onClose={() => setShowTutorial(false)}
       />
+      
+      {/* Terms and Services Dialog - Render this last to ensure it's on top */}
+      <div className="relative z-[100000]">
+        <TermsDialog
+          open={showTermsDialog}
+          onClose={() => {}}  // Prevent closing without accepting
+          onAccept={handleTermsAccept}
+          onWatchTutorial={handleWatchTutorial}
+        />
+      </div>
     </div>
   );
 };
