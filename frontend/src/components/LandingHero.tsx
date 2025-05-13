@@ -37,7 +37,7 @@ const LandingHero: React.FC = () => {
             transition={{ delay: 0.2, duration: 0.5 }}
             className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white via-blue-100 to-indigo-200"
           >
-            London Residential Burglary Prevention System
+            DC2- Group 33's Residential Burglary Prevention system
           </motion.h1>
           
           <motion.p
@@ -46,7 +46,7 @@ const LandingHero: React.FC = () => {
             transition={{ delay: 0.4, duration: 0.5 }}
             className="text-lg text-gray-300 mb-8"
           >
-            Leveraging predictive analytics and machine learning to forecast residential burglary hotspots,
+            London Residential Burglary Preventing police allocation system by leveraging predictive analytics and machine learning to forecast residential burglary hotspots,
             enabling targeted resource allocation and proactive crime prevention strategies.
           </motion.p>
           

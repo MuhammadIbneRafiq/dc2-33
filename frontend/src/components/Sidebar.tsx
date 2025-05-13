@@ -83,7 +83,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         transition={{ duration: 0.2 }}
         variants={isCollapsed ? { expanded: {}, collapsed: { display: 'none' } } : {}}
       >
-        <p className="text-xs text-red-400">This data is for demonstration purposes only.</p>
+        <p className="text-xs text-red-400">This is confidential data, click here to read terms and services</p>
       </motion.div>
 
       {/* Filters - Only visible when expanded */}

@@ -25,6 +25,8 @@ import PoliceAllocation from '@/components/PoliceAllocation';
 import DataAnalytics from '@/components/DataAnalytics';
 import EmmieExplanation from '@/components/EmmieExplanation';
 import PoliceChat from '@/components/PoliceChat';
+import TermsDialog from '@/components/TermsDialog';
+import TutorialVideo from '@/components/TutorialVideo';
 import { motion } from 'framer-motion';
 
 // Dashboard page component
@@ -35,6 +37,8 @@ const Dashboard = () => {
   const [loadingMessage, setLoadingMessage] = useState('Initializing application...');
   const [activeView, setActiveView] = useState('dashboard');
   const [showChatNotification, setShowChatNotification] = useState(true);
+  const [showTermsDialog, setShowTermsDialog] = useState(false);
+  const [showTutorial, setShowTutorial] = useState(false);
   
   // Handle initial loading
   useEffect(() => {
@@ -54,6 +58,12 @@ const Dashboard = () => {
         clearInterval(messageInterval);
         setTimeout(() => {
           setIsLoading(false);
+          
+          // Check if terms have been accepted before
+          const termsAccepted = localStorage.getItem('termsAccepted');
+          if (!termsAccepted) {
+            setShowTermsDialog(true);
+          }
         }, 1000);
       }
     }, 800);
@@ -115,6 +125,17 @@ const Dashboard = () => {
   // Toggle police allocation
   const handleTogglePoliceAllocation = () => {
     setShowPoliceAllocation(!showPoliceAllocation);
+  };
+  
+  // Handle terms agreement
+  const handleTermsAccept = () => {
+    setShowTermsDialog(false);
+  };
+  
+  // Handle watch tutorial
+  const handleWatchTutorial = () => {
+    setShowTermsDialog(false);
+    setShowTutorial(true);
   };
   
   if (isLoading) {
@@ -449,8 +470,8 @@ const Dashboard = () => {
       
       {/* Main Content */}
       <div className="flex-1 flex flex-col pl-[280px]">
-        <Header />
-        <main className="flex-1">
+        <Header onOpenTutorial={() => setShowTutorial(true)} />
+        <main className="flex-1 overflow-auto">
           {renderContent()}
         </main>
         
@@ -486,6 +507,20 @@ const Dashboard = () => {
           footPatrols: policeAllocationData.clusters ? Math.ceil(policeAllocationData.clusters.length * 2 / 3) : 0,
           avgEffectiveness: 85
         } : null}
+      />
+      
+      {/* Terms and Services Dialog */}
+      <TermsDialog
+        open={showTermsDialog}
+        onClose={() => {}}  // Prevent closing without accepting
+        onAccept={handleTermsAccept}
+        onWatchTutorial={handleWatchTutorial}
+      />
+      
+      {/* Tutorial Video Dialog */}
+      <TutorialVideo
+        open={showTutorial}
+        onClose={() => setShowTutorial(false)}
       />
     </div>
   );

@@ -1,10 +1,14 @@
-
 // Only modifying the relevant portions
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Slider } from "./ui/slider";
+import { Video } from "lucide-react";
 
-const Header = () => {
+interface HeaderProps {
+  onOpenTutorial?: () => void;
+}
+
+const Header: React.FC<HeaderProps> = ({ onOpenTutorial }) => {
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [dateRange, setDateRange] = useState([30]); // Default to 30 days
   const [showRangeSlider, setShowRangeSlider] = useState(false);
@@ -54,6 +58,18 @@ const Header = () => {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.3 }}
             >
+              {onOpenTutorial && (
+                <motion.button 
+                  className="px-3 py-1.5 rounded-lg text-sm bg-blue-800/30 text-blue-300 border border-blue-700/40 flex items-center"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={onOpenTutorial}
+                >
+                  <Video className="w-4 h-4 mr-1" />
+                  Tutorial
+                </motion.button>
+              )}
+              
               <motion.button 
                 className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-800/80 hover:bg-indigo-800/50 text-gray-300 transition-colors duration-200 border border-gray-700/50 shadow-md shadow-black/10"
                 whileHover={{ scale: 1.05 }}
