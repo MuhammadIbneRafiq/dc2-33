@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { MessageCircle, SendHorizontal, ChevronDown, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -103,7 +102,7 @@ const PoliceChat: React.FC<PoliceChatProps> = ({ selectedLSOA, selectedAllocatio
     
     // Check for allocation questions
     if (lowercaseQuery.includes('allocation') || lowercaseQuery.includes('deploy') || lowercaseQuery.includes('resource')) {
-      return "The resource allocation uses a fancy algorithm to position officers where they'll have maximum impact. It's like setting up the perfect ambush, but all legal and aboveboard! We use K-means clustering to identify hotspots and optimize patrol routes. The Commissioner calls it 'smart policing' - we call it common sense with computers.";
+      return "Police resource allocation now uses CPTED (Crime Prevention Through Environmental Design) principles. Officers are deployed based on factors like natural surveillance, territorial reinforcement, access control, maintenance, and activity support, ensuring maximum impact in reducing burglary risk. This is a smarter, evidence-based approach to patrol planning.";
     }
     
     // Check for map questions

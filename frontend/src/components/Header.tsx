@@ -11,7 +11,7 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ onOpenTutorial, onDateRangeChange }) => {
   const [isSearchFocused, setIsSearchFocused] = useState(false);
-  const [dateRange, setDateRange] = useState([30]); // Default to 30 days
+  const [dateRange, setDateRange] = useState([180, 30]); // Default: 6 months history + 1 month prediction
   const [showRangeSlider, setShowRangeSlider] = useState(false);
 
   const handleRangeChange = (value: number[]) => {
@@ -196,14 +196,13 @@ const Header: React.FC<HeaderProps> = ({ onOpenTutorial, onDateRangeChange }) =>
                 value={dateRange}
                 onValueChange={handleRangeChange}
                 className="my-4"
+                minStepsBetweenThumbs={1}
+                range
               />
               
-              <div className="flex justify-between text-xs text-gray-400">
-                <span>1 day</span>
-                <span>30 days</span>
-                <span>90 days</span>
-                <span>180 days</span>
-                <span>365 days</span>
+              <div className="flex justify-between text-xs text-gray-400 mt-2">
+                <span>History: {dateRange[0]} days</span>
+                <span>Prediction: {dateRange[1]} days</span>
               </div>
               
               <div className="flex justify-end mt-4 space-x-2">

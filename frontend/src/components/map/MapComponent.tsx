@@ -358,117 +358,49 @@ const MapComponent = ({
   
   // Use static mock data instead of fetching
   useEffect(() => {
-    // Create simple mock GeoJSON for demo
-    const mockLsoaData: LSOAGeoJSON = {
-      type: 'FeatureCollection',
-      features: [
-        // Central London area
-        {
-          type: 'Feature',
-          properties: {
-            lsoa_code: 'E01000001',
-            lsoa_name: 'City of London 001',
-            burglary_count: 35,
-            risk_level: 'High'
-          },
-          geometry: {
-            type: 'Polygon',
-            coordinates: [[
-              [-0.1, 51.51],
-              [-0.08, 51.51],
-              [-0.08, 51.53],
-              [-0.1, 51.53],
-              [-0.1, 51.51]
-            ]]
-          }
+    // Generate 60 mock LSOA polygons randomly across London
+    const features = [];
+    const minLat = 51.28, maxLat = 51.70;
+    const minLon = -0.51, maxLon = 0.34;
+    for (let i = 0; i < 60; i++) {
+      // Random center
+      const centerLat = minLat + Math.random() * (maxLat - minLat);
+      const centerLon = minLon + Math.random() * (maxLon - minLon);
+      // Small rectangle around center
+      const dLat = 0.008 + Math.random() * 0.006;
+      const dLon = 0.012 + Math.random() * 0.008;
+      const lat1 = centerLat - dLat / 2;
+      const lat2 = centerLat + dLat / 2;
+      const lon1 = centerLon - dLon / 2;
+      const lon2 = centerLon + dLon / 2;
+      const riskLevels = ['Very Low', 'Low', 'Medium', 'High', 'Very High'];
+      const risk = riskLevels[Math.floor(Math.random() * riskLevels.length)];
+      features.push({
+        type: 'Feature',
+        properties: {
+          lsoa_code: `E0100${(1000 + i).toString().padStart(4, '0')}`,
+          lsoa_name: `LSOA ${i + 1}`,
+          burglary_count: Math.floor(10 + Math.random() * 50),
+          risk_level: risk
         },
-        // Westminster area
-        {
-          type: 'Feature',
-          properties: {
-            lsoa_code: 'E01000002',
-            lsoa_name: 'Westminster 001',
-            burglary_count: 28,
-            risk_level: 'Medium'
-          },
-          geometry: {
-            type: 'Polygon',
-            coordinates: [[
-              [-0.13, 51.50],
-              [-0.11, 51.50],
-              [-0.11, 51.52],
-              [-0.13, 51.52],
-              [-0.13, 51.50]
-            ]]
-          }
-        },
-        // Camden area
-        {
-          type: 'Feature',
-          properties: {
-            lsoa_code: 'E01000003',
-            lsoa_name: 'Camden 001',
-            burglary_count: 15,
-            risk_level: 'Low'
-          },
-          geometry: {
-            type: 'Polygon',
-            coordinates: [[
-              [-0.14, 51.53],
-              [-0.12, 51.53],
-              [-0.12, 51.55],
-              [-0.14, 51.55],
-              [-0.14, 51.53]
-            ]]
-          }
-        },
-        // Hackney area
-        {
-          type: 'Feature',
-          properties: {
-            lsoa_code: 'E01000004',
-            lsoa_name: 'Hackney 001',
-            burglary_count: 42,
-            risk_level: 'Very High'
-          },
-          geometry: {
-            type: 'Polygon',
-            coordinates: [[
-              [-0.07, 51.53],
-              [-0.05, 51.53],
-              [-0.05, 51.55],
-              [-0.07, 51.55],
-              [-0.07, 51.53]
-            ]]
-          }
-        },
-        // Southwark area
-        {
-          type: 'Feature',
-          properties: {
-            lsoa_code: 'E01000005',
-            lsoa_name: 'Southwark 001',
-            burglary_count: 8,
-            risk_level: 'Very Low'
-          },
-          geometry: {
-            type: 'Polygon',
-            coordinates: [[
-              [-0.09, 51.48],
-              [-0.07, 51.48],
-              [-0.07, 51.50],
-              [-0.09, 51.50],
-              [-0.09, 51.48]
-            ]]
-          }
+        geometry: {
+          type: 'Polygon',
+          coordinates: [[
+            [lon1, lat1],
+            [lon2, lat1],
+            [lon2, lat2],
+            [lon1, lat2],
+            [lon1, lat1]
+          ]]
         }
-      ]
+      });
+    }
+    const mockLsoaData = {
+      type: 'FeatureCollection' as const,
+      features
     };
-    
-    // Set mock data and finish loading
     setLsoaData(mockLsoaData);
     setLoading(false);
-    
   }, []);
   
   // Generate predictions when showPredictions changes
@@ -676,28 +608,27 @@ const MapComponent = ({
         {/* Police Allocation Layer - Only shown when enabled */}
         {showPoliceAllocation && (
           <div className="police-allocation-layer">
-            {/* Use static mock police allocation data */}
-            {[
-              { lat: 51.516, lon: -0.09, officer_count: 3, risk_score: 0.85 },
-              { lat: 51.513, lon: -0.12, officer_count: 2, risk_score: 0.75 },
-              { lat: 51.518, lon: -0.14, officer_count: 4, risk_score: 0.92 },
-              { lat: 51.514, lon: -0.06, officer_count: 1, risk_score: 0.68 },
-              { lat: 51.511, lon: -0.08, officer_count: 2, risk_score: 0.72 }
-            ].map((cluster, index) => (
-              <ZoomAwareMarker
-                key={`officer-${index}`}
-                position={[cluster.lat, cluster.lon]}
-                patrolType={index % 3 === 0 ? 'vehicle' : 'officer'}
-              >
-                <Popup>
-                  <div>
-                    <h3 className="font-bold mb-1">Patrol {index + 1}</h3>
-                    <p>Officers: {cluster.officer_count || 0}</p>
-                    <p>Risk Score: {cluster.risk_score?.toFixed(2) || 'N/A'}</p>
-                  </div>
-                </Popup>
-              </ZoomAwareMarker>
-            ))}
+            {/* Use scattered mock police allocation data */}
+            {Array.from({ length: 8 }).map((_, index) => {
+              // Random position in London
+              const lat = 51.28 + Math.random() * (51.70 - 51.28);
+              const lon = -0.51 + Math.random() * (0.34 + 0.51);
+              return (
+                <ZoomAwareMarker
+                  key={`officer-${index}`}
+                  position={[lat, lon]}
+                  patrolType={index % 3 === 0 ? 'vehicle' : 'officer'}
+                >
+                  <Popup>
+                    <div>
+                      <h3 className="font-bold mb-1">Patrol {index + 1}</h3>
+                      <p>Officers: {2 + Math.floor(Math.random() * 4)}</p>
+                      <p>Risk Score: {(0.6 + Math.random() * 0.4).toFixed(2)}</p>
+                    </div>
+                  </Popup>
+                </ZoomAwareMarker>
+              );
+            })}
           </div>
         )}
         
@@ -780,24 +711,7 @@ const MapComponent = ({
           </div>
         </div>
         
-        Map Legend
-        <MapLegend 
-          title="Burglary Risk"
-          items={[
-            { color: getRiskColor('Very Low'), label: 'Very Low' },
-            { color: getRiskColor('Low'), label: 'Low' },
-            { color: getRiskColor('Medium'), label: 'Medium' },
-            { color: getRiskColor('High'), label: 'High' },
-            { color: getRiskColor('Very High'), label: 'Very High' },
-          ]}
-          showPoliceAllocation={showPoliceAllocation}
-          showPredictions={predictionMarkers.length > 0}
-          predictionItems={predictionMarkers.length > 0 ? [
-            { color: '#ef4444', label: 'High Risk Prediction' },
-            { color: '#f59e0b', label: 'Medium Risk Prediction' },
-            { color: '#22c55e', label: 'Low Risk Prediction' },
-          ] : []}
-        />
+        <MapLegend />
       </MapContainer>
     </div>
   );

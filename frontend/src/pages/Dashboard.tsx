@@ -42,11 +42,13 @@ const Dashboard = () => {
   
   // Prediction state
   const [predictionModel, setPredictionModel] = useState('sdgcn');
-  const [predictionRange, setPredictionRange] = useState(60);
   const [showPredictions, setShowPredictions] = useState(false);
   
   // Date range from header slider
   const [dateRange, setDateRange] = useState<number[]>([30]);
+  
+  // Add state for number of points to display
+  const [numPoints, setNumPoints] = useState(90); // Default to 90 points
   
   // Handle date range changes from header
   const handleDateRangeChange = (newRange: number[]) => {
@@ -168,11 +170,21 @@ const Dashboard = () => {
     setShowPredictions(false); // Reset predictions when model changes
   };
   
-  // Handle prediction range change
-  const handleRangeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPredictionRange(parseInt(e.target.value));
-    setShowPredictions(false); // Reset predictions when range changes
-  };
+  // Generate random risk factors for the selected LSOA
+  const lsoaRiskFactors = selectedLSOA
+    ? [
+        'High population density',
+        'Low community cohesion',
+        'Poor street lighting',
+        'Proximity to major transport routes',
+        'High unemployment rate',
+        'High proportion of rental housing',
+        'Recent increase in burglary incidents',
+        'Limited natural surveillance',
+        'Lack of CCTV coverage',
+        'High turnover of residents',
+      ].filter(() => Math.random() > 0.5) // Randomly select factors
+    : undefined;
   
   if (isLoading) {
     return <LoadingScreen message={loadingMessage} />;
@@ -180,17 +192,67 @@ const Dashboard = () => {
   
   // Create a time series visualization component at the bottom of the map
   const renderTimeSeriesPanel = () => {
+    const historyDays = Math.min(dateRange[0], numPoints);
+    const futureDays = Math.min(dateRange[1], Math.floor(numPoints / 4)); // Limit future points for clarity
+    // Generate mock historical data
+    const historicalPoints = Array.from({ length: historyDays }, (_, i) => ({
+      date: new Date(Date.now() - (historyDays - i) * 24 * 60 * 60 * 1000),
+      value: Math.floor(15 + Math.random() * 25)
+    }));
+    // Generate mock forecast data
+    const forecastPoints = Array.from({ length: futureDays }, (_, i) => {
+      let baseValue = 20;
+      if (predictionModel === 'sarima') {
+        baseValue = 20 + 5 * Math.sin(i / 3);
+      } else if (predictionModel === 'lstm') {
+        baseValue = 22 - i * 0.3;
+      } else {
+        baseValue = 18 + i * 0.2;
+      }
+      return {
+        date: new Date(Date.now() + i * 24 * 60 * 60 * 1000),
+        value: Math.floor(baseValue + Math.random() * 4)
+      };
+    });
+    // Combine for line chart
+    const allPoints = [...historicalPoints, ...forecastPoints];
+    // SVG line chart dimensions
+    const width = 600;
+    const height = 220;
+    const margin = 40;
+    const maxValue = Math.max(...allPoints.map(p => p.value), 1);
+    const minValue = Math.min(...allPoints.map(p => p.value), 0);
+    const yScale = v => height - margin - ((v - minValue) / (maxValue - minValue + 1e-6)) * (height - 2 * margin);
+    const xScale = i => margin + (i / (allPoints.length - 1)) * (width - 2 * margin);
+    // Y axis ticks
+    const yTicks = Array.from({ length: 5 }, (_, i) => minValue + (i * (maxValue - minValue) / 4));
+    // X axis ticks (show at most 6)
+    const xTicks = Array.from({ length: Math.min(6, allPoints.length) }, (_, i) => Math.floor(i * (allPoints.length - 1) / (Math.min(5, allPoints.length - 1) || 1)));
     return (
       <div className="mt-6 bg-gray-800/70 rounded-xl border border-gray-700/50 p-4 shadow-lg">
-        <h3 className="text-lg font-bold text-white mb-4">Time Series Forecasting</h3>
-        
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="text-lg font-bold text-white">Time Series Forecasting</h3>
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-gray-400">Points:</span>
+            {[30, 90, 180, 365].map(n => (
+              <button
+                key={n}
+                className={`px-2 py-1 rounded text-xs font-semibold border ${numPoints === n ? 'bg-indigo-700 text-white border-indigo-500' : 'bg-gray-800 text-gray-300 border-gray-600'} mx-1`}
+                onClick={() => setNumPoints(n)}
+              >
+                {n}
+              </button>
+            ))}
+          </div>
+        </div>
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center space-x-4">
             <div className="text-sm text-gray-400">Model:</div>
-            <div className="flex space-x-2">
+            <div className="flex flex-row gap-4">
               <Button 
                 variant={predictionModel === 'sarima' ? 'default' : 'outline'} 
                 size="sm"
+                className={`px-6 py-2 rounded-lg font-semibold ${predictionModel === 'sarima' ? 'bg-indigo-700 text-white' : ''}`}
                 onClick={() => setPredictionModel('sarima')}
               >
                 SARIMA
@@ -198,6 +260,7 @@ const Dashboard = () => {
               <Button 
                 variant={predictionModel === 'lstm' ? 'default' : 'outline'} 
                 size="sm"
+                className={`px-6 py-2 rounded-lg font-semibold ${predictionModel === 'lstm' ? 'bg-indigo-700 text-white' : ''}`}
                 onClick={() => setPredictionModel('lstm')}
               >
                 LSTM
@@ -205,13 +268,13 @@ const Dashboard = () => {
               <Button 
                 variant={predictionModel === 'sdgcn' ? 'default' : 'outline'} 
                 size="sm"
+                className={`px-6 py-2 rounded-lg font-semibold ${predictionModel === 'sdgcn' ? 'bg-indigo-700 text-white' : ''}`}
                 onClick={() => setPredictionModel('sdgcn')}
               >
                 LSTM-GCN
               </Button>
             </div>
           </div>
-          
           <Button 
             variant="default" 
             size="sm"
@@ -220,139 +283,83 @@ const Dashboard = () => {
             {showPredictions ? 'Update Forecast' : 'Generate Forecast'}
           </Button>
         </div>
-        
-        <div className="h-[300px] bg-gray-900/50 rounded-lg border border-gray-700/50">
-          {isLoadingForecast ? (
-            <div className="flex flex-col items-center justify-center h-full">
-              <div className="w-8 h-8 border-2 border-t-2 border-blue-500 border-t-transparent rounded-full animate-spin mb-2"></div>
-              <p className="text-sm text-gray-400">Loading forecast data...</p>
-            </div>
-          ) : forecastData && selectedLSOA ? (
-            <div className="w-full h-full p-4">
-              <div className="flex justify-between items-center mb-2">
-                <div className="text-sm text-white font-medium">
-                  Burglary forecast for {selectedLSOA || 'London'}
-                </div>
-                <div className="text-xs text-gray-400">
-                  Showing {dateRange[0]} days of data
-                </div>
-              </div>
-              <div className="relative h-[calc(100%-30px)]">
-                {/* Mock time series data since we don't have real API data */}
-                <div className="absolute inset-0 flex">
-                  <div className="w-2/3 border-r border-gray-700/50 p-2">
-                    <div className="text-xs text-gray-400 mb-1">Historical (Last {dateRange[0]} days)</div>
-                    <div className="h-[calc(100%-20px)] relative bg-gray-800/30 rounded">
-                      {/* Generate mock historical data points */}
-                      {Array.from({ length: 30 }, (_, i) => ({
-                        date: new Date(Date.now() - (30 - i) * 24 * 60 * 60 * 1000),
-                        value: Math.floor(15 + Math.random() * 25)
-                      })).map((point, i, arr) => (
-                        <React.Fragment key={i}>
-                          {/* Generate line connecting points */}
-                          {i < arr.length - 1 && (
-                            <div 
-                              className="absolute bg-blue-500/50"
-                              style={{
-                                left: `${(i / arr.length) * 100}%`,
-                                bottom: `${(point.value / 50) * 100}%`,
-                                width: `${(1 / arr.length) * 100}%`,
-                                height: '1px',
-                                transform: `rotate(${Math.atan2(
-                                  ((arr[i+1].value - point.value) / 50) * 100,
-                                  ((1 / arr.length) * 100)
-                                ) * (180 / Math.PI)}deg)`,
-                                transformOrigin: 'left bottom'
-                              }}
-                            ></div>
-                          )}
-                          {/* Data point */}
-                          <div 
-                            className="absolute w-2 h-2 bg-blue-500 rounded-full"
-                            style={{
-                              left: `${(i / arr.length) * 100}%`,
-                              bottom: `${(point.value / 50) * 100}%`,
-                              transform: 'translate(-50%, 50%)'
-                            }}
-                            title={`${point.date.toLocaleDateString()}: ${point.value} incidents`}
-                          ></div>
-                        </React.Fragment>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="w-1/3 p-2">
-                    <div className="text-xs text-gray-400 mb-1">Forecast (Next 30 days)</div>
-                    <div className="h-[calc(100%-20px)] relative bg-gray-800/30 rounded">
-                      {/* Generate mock forecast data points based on model */}
-                      {Array.from({ length: 15 }, (_, i) => {
-                        let baseValue = 20;
-                        // Different models have different forecast patterns
-                        if (predictionModel === 'sarima') {
-                          // SARIMA has a seasonal pattern
-                          baseValue = 20 + 5 * Math.sin(i / 3);
-                        } else if (predictionModel === 'lstm') {
-                          // LSTM has a more smooth trend
-                          baseValue = 22 - i * 0.3;
-                        } else {
-                          // LSTM-GCN has a different pattern
-                          baseValue = 18 + i * 0.2;
-                        }
-                        return {
-                          date: new Date(Date.now() + i * 24 * 60 * 60 * 1000),
-                          value: Math.floor(baseValue + Math.random() * 4)
-                        };
-                      }).map((point, i, arr) => (
-                        <React.Fragment key={i}>
-                          {/* Generate line connecting points */}
-                          {i < arr.length - 1 && (
-                            <div 
-                              className="absolute bg-green-500/50"
-                              style={{
-                                left: `${(i / arr.length) * 100}%`,
-                                bottom: `${(point.value / 50) * 100}%`,
-                                width: `${(1 / arr.length) * 100}%`,
-                                height: '1px',
-                                transform: `rotate(${Math.atan2(
-                                  ((arr[i+1].value - point.value) / 50) * 100,
-                                  ((1 / arr.length) * 100)
-                                ) * (180 / Math.PI)}deg)`,
-                                transformOrigin: 'left bottom'
-                              }}
-                            ></div>
-                          )}
-                          {/* Data point */}
-                          <div 
-                            className="absolute w-2 h-2 bg-green-500 rounded-full"
-                            style={{
-                              left: `${(i / arr.length) * 100}%`,
-                              bottom: `${(point.value / 50) * 100}%`,
-                              transform: 'translate(-50%, 50%)'
-                            }}
-                            title={`${point.date.toLocaleDateString()}: ${point.value} predicted incidents`}
-                          ></div>
-                        </React.Fragment>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="flex justify-between mt-2">
-                <div className="flex items-center">
-                  <div className="w-3 h-3 bg-blue-500 rounded-full mr-1"></div>
-                  <span className="text-xs text-gray-400">Historical Data</span>
-                </div>
-                <div className="flex items-center">
-                  <div className="w-3 h-3 bg-green-500 rounded-full mr-1"></div>
-                  <span className="text-xs text-gray-400">Predicted ({predictionModel})</span>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div className="flex flex-col items-center justify-center h-full">
-              <p className="text-gray-400 mb-2">No forecast data available</p>
-              <p className="text-xs text-gray-500">Select an area on the map to view predictions</p>
-            </div>
-          )}
+        <div className="h-[260px] bg-gray-900/50 rounded-lg border border-gray-700/50 flex items-center justify-center">
+          <svg width={width} height={height}>
+            {/* Y axis */}
+            <line x1={margin} y1={margin} x2={margin} y2={height - margin} stroke="#cbd5e1" strokeWidth={1.5} />
+            {/* Y axis ticks and labels */}
+            {yTicks.map((y, i) => (
+              <g key={i}>
+                <line x1={margin - 5} x2={margin} y1={yScale(y)} y2={yScale(y)} stroke="#cbd5e1" strokeWidth={1} />
+                <text x={margin - 8} y={yScale(y) + 4} textAnchor="end" fontSize="11" fill="#cbd5e1">{Math.round(y)}</text>
+              </g>
+            ))}
+            {/* X axis */}
+            <line x1={margin} y1={height - margin} x2={width - margin} y2={height - margin} stroke="#cbd5e1" strokeWidth={1.5} />
+            {/* X axis ticks and labels */}
+            {xTicks.map((idx, i) => (
+              <g key={i}>
+                <line x1={xScale(idx)} x2={xScale(idx)} y1={height - margin} y2={height - margin + 5} stroke="#cbd5e1" strokeWidth={1} />
+                <text x={xScale(idx)} y={height - margin + 18} textAnchor="middle" fontSize="11" fill="#cbd5e1">
+                  {allPoints[idx].date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
+                </text>
+              </g>
+            ))}
+            {/* Y axis label */}
+            <text x={margin - 30} y={height / 2} textAnchor="middle" fontSize="13" fill="#cbd5e1" transform={`rotate(-90,${margin - 30},${height / 2})`}>
+              Residential Burglaries
+            </text>
+            {/* X axis label */}
+            <text x={width / 2} y={height - margin + 36} textAnchor="middle" fontSize="13" fill="#cbd5e1">
+              Date
+            </text>
+            {/* Historical line */}
+            <polyline
+              fill="none"
+              stroke="#3b82f6"
+              strokeWidth="2.5"
+              points={historicalPoints.map((p, i) => `${xScale(i)},${yScale(p.value)}`).join(' ')}
+            />
+            {/* Predicted line */}
+            <polyline
+              fill="none"
+              stroke="#22c55e"
+              strokeWidth="2.5"
+              points={forecastPoints.map((p, i) => `${xScale(i + historicalPoints.length)},${yScale(p.value)}`).join(' ')}
+            />
+            {/* Dots for all points */}
+            {allPoints.map((p, i) => (
+              <circle
+                key={i}
+                cx={xScale(i)}
+                cy={yScale(p.value)}
+                r={3}
+                fill={i < historicalPoints.length ? '#3b82f6' : '#22c55e'}
+                stroke="#fff"
+                strokeWidth={1}
+              />
+            ))}
+            {/* Vertical line at transition */}
+            <line
+              x1={xScale(historicalPoints.length - 1) + 1}
+              y1={margin}
+              x2={xScale(historicalPoints.length - 1) + 1}
+              y2={height - margin}
+              stroke="#fbbf24"
+              strokeDasharray="4 2"
+              strokeWidth={2}
+            />
+          </svg>
+        </div>
+        <div className="flex justify-between mt-2">
+          <div className="flex items-center">
+            <div className="w-3 h-3 bg-blue-500 rounded-full mr-1"></div>
+            <span className="text-xs text-gray-400">Historical Data</span>
+          </div>
+          <div className="flex items-center">
+            <div className="w-3 h-3 bg-green-500 rounded-full mr-1"></div>
+            <span className="text-xs text-gray-400">Predicted ({predictionModel})</span>
+          </div>
         </div>
       </div>
     );
@@ -462,7 +469,6 @@ const Dashboard = () => {
                     policeAllocationData={policeAllocationData}
                     showPredictions={showPredictions}
                     predictionModel={predictionModel}
-                    predictionRange={predictionRange}
                     dateRange={dateRange}
                   />
                 </div>
@@ -520,18 +526,17 @@ const Dashboard = () => {
                     <div className="mt-4">
                       <div className="grid grid-cols-2 gap-2 mb-4">
                         <div className="bg-gray-900/50 p-2 rounded-lg">
-                          <p className="text-xs text-gray-400">Optimization Method</p>
-                          <p className="text-sm text-white">K-means Clustering</p>
+                          <p className="text-xs text-gray-400">Allocation Method</p>
+                          <p className="text-sm text-white">CPTED Principles</p>
                         </div>
                         <div className="bg-gray-900/50 p-2 rounded-lg">
                           <p className="text-xs text-gray-400">Coverage</p>
-                          <p className="text-sm text-white">83.3% of hot spots</p>
+                          <p className="text-sm text-white">Police deployment based on environmental risk factors</p>
                         </div>
                       </div>
                       <div className="bg-blue-500/10 text-blue-300 p-3 rounded-md text-xs border border-blue-500/20">
                         <p>
-                          Police resources have been allocated based on predictive burglary hotspots.
-                          Use the resource allocator to fine-tune deployment.
+                          Police resources are now allocated using CPTED (Crime Prevention Through Environmental Design) strategies. Officers are deployed to maximize natural surveillance, reinforce territoriality, control access, support positive activity, and maintain safe environments in high-risk areas.
                         </p>
                       </div>
                     </div>
@@ -564,41 +569,6 @@ const Dashboard = () => {
                         "Using time series data only (no socioeconomic factors)"
                       }
                     </p>
-                  </div>
-                  
-                  <div className="mb-4">
-                    <label className="text-sm text-gray-400 block mb-2">Prediction Range</label>
-                    <div className="flex items-center justify-between text-xs text-gray-400 mb-1">
-                      <span>Historical</span>
-                      <span>Future</span>
-                    </div>
-                    <div className="px-1">
-                      <input 
-                        type="range" 
-                        min="0" 
-                        max="100" 
-                        defaultValue="60"
-                        value={predictionRange}
-                        className="w-full h-1.5 bg-gray-600 rounded-lg appearance-none cursor-pointer accent-red-500"
-                        onChange={handleRangeChange}
-                      />
-                    </div>
-                    <div className="flex justify-between text-[10px] text-gray-400 mt-1">
-                      <span>Past (3 months)</span>
-                      <span>Next 3 months</span>
-                    </div>
-                    
-                    {/* Data Range Indicator */}
-                    <div className="mt-3 flex">
-                      <div className="bg-gray-900/50 p-2 rounded-lg w-1/2 mr-1">
-                        <p className="text-xs text-gray-400">Historical Data</p>
-                        <p className="text-sm text-white">{100 - predictionRange}%</p>
-                      </div>
-                      <div className="bg-indigo-900/30 p-2 rounded-lg w-1/2 ml-1">
-                        <p className="text-xs text-gray-400">Prediction Horizon</p>
-                        <p className="text-sm text-blue-300">{predictionRange}%</p>
-                      </div>
-                    </div>
                   </div>
                   
                   <div className="mt-2 p-2 bg-indigo-900/30 border border-indigo-700/30 rounded-md mb-4">
@@ -761,9 +731,9 @@ const Dashboard = () => {
                 </p>
                 <div className="space-y-4">
                   <div className="p-4 bg-blue-500/10 text-blue-400 rounded-lg border border-blue-500/20">
-                    <h3 className="font-semibold mb-2">K-means Clustering</h3>
+                    <h3 className="font-semibold mb-2">CPTED Principles</h3>
                     <p className="text-sm">
-                      Our algorithm uses K-means clustering to identify crime hotspots and allocate resources efficiently.
+                      Our algorithm uses CPTED (Crime Prevention Through Environmental Design) principles to identify crime hotspots and allocate resources efficiently.
                     </p>
                   </div>
                   <div className="p-4 bg-green-500/10 text-green-400 rounded-lg border border-green-500/20">
@@ -782,7 +752,7 @@ const Dashboard = () => {
         return <DataAnalytics />;
         
       case 'emmie':
-        return <EmmieExplanation />;
+        return <EmmieExplanation selectedLSOA={selectedLSOA} lsoaFactors={lsoaRiskFactors} />;
         
       default:
         return <div>Select a view</div>;

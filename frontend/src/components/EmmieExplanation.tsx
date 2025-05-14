@@ -1,9 +1,13 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Star } from 'lucide-react';
 
-const EmmieExplanation: React.FC = () => {
+interface EmmieExplanationProps {
+  selectedLSOA?: string | null;
+  lsoaFactors?: string[];
+}
+
+const EmmieExplanation: React.FC<EmmieExplanationProps> = ({ selectedLSOA, lsoaFactors }) => {
   const emmieDetails = [
     {
       title: "Effect",
@@ -49,6 +53,16 @@ const EmmieExplanation: React.FC = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
       >
+        {selectedLSOA && lsoaFactors && (
+          <div className="mb-8 bg-blue-900/20 border border-blue-900/30 rounded-lg p-6">
+            <h3 className="text-xl font-bold text-blue-300 mb-2">Risk Factors for {selectedLSOA}</h3>
+            <ul className="list-disc pl-6 text-blue-100 text-sm">
+              {lsoaFactors.map((factor, idx) => (
+                <li key={idx}>{factor}</li>
+              ))}
+            </ul>
+          </div>
+        )}
         <div className="flex items-center mb-6">
           <h2 className="text-2xl font-bold text-white">Understanding EMMIE</h2>
           <div className="ml-2 bg-blue-500/20 text-blue-300 px-3 py-1 rounded-full text-xs font-medium">
@@ -61,6 +75,14 @@ const EmmieExplanation: React.FC = () => {
             The EMMIE framework is an evidence-based approach developed by the College of Policing to assess crime prevention interventions. 
             It helps police forces make informed decisions about which strategies to deploy against residential burglary by evaluating them across five dimensions.
           </p>
+          <ul className="mt-4 text-gray-400 text-sm list-disc pl-6">
+            <li>Socioeconomic status of the area</li>
+            <li>Housing type and density</li>
+            <li>Lighting and visibility in public spaces</li>
+            <li>Community cohesion and social capital</li>
+            <li>Prior crime rates and repeat victimization</li>
+            <li>Proximity to transport and escape routes</li>
+          </ul>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
