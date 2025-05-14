@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { BarChart, Map, Shield, TrendingUp, ChevronLeft, ChevronRight, Info } from 'lucide-react';
@@ -57,7 +56,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             transition={{ duration: 0.2 }}
           >
             <motion.span 
-              className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-emerald-400 tracking-wide"
+              className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 tracking-wide drop-shadow-lg"
               variants={logoTextVariants}
             >
               CRIME FORECASTING
