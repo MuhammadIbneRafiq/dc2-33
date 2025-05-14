@@ -6,15 +6,20 @@ import { Video } from "lucide-react";
 
 interface HeaderProps {
   onOpenTutorial?: () => void;
+  onDateRangeChange?: (dateRange: number[]) => void; // Add callback for date range changes
 }
 
-const Header: React.FC<HeaderProps> = ({ onOpenTutorial }) => {
+const Header: React.FC<HeaderProps> = ({ onOpenTutorial, onDateRangeChange }) => {
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [dateRange, setDateRange] = useState([30]); // Default to 30 days
   const [showRangeSlider, setShowRangeSlider] = useState(false);
 
   const handleRangeChange = (value: number[]) => {
     setDateRange(value);
+    // Call the callback to notify parent components
+    if (onDateRangeChange) {
+      onDateRangeChange(value);
+    }
   };
 
   return (
@@ -36,7 +41,7 @@ const Header: React.FC<HeaderProps> = ({ onOpenTutorial }) => {
               >
                 CF
               </motion.div>
-              <h1 className="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-indigo-300 to-purple-400">
+              <h1 className="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-red-400 via-orange-300 to-yellow-400">
                 London Residential Burglary Forecasting
               </h1>
             </motion.div>
@@ -96,10 +101,26 @@ const Header: React.FC<HeaderProps> = ({ onOpenTutorial }) => {
       <div className="bg-gray-900/90 backdrop-blur-sm py-2 border-b border-gray-800/50 shadow-sm">
         <div className="container mx-auto px-6 flex flex-wrap items-center justify-between">
           <div className="flex space-x-2">
-            <TimeButton label="Last 30 days" active={dateRange[0] === 30} onClick={() => setDateRange([30])} />
-            <TimeButton label="3 months" active={dateRange[0] === 90} onClick={() => setDateRange([90])} />
-            <TimeButton label="6 months" active={dateRange[0] === 180} onClick={() => setDateRange([180])} />
-            <TimeButton label="1 year" active={dateRange[0] === 365} onClick={() => setDateRange([365])} />
+            <TimeButton 
+              label="Last 30 days" 
+              active={dateRange[0] === 30} 
+              onClick={() => handleRangeChange([30])} 
+            />
+            <TimeButton 
+              label="3 months" 
+              active={dateRange[0] === 90} 
+              onClick={() => handleRangeChange([90])} 
+            />
+            <TimeButton 
+              label="6 months" 
+              active={dateRange[0] === 180} 
+              onClick={() => handleRangeChange([180])} 
+            />
+            <TimeButton 
+              label="1 year" 
+              active={dateRange[0] === 365} 
+              onClick={() => handleRangeChange([365])} 
+            />
             <motion.button
               className={`btn-secondary text-xs py-1.5 px-3 bg-gray-800/80 text-gray-300 border ${
                 showRangeSlider ? "border-indigo-600/50" : "border-gray-700/50"

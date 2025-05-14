@@ -20,6 +20,50 @@ const MOCK_DATA = {
       education_score: 0.19,
       housing_score: 0.35,
       living_environment_score: 0.33
+    },
+    // Mock LSOA boundaries for fallback
+    boundaries: {
+      type: 'FeatureCollection',
+      features: [
+        {
+          type: 'Feature',
+          properties: {
+            lsoa_code: 'E01000001',
+            lsoa_name: 'City of London 001A',
+            burglary_count: 35,
+            risk_level: 'Medium'
+          },
+          geometry: {
+            type: 'Polygon',
+            coordinates: [[
+              [-0.1, 51.51],
+              [-0.095, 51.51],
+              [-0.095, 51.515],
+              [-0.1, 51.515],
+              [-0.1, 51.51]
+            ]]
+          }
+        },
+        {
+          type: 'Feature',
+          properties: {
+            lsoa_code: 'E01000005',
+            lsoa_name: 'City of London 001E',
+            burglary_count: 42,
+            risk_level: 'High'
+          },
+          geometry: {
+            type: 'Polygon',
+            coordinates: [[
+              [-0.08, 51.51],
+              [-0.075, 51.51],
+              [-0.075, 51.515],
+              [-0.08, 51.515],
+              [-0.08, 51.51]
+            ]]
+          }
+        }
+      ]
     }
   },
   burglary: {
@@ -116,6 +160,7 @@ export const api = {
   lsoa: {
     getList: () => fetchApi('/lsoa/list', MOCK_DATA.lsoa.list),
     getWellbeingData: (lsoaCode: string) => fetchApi(`/imd/lsoa/${lsoaCode}`, MOCK_DATA.lsoa.wellbeing),
+    getBoundaries: () => fetchApi('/lsoa/boundaries', MOCK_DATA.lsoa.boundaries),
   },
 
   // Burglary data endpoints

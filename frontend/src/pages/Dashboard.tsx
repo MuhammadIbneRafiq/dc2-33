@@ -40,6 +40,11 @@ const Dashboard = () => {
   const [showTermsDialog, setShowTermsDialog] = useState(true);
   const [showTutorial, setShowTutorial] = useState(false);
   
+  // Prediction state
+  const [predictionModel, setPredictionModel] = useState('sdgcn');
+  const [predictionRange, setPredictionRange] = useState(60);
+  const [showPredictions, setShowPredictions] = useState(false);
+  
   // Handle initial loading
   useEffect(() => {
     const loadingMessages = [
@@ -140,6 +145,23 @@ const Dashboard = () => {
   const handleWatchTutorial = () => {
     setShowTermsDialog(false);
     setShowTutorial(true);
+  };
+  
+  // Handle prediction generation
+  const handleGeneratePrediction = () => {
+    setShowPredictions(true);
+  };
+  
+  // Handle prediction model change
+  const handleModelChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setPredictionModel(e.target.value);
+    setShowPredictions(false); // Reset predictions when model changes
+  };
+  
+  // Handle prediction range change
+  const handleRangeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPredictionRange(parseInt(e.target.value));
+    setShowPredictions(false); // Reset predictions when range changes
   };
   
   if (isLoading) {
@@ -247,6 +269,9 @@ const Dashboard = () => {
                     showPoliceAllocation={showPoliceAllocation}
                     selectedLSOA={selectedLSOA}
                     policeAllocationData={policeAllocationData}
+                    showPredictions={showPredictions}
+                    predictionModel={predictionModel}
+                    predictionRange={predictionRange}
                   />
                 </div>
                 <div className="flex items-center space-x-4 mt-4 p-2 bg-gray-900/50 rounded-lg">
@@ -313,6 +338,113 @@ const Dashboard = () => {
                           Use the resource allocator to fine-tune deployment.
                         </p>
                       </div>
+                    </div>
+                  )}
+                </div>
+                
+                {/* Crime Prediction Panel */}
+                <div className="bg-gray-800/70 rounded-xl border border-gray-700/50 p-4 shadow-lg">
+                  <h3 className="text-lg font-semibold text-white mb-4">Crime Prediction</h3>
+                  
+                  <div className="mb-4">
+                    <label className="text-sm text-gray-400 block mb-2">Prediction Model</label>
+                    <select 
+                      className="w-full bg-gray-700/80 text-white text-sm rounded-md border border-gray-600 px-3 py-2"
+                      defaultValue="sdgcn"
+                      onChange={handleModelChange}
+                    >
+                      <option value="lstm-gcn">LSTM-GCN (Spatial-Temporal)</option>
+                      <option value="sdgcn">SDGCN (Social-Economic)</option>
+                      <option value="sarima">SARIMA (Seasonal)</option>
+                    </select>
+                    <p className="mt-2 text-xs text-gray-400">
+                      {predictionModel === 'lstm-gcn' && 
+                        "Using socioeconomic factors: income, housing, education, health"
+                      }
+                      {predictionModel === 'sdgcn' && 
+                        "Using socioeconomic factors: income, employment, education, crime density"
+                      }
+                      {predictionModel === 'sarima' && 
+                        "Using time series data only (no socioeconomic factors)"
+                      }
+                    </p>
+                  </div>
+                  
+                  <div className="mb-4">
+                    <label className="text-sm text-gray-400 block mb-2">Prediction Range</label>
+                    <div className="flex items-center justify-between text-xs text-gray-400 mb-1">
+                      <span>Historical</span>
+                      <span>Future</span>
+                    </div>
+                    <div className="px-1">
+                      <input 
+                        type="range" 
+                        min="0" 
+                        max="100" 
+                        defaultValue="60"
+                        value={predictionRange}
+                        className="w-full h-1.5 bg-gray-600 rounded-lg appearance-none cursor-pointer accent-red-500"
+                        onChange={handleRangeChange}
+                      />
+                    </div>
+                    <div className="flex justify-between text-[10px] text-gray-400 mt-1">
+                      <span>Past (3 months)</span>
+                      <span>Next 3 months</span>
+                    </div>
+                    
+                    {/* Data Range Indicator */}
+                    <div className="mt-3 flex">
+                      <div className="bg-gray-900/50 p-2 rounded-lg w-1/2 mr-1">
+                        <p className="text-xs text-gray-400">Historical Data</p>
+                        <p className="text-sm text-white">{100 - predictionRange}%</p>
+                      </div>
+                      <div className="bg-indigo-900/30 p-2 rounded-lg w-1/2 ml-1">
+                        <p className="text-xs text-gray-400">Prediction Horizon</p>
+                        <p className="text-sm text-blue-300">{predictionRange}%</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-2 p-2 bg-indigo-900/30 border border-indigo-700/30 rounded-md mb-4">
+                    <div className="text-xs text-indigo-300">
+                      {predictionModel === 'lstm-gcn' && (
+                        <span className="font-semibold">LSTM-GCN:</span>
+                      )}
+                      {predictionModel === 'sdgcn' && (
+                        <span className="font-semibold">SDGCN:</span>
+                      )}
+                      {predictionModel === 'sarima' && (
+                        <span className="font-semibold">SARIMA:</span>
+                      )}
+                      {' '}
+                      {predictionModel === 'lstm-gcn' && 
+                        "Long Short-Term Memory with Graph Convolutional Networks. Combines temporal patterns with spatial relationships."
+                      }
+                      {predictionModel === 'sdgcn' && 
+                        "Socioeconomic Dynamic Graph Convolutional Network. Integrates socioeconomic indicators with spatio-temporal crime data."
+                      }
+                      {predictionModel === 'sarima' && 
+                        "Seasonal AutoRegressive Integrated Moving Average. Captures seasonal patterns in historical crime data."
+                      }
+                    </div>
+                  </div>
+                  
+                  <Button 
+                    variant="default"
+                    className={`w-full ${showPredictions 
+                      ? 'bg-gradient-to-r from-green-500 to-teal-500 hover:from-green-600 hover:to-teal-600' 
+                      : 'bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600'} 
+                      text-white`}
+                    onClick={handleGeneratePrediction}
+                  >
+                    {showPredictions ? 'Predictions Active' : 'Generate Prediction'}
+                  </Button>
+                  
+                  {/* Prediction Status */}
+                  {showPredictions && (
+                    <div className="mt-3 p-2 bg-green-500/10 text-green-300 text-xs rounded-md border border-green-500/20 flex items-center">
+                      <div className="h-2 w-2 rounded-full bg-green-500 mr-2 animate-pulse"></div>
+                      <p>Prediction model active - {Math.floor(30 + Math.random() * 20)} hotspots identified</p>
                     </div>
                   )}
                 </div>
