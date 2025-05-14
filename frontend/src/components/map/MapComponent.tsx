@@ -486,9 +486,9 @@ const MapComponent = ({
     const loadHistoricalData = async () => {
       try {
         // Call API to load historical data based on dateRange
-        const response = await api.get(`/api/burglary/time-series?days=${dateRange[0]}`);
-        if (response.data) {
-          setHistoricalData(response.data);
+        const response = await api.burglary.getTimeSeries({ days: dateRange[0] });
+        if (response) {
+          setHistoricalData(response);
         }
       } catch (error) {
         console.error("Error loading historical data:", error);
@@ -780,7 +780,7 @@ const MapComponent = ({
           </div>
         </div>
         
-        {/* Map Legend */}
+        Map Legend
         <MapLegend 
           title="Burglary Risk"
           items={[

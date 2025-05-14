@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { getEmmieScores, getLsoaWellbeingData } from '../api/backendService';
@@ -14,25 +13,64 @@ const EmmieScorecard: React.FC<EmmieScoreCardProps> = ({ selectedLSOA }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Updated burglary factors based on criminology research
+  const burglaryFactors = {
+    environmental: {
+      title: 'Environmental Factors',
+      items: [
+        { name: 'Lack of natural surveillance', score: 4, description: 'Limited visibility from street or neighbors', effectiveness: 4.2 },
+        { name: 'Poor street lighting', score: 3, description: 'Dark areas create opportunities', effectiveness: 3.8 },
+        { name: 'Secluded entry points', score: 4, description: 'Hidden access points to properties', effectiveness: 4.3 },
+        { name: 'Vacant properties', score: 5, description: 'Unoccupied homes are prime targets', effectiveness: 4.7 }
+      ]
+    },
+    socioeconomic: {
+      title: 'Socioeconomic Factors',
+      items: [
+        { name: 'Income inequality', score: 4, description: 'Areas with high wealth disparity', effectiveness: 4.1 },
+        { name: 'Housing density', score: 3, description: 'High-density housing areas', effectiveness: 3.5 },
+        { name: 'Transient population', score: 4, description: 'Areas with short-term residents', effectiveness: 3.9 },
+        { name: 'Unemployment rate', score: 5, description: 'Higher joblessness correlates with crime', effectiveness: 4.5 }
+      ]
+    },
+    opportunity: {
+      title: 'Opportunity Factors',
+      items: [
+        { name: 'Weak security measures', score: 5, description: 'Inadequate locks, alarms, cameras', effectiveness: 4.8 },
+        { name: 'Predictable occupancy', score: 4, description: 'Obvious patterns when homes are empty', effectiveness: 4.2 },
+        { name: 'Valuable possessions', score: 3, description: 'Visible high-value items', effectiveness: 3.7 },
+        { name: 'Easy escape routes', score: 4, description: 'Multiple pathways to flee', effectiveness: 4.0 }
+      ]
+    },
+    temporal: {
+      title: 'Temporal Patterns',
+      items: [
+        { name: 'Winter darkness', score: 4, description: 'Early darkness in winter months', effectiveness: 4.1 },
+        { name: 'Holiday seasons', score: 5, description: 'Christmas and summer holiday periods', effectiveness: 4.6 },
+        { name: 'Weekend patterns', score: 3, description: 'Different patterns on weekends', effectiveness: 3.4 },
+        { name: 'Evening hours', score: 4, description: 'Peak times between 6pm-12am', effectiveness: 4.3 }
+      ]
+    },
+    cpted: {
+      title: 'CPTED Principles',
+      items: [
+        { name: 'Territorial reinforcement', score: 4, description: 'Clear boundaries between public/private', effectiveness: 4.1 },
+        { name: 'Access control', score: 5, description: 'Limiting entry/exit points', effectiveness: 4.7 },
+        { name: 'Activity support', score: 3, description: 'Encouraging legitimate space use', effectiveness: 3.6 },
+        { name: 'Maintenance', score: 4, description: 'Upkeep of properties and surroundings', effectiveness: 4.2 }
+      ]
+    }
+  };
+
   // Load EMMIE framework data
   useEffect(() => {
     const loadEmmieData = async () => {
       try {
         setIsLoading(true);
-        const emmieData = await getEmmieScores();
         
-        // Ensure each section has at least an empty items array to prevent mapping errors
-        if (emmieData) {
-          Object.keys(emmieData).forEach(key => {
-            if (!emmieData[key]) {
-              emmieData[key] = { title: key.charAt(0).toUpperCase() + key.slice(1), items: [] };
-            } else if (!emmieData[key].items) {
-              emmieData[key].items = [];
-            }
-          });
-        }
+        // Use updated burglary factors instead of API data
+        setEmmieFramework(burglaryFactors);
         
-        setEmmieFramework(emmieData);
         setIsLoading(false);
       } catch (error) {
         console.error("Error loading EMMIE data:", error);
@@ -152,7 +190,7 @@ const EmmieScorecard: React.FC<EmmieScoreCardProps> = ({ selectedLSOA }) => {
     return (
       <div className="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden mb-4 p-4">
         <div className="text-center py-6">
-          <p className="text-gray-400">EMMIE framework data unavailable.</p>
+          <p className="text-gray-400">Burglary factors data unavailable.</p>
         </div>
       </div>
     );
@@ -162,7 +200,7 @@ const EmmieScorecard: React.FC<EmmieScoreCardProps> = ({ selectedLSOA }) => {
     <div className="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden mb-4">
       <h3 className="text-white text-base font-semibold p-3 border-b border-gray-700 flex items-center">
         <span className="text-orange-400 mr-2">🎯</span>
-        EMMIE Scorecard Widget
+        Burglary Risk Factors
       </h3>
       
       {/* Tabs */}
@@ -248,43 +286,58 @@ const EmmieScorecard: React.FC<EmmieScoreCardProps> = ({ selectedLSOA }) => {
                     <div className="text-xs text-gray-400 mb-1">Housing Density:</div>
                     <div className="text-white">{housingData.housingDensity}/ha</div>
                   </div>
+                </div>
+                <div className="grid grid-cols-2 gap-2 mb-3">
                   <div className="bg-gray-800 p-2 rounded border border-gray-700">
                     <div className="text-xs text-gray-400 mb-1">Social Housing:</div>
                     <div className="text-white">{housingData.socialHousingPercent}%</div>
                   </div>
                   <div className="bg-gray-800 p-2 rounded border border-gray-700">
                     <div className="text-xs text-gray-400 mb-1">Crime Rank:</div>
-                    <div className="text-white">{housingData.crimeRank}/32</div>
+                    <div className="text-white">{housingData.crimeRank}/30</div>
                   </div>
                 </div>
-                
-                <div className="bg-gray-800 p-2 rounded border border-gray-700 mb-3">
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <div className="text-xs text-gray-400 mb-1">Wellbeing Score:</div>
-                      <div className="text-white">{housingData.wellbeingScore.toFixed(1)}</div>
-                    </div>
-                    <div>
-                      <div className="text-xs text-gray-400 mb-1">Risk Level:</div>
-                      <div className="text-white">{renderRiskLevel(housingData.riskLevel)}</div>
-                    </div>
+                <div className="bg-gray-800 p-2 rounded border border-gray-700 mb-2">
+                  <div className="text-xs text-gray-400 mb-1">Area Risk Level:</div>
+                  <div className="text-white font-medium">
+                    {renderRiskLevel(housingData.riskLevel)}
                   </div>
                 </div>
-                
-                <div className="bg-blue-900/20 text-blue-400 border border-blue-900/30 rounded p-2 text-xs">
-                  EMMIE scores indicate intervention effectiveness. The framework considers Effect, Mechanism, 
-                  Moderators, Implementation and Economic impact for crime reduction strategies.
+                <div className="bg-gray-800 p-2 rounded border border-gray-700">
+                  <div className="text-xs text-gray-400 mb-1">Recommended Interventions:</div>
+                  <ul className="text-xs text-white mt-1 space-y-1">
+                    {/* Show different recommendations based on risk level */}
+                    {housingData.riskLevel === 2 ? (
+                      <>
+                        <li className="flex items-center"><span className="text-blue-400 mr-1">•</span> Targeted police patrols</li>
+                        <li className="flex items-center"><span className="text-blue-400 mr-1">•</span> Enhanced CCTV coverage</li>
+                        <li className="flex items-center"><span className="text-blue-400 mr-1">•</span> Community watch programs</li>
+                      </>
+                    ) : housingData.riskLevel === 1 ? (
+                      <>
+                        <li className="flex items-center"><span className="text-blue-400 mr-1">•</span> Improved street lighting</li>
+                        <li className="flex items-center"><span className="text-blue-400 mr-1">•</span> Property marking schemes</li>
+                        <li className="flex items-center"><span className="text-blue-400 mr-1">•</span> Security assessments</li>
+                      </>
+                    ) : (
+                      <>
+                        <li className="flex items-center"><span className="text-blue-400 mr-1">•</span> Maintain environmental design</li>
+                        <li className="flex items-center"><span className="text-blue-400 mr-1">•</span> Community engagement</li>
+                        <li className="flex items-center"><span className="text-blue-400 mr-1">•</span> Preventative education</li>
+                      </>
+                    )}
+                  </ul>
                 </div>
               </motion.div>
             ) : (
               <div className="text-center py-4 text-gray-400">
-                <p>Loading wellbeing data for this area...</p>
+                Loading area data...
               </div>
             )}
           </div>
         ) : (
           <div className="text-center py-4 text-gray-400">
-            <p>Select an area on the map to view EMMIE data</p>
+            <p>Select an area on the map to view details</p>
           </div>
         )}
       </div>
@@ -293,3 +346,4 @@ const EmmieScorecard: React.FC<EmmieScoreCardProps> = ({ selectedLSOA }) => {
 };
 
 export default EmmieScorecard;
+

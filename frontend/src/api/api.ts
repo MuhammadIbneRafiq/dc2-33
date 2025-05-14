@@ -165,8 +165,14 @@ export const api = {
 
   // Burglary data endpoints
   burglary: {
-    getTimeSeries: (params?: { lsoa_code?: string }) => {
-      const queryParams = params?.lsoa_code ? `?lsoa_code=${params.lsoa_code}` : '';
+    getTimeSeries: (params?: { lsoa_code?: string, days?: number }) => {
+      let queryParams = '';
+      if (params) {
+        const queryParts = [];
+        if (params.lsoa_code) queryParts.push(`lsoa_code=${params.lsoa_code}`);
+        if (params.days) queryParts.push(`days=${params.days}`);
+        if (queryParts.length > 0) queryParams = `?${queryParts.join('&')}`;
+      }
       return fetchApi(`/burglary/time-series${queryParams}`, MOCK_DATA.burglary.timeSeries);
     },
     getForecast: (params?: { lsoa_code?: string }) => {

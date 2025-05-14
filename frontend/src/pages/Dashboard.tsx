@@ -45,6 +45,16 @@ const Dashboard = () => {
   const [predictionRange, setPredictionRange] = useState(60);
   const [showPredictions, setShowPredictions] = useState(false);
   
+  // Date range from header slider
+  const [dateRange, setDateRange] = useState<number[]>([30]);
+  
+  // Handle date range changes from header
+  const handleDateRangeChange = (newRange: number[]) => {
+    setDateRange(newRange);
+    // Reset predictions when date range changes
+    setShowPredictions(false);
+  };
+  
   // Handle initial loading
   useEffect(() => {
     const loadingMessages = [
@@ -168,6 +178,187 @@ const Dashboard = () => {
     return <LoadingScreen message={loadingMessage} />;
   }
   
+  // Create a time series visualization component at the bottom of the map
+  const renderTimeSeriesPanel = () => {
+    return (
+      <div className="mt-6 bg-gray-800/70 rounded-xl border border-gray-700/50 p-4 shadow-lg">
+        <h3 className="text-lg font-bold text-white mb-4">Time Series Forecasting</h3>
+        
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center space-x-4">
+            <div className="text-sm text-gray-400">Model:</div>
+            <div className="flex space-x-2">
+              <Button 
+                variant={predictionModel === 'sarima' ? 'default' : 'outline'} 
+                size="sm"
+                onClick={() => setPredictionModel('sarima')}
+              >
+                SARIMA
+              </Button>
+              <Button 
+                variant={predictionModel === 'lstm' ? 'default' : 'outline'} 
+                size="sm"
+                onClick={() => setPredictionModel('lstm')}
+              >
+                LSTM
+              </Button>
+              <Button 
+                variant={predictionModel === 'sdgcn' ? 'default' : 'outline'} 
+                size="sm"
+                onClick={() => setPredictionModel('sdgcn')}
+              >
+                LSTM-GCN
+              </Button>
+            </div>
+          </div>
+          
+          <Button 
+            variant="default" 
+            size="sm"
+            onClick={handleGeneratePrediction}
+          >
+            {showPredictions ? 'Update Forecast' : 'Generate Forecast'}
+          </Button>
+        </div>
+        
+        <div className="h-[300px] bg-gray-900/50 rounded-lg border border-gray-700/50">
+          {isLoadingForecast ? (
+            <div className="flex flex-col items-center justify-center h-full">
+              <div className="w-8 h-8 border-2 border-t-2 border-blue-500 border-t-transparent rounded-full animate-spin mb-2"></div>
+              <p className="text-sm text-gray-400">Loading forecast data...</p>
+            </div>
+          ) : forecastData && selectedLSOA ? (
+            <div className="w-full h-full p-4">
+              <div className="flex justify-between items-center mb-2">
+                <div className="text-sm text-white font-medium">
+                  Burglary forecast for {selectedLSOA || 'London'}
+                </div>
+                <div className="text-xs text-gray-400">
+                  Showing {dateRange[0]} days of data
+                </div>
+              </div>
+              <div className="relative h-[calc(100%-30px)]">
+                {/* Mock time series data since we don't have real API data */}
+                <div className="absolute inset-0 flex">
+                  <div className="w-2/3 border-r border-gray-700/50 p-2">
+                    <div className="text-xs text-gray-400 mb-1">Historical (Last {dateRange[0]} days)</div>
+                    <div className="h-[calc(100%-20px)] relative bg-gray-800/30 rounded">
+                      {/* Generate mock historical data points */}
+                      {Array.from({ length: 30 }, (_, i) => ({
+                        date: new Date(Date.now() - (30 - i) * 24 * 60 * 60 * 1000),
+                        value: Math.floor(15 + Math.random() * 25)
+                      })).map((point, i, arr) => (
+                        <React.Fragment key={i}>
+                          {/* Generate line connecting points */}
+                          {i < arr.length - 1 && (
+                            <div 
+                              className="absolute bg-blue-500/50"
+                              style={{
+                                left: `${(i / arr.length) * 100}%`,
+                                bottom: `${(point.value / 50) * 100}%`,
+                                width: `${(1 / arr.length) * 100}%`,
+                                height: '1px',
+                                transform: `rotate(${Math.atan2(
+                                  ((arr[i+1].value - point.value) / 50) * 100,
+                                  ((1 / arr.length) * 100)
+                                ) * (180 / Math.PI)}deg)`,
+                                transformOrigin: 'left bottom'
+                              }}
+                            ></div>
+                          )}
+                          {/* Data point */}
+                          <div 
+                            className="absolute w-2 h-2 bg-blue-500 rounded-full"
+                            style={{
+                              left: `${(i / arr.length) * 100}%`,
+                              bottom: `${(point.value / 50) * 100}%`,
+                              transform: 'translate(-50%, 50%)'
+                            }}
+                            title={`${point.date.toLocaleDateString()}: ${point.value} incidents`}
+                          ></div>
+                        </React.Fragment>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="w-1/3 p-2">
+                    <div className="text-xs text-gray-400 mb-1">Forecast (Next 30 days)</div>
+                    <div className="h-[calc(100%-20px)] relative bg-gray-800/30 rounded">
+                      {/* Generate mock forecast data points based on model */}
+                      {Array.from({ length: 15 }, (_, i) => {
+                        let baseValue = 20;
+                        // Different models have different forecast patterns
+                        if (predictionModel === 'sarima') {
+                          // SARIMA has a seasonal pattern
+                          baseValue = 20 + 5 * Math.sin(i / 3);
+                        } else if (predictionModel === 'lstm') {
+                          // LSTM has a more smooth trend
+                          baseValue = 22 - i * 0.3;
+                        } else {
+                          // LSTM-GCN has a different pattern
+                          baseValue = 18 + i * 0.2;
+                        }
+                        return {
+                          date: new Date(Date.now() + i * 24 * 60 * 60 * 1000),
+                          value: Math.floor(baseValue + Math.random() * 4)
+                        };
+                      }).map((point, i, arr) => (
+                        <React.Fragment key={i}>
+                          {/* Generate line connecting points */}
+                          {i < arr.length - 1 && (
+                            <div 
+                              className="absolute bg-green-500/50"
+                              style={{
+                                left: `${(i / arr.length) * 100}%`,
+                                bottom: `${(point.value / 50) * 100}%`,
+                                width: `${(1 / arr.length) * 100}%`,
+                                height: '1px',
+                                transform: `rotate(${Math.atan2(
+                                  ((arr[i+1].value - point.value) / 50) * 100,
+                                  ((1 / arr.length) * 100)
+                                ) * (180 / Math.PI)}deg)`,
+                                transformOrigin: 'left bottom'
+                              }}
+                            ></div>
+                          )}
+                          {/* Data point */}
+                          <div 
+                            className="absolute w-2 h-2 bg-green-500 rounded-full"
+                            style={{
+                              left: `${(i / arr.length) * 100}%`,
+                              bottom: `${(point.value / 50) * 100}%`,
+                              transform: 'translate(-50%, 50%)'
+                            }}
+                            title={`${point.date.toLocaleDateString()}: ${point.value} predicted incidents`}
+                          ></div>
+                        </React.Fragment>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="flex justify-between mt-2">
+                <div className="flex items-center">
+                  <div className="w-3 h-3 bg-blue-500 rounded-full mr-1"></div>
+                  <span className="text-xs text-gray-400">Historical Data</span>
+                </div>
+                <div className="flex items-center">
+                  <div className="w-3 h-3 bg-green-500 rounded-full mr-1"></div>
+                  <span className="text-xs text-gray-400">Predicted ({predictionModel})</span>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center h-full">
+              <p className="text-gray-400 mb-2">No forecast data available</p>
+              <p className="text-xs text-gray-500">Select an area on the map to view predictions</p>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
+  
+  // Add the time series panel to the Dashboard content
   const renderContent = () => {
     switch (activeView) {
       case 'dashboard':
@@ -272,8 +463,13 @@ const Dashboard = () => {
                     showPredictions={showPredictions}
                     predictionModel={predictionModel}
                     predictionRange={predictionRange}
+                    dateRange={dateRange}
                   />
                 </div>
+                
+                {/* Add the time series visualization below the map */}
+                {renderTimeSeriesPanel()}
+                
                 <div className="flex items-center space-x-4 mt-4 p-2 bg-gray-900/50 rounded-lg">
                   <div className="flex items-center space-x-2">
                     <div className="w-3 h-3 rounded-full bg-red-500"></div>
@@ -606,7 +802,10 @@ const Dashboard = () => {
       
       {/* Main Content */}
       <div className="flex-1 flex flex-col pl-[280px]">
-        <Header onOpenTutorial={() => setShowTutorial(true)} />
+        <Header 
+          onOpenTutorial={() => setShowTutorial(true)} 
+          onDateRangeChange={handleDateRangeChange}
+        />
         <main className="flex-1 overflow-auto">
           {renderContent()}
         </main>

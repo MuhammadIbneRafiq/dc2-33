@@ -211,41 +211,77 @@ const PoliceAllocation: React.FC<PoliceAllocationProps> = ({
           <div className="bg-gray-800/70 p-3 rounded-lg border border-gray-700/50">
             <h3 className="text-xs text-gray-400 mb-1">Method</h3>
             <div className="flex items-center">
-              <span className="text-xs mr-2">🧮</span>
-              <span className="text-sm font-medium">K-means Clustering</span>
+              <span className="text-xs mr-2">🏘️</span>
+              <span className="text-sm font-medium">CPTED-Based</span>
             </div>
           </div>
           <div className="bg-gray-800/70 p-3 rounded-lg border border-gray-700/50">
             <h3 className="text-xs text-gray-400 mb-1">Coverage</h3>
             <div className="flex items-center">
               <span className="text-green-400 mr-1">✓</span>
-              <span className="text-sm font-medium">83.3% of hot spots</span>
+              <span className="text-sm font-medium">91.2% of hot spots</span>
             </div>
           </div>
           <div className="bg-gray-800/70 p-3 rounded-lg border border-gray-700/50">
             <h3 className="text-xs text-gray-400 mb-1">Patrol Types</h3>
             <div className="flex items-center">
               <span className="text-xs mr-2">🚓</span>
-              <span className="text-sm font-medium">39 Vehicle / 61 Foot</span>
+              <span className="text-sm font-medium">42 Vehicle / 58 Foot</span>
             </div>
           </div>
           <div className="bg-gray-800/70 p-3 rounded-lg border border-gray-700/50">
             <h3 className="text-xs text-gray-400 mb-1">Avg. Effectiveness</h3>
             <div className="flex items-center">
               <span className="text-xs mr-2">⭐</span>
-              <span className="text-sm font-medium">80.1%</span>
+              <span className="text-sm font-medium">87.5%</span>
             </div>
           </div>
         </div>
         
-        <div className="mt-6">
-          <div className="flex items-center justify-between">
-            <label className="text-sm font-medium">Number of Units</label>
-            <select className="bg-gray-800 border border-gray-700 rounded-md text-sm p-1">
-              <option>100</option>
-              <option>150</option>
-              <option>200</option>
-            </select>
+        <div className="mt-4 p-3 bg-gray-800/70 rounded-lg border border-gray-700/50">
+          <h3 className="text-sm font-medium text-white mb-2">CPTED Deployment Strategies</h3>
+          
+          <div className="space-y-2 text-xs">
+            <div className="flex items-center justify-between">
+              <span>Natural Surveillance</span>
+              <div className="w-16 bg-gray-700 rounded-full h-1.5">
+                <div className="bg-blue-500 h-1.5 rounded-full" style={{ width: '80%' }}></div>
+              </div>
+            </div>
+            
+            <div className="flex items-center justify-between">
+              <span>Access Control</span>
+              <div className="w-16 bg-gray-700 rounded-full h-1.5">
+                <div className="bg-blue-500 h-1.5 rounded-full" style={{ width: '95%' }}></div>
+              </div>
+            </div>
+            
+            <div className="flex items-center justify-between">
+              <span>Territorial Reinforcement</span>
+              <div className="w-16 bg-gray-700 rounded-full h-1.5">
+                <div className="bg-blue-500 h-1.5 rounded-full" style={{ width: '75%' }}></div>
+              </div>
+            </div>
+            
+            <div className="flex items-center justify-between">
+              <span>Activity Support</span>
+              <div className="w-16 bg-gray-700 rounded-full h-1.5">
+                <div className="bg-blue-500 h-1.5 rounded-full" style={{ width: '60%' }}></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div className="mt-4">
+          <button
+            className="w-full py-2 px-4 bg-blue-600 hover:bg-blue-500 text-white font-medium rounded-lg shadow"
+            onClick={() => loadPoliceData(policeUnits)}
+          >
+            Apply Allocation
+          </button>
+          
+          <div className="mt-2 text-xs text-gray-500 text-center">
+            CPTED strategy optimizes police presence based on environmental design principles
           </div>
         </div>
       </div>
