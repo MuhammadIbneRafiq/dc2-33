@@ -54,30 +54,30 @@ def load_imd_data():
 def load_lsoa_codes():
     """Load LSOA codes reference data"""
     try:
-    if 'lsoa_codes' not in data_cache:
-            print(f"Loading LSOA codes from {LSOA_CODES_PATH}")
-            # Check if the file exists
-            if not os.path.exists(LSOA_CODES_PATH):
-                print(f"LSOA codes file not found at {LSOA_CODES_PATH}")
-                # Try alternative location
-                alt_path = os.path.join(BASE_DIR, "Societal_wellbeing_dataset", "LSOA_codes.csv")
-                if os.path.exists(alt_path):
-                    print(f"Found LSOA codes at alternative location: {alt_path}")
-                    data_cache['lsoa_codes'] = pd.read_csv(alt_path)
+        if 'lsoa_codes' not in data_cache:
+                print(f"Loading LSOA codes from {LSOA_CODES_PATH}")
+                # Check if the file exists
+                if not os.path.exists(LSOA_CODES_PATH):
+                    print(f"LSOA codes file not found at {LSOA_CODES_PATH}")
+                    # Try alternative location
+                    alt_path = os.path.join(BASE_DIR, "Societal_wellbeing_dataset", "LSOA_codes.csv")
+                    if os.path.exists(alt_path):
+                        print(f"Found LSOA codes at alternative location: {alt_path}")
+                        data_cache['lsoa_codes'] = pd.read_csv(alt_path)
+                    else:
+                        print(f"Alternative path also not found: {alt_path}")
+                        # Create a minimal placeholder dataframe to avoid errors
+                        data_cache['lsoa_codes'] = pd.DataFrame({
+                            'LSOA11CD': ['E01000001', 'E01000002', 'E01000003'],
+                            'LSOA11NM': ['City of London 001A', 'City of London 001B', 'City of London 001C']
+                        })
                 else:
-                    print(f"Alternative path also not found: {alt_path}")
-                    # Create a minimal placeholder dataframe to avoid errors
-                    data_cache['lsoa_codes'] = pd.DataFrame({
-                        'LSOA11CD': ['E01000001', 'E01000002', 'E01000003'],
-                        'LSOA11NM': ['City of London 001A', 'City of London 001B', 'City of London 001C']
-                    })
-            else:
-        data_cache['lsoa_codes'] = pd.read_csv(LSOA_CODES_PATH)
-            
-            print(f"LSOA codes loaded, shape: {data_cache['lsoa_codes'].shape}")
-            print(f"LSOA codes columns: {data_cache['lsoa_codes'].columns.tolist()}")
+                    data_cache['lsoa_codes'] = pd.read_csv(LSOA_CODES_PATH)
+                
+                    print(f"LSOA codes loaded, shape: {data_cache['lsoa_codes'].shape}")
+                    print(f"LSOA codes columns: {data_cache['lsoa_codes'].columns.tolist()}")
         
-    return data_cache['lsoa_codes']
+        return data_cache['lsoa_codes']
     except Exception as e:
         print(f"Error loading LSOA codes: {str(e)}")
         import traceback
