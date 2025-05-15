@@ -170,6 +170,12 @@ def create_visualizations(df, viz_dir):
     
     # 11. Predictive modeling
     perform_predictive_modeling(df, viz_dir)
+    
+    # 12. Violin plot of burglary distributions
+    create_violin_plot(df, viz_dir)
+    
+    # 13. Temporal heatmap
+    create_temporal_heatmap(df, viz_dir)
 
 def plot_time_series(df, viz_dir):
     """Create time series visualizations"""
@@ -421,7 +427,7 @@ def create_time_series_dashboard(df, output_dir):
     monthly_data = df.groupby('YearMonth').size().reset_index(name='count')
     monthly_data['Month'] = pd.to_datetime(monthly_data['YearMonth'] + '-01')
     
-    # Create the time series plot
+    # Create the time series plot with colorblind-friendly blue
     fig = px.line(
         monthly_data, 
         x='Month', 
@@ -430,7 +436,8 @@ def create_time_series_dashboard(df, output_dir):
         labels={'count': 'Number of Burglaries', 'Month': 'Date'},
         markers=True,
         line_shape='linear',
-        template='plotly_white'
+        template='plotly_white',
+        color_discrete_sequence=['#0072B2']
     )
     
     # Add range slider
@@ -458,13 +465,13 @@ def create_time_series_dashboard(df, output_dir):
         # Group by year and month
         heatmap_data = df.groupby(['Year', 'MonthNum']).size().reset_index(name='count')
         
-        # Create heatmap
+        # Create heatmap with colorblind-friendly Yellow-Orange-Red scale
         fig = px.imshow(
             heatmap_data.pivot(index='Year', columns='MonthNum', values='count'),
             labels=dict(x="Month", y="Year", color="Burglaries"),
             x=[calendar.month_name[i] for i in range(1, 13)],
             y=heatmap_data['Year'].unique(),
-            color_continuous_scale="Viridis",
+            color_continuous_scale="YlOrRd",
             title="Monthly Burglary Heatmap by Year",
             template="plotly_white"
         )
@@ -473,7 +480,7 @@ def create_time_series_dashboard(df, output_dir):
         fig.update_layout(
             xaxis={'side': 'top'},
             coloraxis_colorbar=dict(
-                title="Number of<br>Burglaries",
+                title="Number of<br>Burglaries"
             )
         )
         
@@ -562,7 +569,7 @@ def create_investigation_dashboard(df, output_dir):
     total = outcome_counts.sum()
     other_count = len(df) - total
     if other_count > 0:
-        outcome_counts = outcome_counts.append(pd.Series([other_count], index=['Other']))
+        outcome_counts = pd.concat([outcome_counts, pd.Series([other_count], index=['Other'])])
     
     fig.add_trace(
         go.Pie(
@@ -1143,6 +1150,204 @@ def perform_predictive_modeling(df, viz_dir):
         print("Modeling libraries not available. Install scikit-learn for predictive modeling.")
     except Exception as e:
         print(f"Error in predictive modeling: {e}")
+
+def create_violin_plot(df, viz_dir):
+    """Create a violin plot showing the distribution of burglary rates by location"""
+    # Convert string path to Path object if needed
+    if isinstance(viz_dir, str):
+        viz_dir = Path(viz_dir)
+    
+    # Ensure directory exists
+    viz_dir.mkdir(exist_ok=True, parents=True)
+    
+    # Group data by LSOA and month, then count burglaries
+    lsoa_monthly = df.groupby(['LSOA name', 'YearMonth']).size().reset_index(name='count')
+    
+    # Get top 10 LSOAs by total burglaries for readability
+    top_lsoas = lsoa_monthly.groupby('LSOA name')['count'].sum().nlargest(10).index.tolist()
+    filtered_data = lsoa_monthly[lsoa_monthly['LSOA name'].isin(top_lsoas)]
+    
+    # Create violin plot with colorblind-friendly colors
+    plt.figure(figsize=(14, 10))
+    sns.violinplot(x='LSOA name', y='count', data=filtered_data, palette='YlOrBr', inner='quartile')
+    plt.title('Distribution of Monthly Burglary Rates by Location', fontsize=16)
+    plt.xlabel('LSOA Area', fontsize=12)
+    plt.ylabel('Number of Burglaries per Month', fontsize=12)
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.savefig(viz_dir / 'burglary_rate_violin.png', dpi=300)
+    plt.close()
+    
+    # Ensure interactive directory exists
+    interactive_dir = viz_dir / 'interactive'
+    interactive_dir.mkdir(exist_ok=True)
+    
+    # Create an interactive ridgeline plot with Plotly
+    fig = go.Figure()
+    
+    # Add a trace for each LSOA
+    for i, lsoa in enumerate(top_lsoas):
+        lsoa_data = filtered_data[filtered_data['LSOA name'] == lsoa]
+        
+        fig.add_trace(go.Violin(
+            x=lsoa_data['count'],
+            y=[lsoa] * len(lsoa_data),
+            name=lsoa,
+            orientation='h',
+            side='positive',
+            width=2,
+            line_color='#0072B2',
+            fillcolor=px.colors.sequential.YlOrBr[i % len(px.colors.sequential.YlOrBr)]
+        ))
+    
+    fig.update_layout(
+        title='Ridgeline Plot of Burglary Distributions by Area',
+        xaxis_title='Number of Burglaries per Month',
+        yaxis_title='LSOA Area',
+        template='plotly_white',
+        height=800
+    )
+    
+    # Save the interactive plot
+    pio.write_html(fig, file=str(interactive_dir / 'burglary_ridgeline.html'), auto_open=False)
+    
+    return viz_dir / 'burglary_rate_violin.png', interactive_dir / 'burglary_ridgeline.html'
+
+def create_temporal_heatmap(df, viz_dir):
+    """Create a heatmap showing burglary patterns by day of week and hour of day"""
+    # Convert string path to Path object if needed
+    if isinstance(viz_dir, str):
+        viz_dir = Path(viz_dir)
+    
+    # Ensure directory exists
+    viz_dir.mkdir(exist_ok=True, parents=True)
+    
+    # Add day of week if not already present
+    if 'DayOfWeek' not in df.columns and 'Month' in df.columns:
+        df['DayOfWeek'] = df['Month'].dt.day_name()
+    
+    # Add hour if not already present
+    if 'Hour' not in df.columns and 'Time' in df.columns:
+        df['Hour'] = df['Time'].apply(lambda x: int(x.split(':')[0]) if isinstance(x, str) and ':' in x else None)
+    
+    # Check if we have the required columns
+    if 'DayOfWeek' in df.columns and 'Hour' in df.columns:
+        # Create day-hour heatmap
+        day_hour_counts = df.groupby(['DayOfWeek', 'Hour']).size().reset_index(name='count')
+        
+        # Convert to pivot table
+        day_order = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+        hour_pivot = day_hour_counts.pivot(index='DayOfWeek', columns='Hour', values='count')
+        
+        # Reorder rows by day of week
+        hour_pivot = hour_pivot.reindex(day_order)
+        
+        # Create heatmap with colorblind-friendly colors
+        plt.figure(figsize=(14, 8))
+        sns.heatmap(hour_pivot, cmap='YlOrBr', annot=False, fmt='.0f', cbar_kws={'label': 'Number of Burglaries'})
+        plt.title('Burglary Frequency by Day and Hour', fontsize=16)
+        plt.xlabel('Hour of Day', fontsize=12)
+        plt.ylabel('Day of Week', fontsize=12)
+        plt.tight_layout()
+        plt.savefig(viz_dir / 'day_hour_heatmap.png', dpi=300)
+        plt.close()
+        
+        # Create interactive version with Plotly
+        interactive_dir = viz_dir / 'interactive'
+        interactive_dir.mkdir(exist_ok=True)
+        
+        fig = px.imshow(
+            hour_pivot,
+            labels=dict(x="Hour of Day", y="Day of Week", color="Burglaries"),
+            x=hour_pivot.columns,
+            y=hour_pivot.index,
+            color_continuous_scale="YlOrBr",
+            title="Interactive Burglary Heatmap by Day and Hour",
+            template="plotly_white"
+        )
+        
+        # Add annotations
+        annotations = []
+        for i, day in enumerate(hour_pivot.index):
+            for j, hour in enumerate(hour_pivot.columns):
+                value = hour_pivot.iloc[i, j]
+                if pd.notna(value) and value > 0:
+                    annotations.append(
+                        dict(
+                            x=hour,
+                            y=day,
+                            text=str(int(value)),
+                            showarrow=False,
+                            font=dict(color='white' if value > hour_pivot.values.max()/2 else 'black')
+                        )
+                    )
+        
+        fig.update_layout(annotations=annotations)
+        
+        # Save interactive plot
+        pio.write_html(fig, file=str(interactive_dir / 'day_hour_heatmap.html'), auto_open=False)
+        
+        return viz_dir / 'day_hour_heatmap.png', interactive_dir / 'day_hour_heatmap.html'
+    
+    # If we don't have day and hour, create a year-month heatmap instead
+    else:
+        # Ensure we have year and month columns
+        if 'Year' not in df.columns or 'MonthNum' not in df.columns:
+            if 'Month' in df.columns:
+                df['Year'] = df['Month'].dt.year
+                df['MonthNum'] = df['Month'].dt.month
+        
+        # Group by year and month
+        heatmap_data = df.groupby(['Year', 'MonthNum']).size().reset_index(name='count')
+        
+        # Create heatmap
+        plt.figure(figsize=(14, 8))
+        heatmap_pivot = heatmap_data.pivot(index='Year', columns='MonthNum', values='count')
+        
+        # Create heatmap with colorblind-friendly colors
+        sns.heatmap(
+            heatmap_pivot, 
+            cmap='YlOrBr', 
+            annot=True, 
+            fmt='.0f', 
+            cbar_kws={'label': 'Number of Burglaries'},
+            linewidths=0.5
+        )
+        plt.title('Burglary Frequency by Year and Month', fontsize=16)
+        plt.xlabel('Month', fontsize=12)
+        plt.ylabel('Year', fontsize=12)
+        plt.xticks(ticks=np.arange(1, 13) + 0.5, labels=[calendar.month_name[i] for i in range(1, 13)], rotation=45)
+        plt.tight_layout()
+        plt.savefig(viz_dir / 'year_month_heatmap.png', dpi=300)
+        plt.close()
+        
+        # Create interactive version with Plotly
+        interactive_dir = viz_dir / 'interactive'
+        interactive_dir.mkdir(exist_ok=True)
+        
+        fig = px.imshow(
+            heatmap_pivot,
+            labels=dict(x="Month", y="Year", color="Burglaries"),
+            x=[calendar.month_name[i] for i in range(1, 13)],
+            y=heatmap_data['Year'].unique(),
+            color_continuous_scale="YlOrBr",
+            title="Interactive Burglary Heatmap by Year and Month",
+            template="plotly_white",
+            text_auto=True
+        )
+        
+        # Customize layout
+        fig.update_layout(
+            xaxis={'side': 'bottom'},
+            coloraxis_colorbar=dict(
+                title="Number of<br>Burglaries"
+            )
+        )
+        
+        # Save interactive plot
+        pio.write_html(fig, file=str(interactive_dir / 'year_month_heatmap.html'), auto_open=False)
+        
+        return viz_dir / 'year_month_heatmap.png', interactive_dir / 'year_month_heatmap.html'
 
 def main():
     # Parse command line arguments

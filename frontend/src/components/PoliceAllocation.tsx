@@ -12,8 +12,8 @@ const PoliceAllocation: React.FC<PoliceAllocationProps> = ({
   onToggle
 }) => {
   const [policeUnits, setPoliceUnits] = useState(100);
-  const [deploymentHours, setDeploymentHours] = useState(8);
-  const [activeTab, setActiveTab] = useState('optimization');
+  const [deploymentHours, setDeploymentHours] = useState(2);
+  const [deploymentTime, setDeploymentTime] = useState('08:00');
   const [isLoading, setIsLoading] = useState(true);
   const [policeData, setPoliceData] = useState<any[] | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -35,7 +35,7 @@ const PoliceAllocation: React.FC<PoliceAllocationProps> = ({
       setIsLoading(true);
       setError(null);
       
-      const data = await getPoliceAllocation(units);
+      const data = await getPoliceAllocation(units, deploymentHours, deploymentTime);
       setPoliceData(data);
       
     } catch (error) {
@@ -50,6 +50,13 @@ const PoliceAllocation: React.FC<PoliceAllocationProps> = ({
   useEffect(() => {
     loadPoliceData(policeUnits);
   }, []);
+  
+  // Reload data when deployment parameters change
+  useEffect(() => {
+    if (!isLoading) {
+      loadPoliceData(policeUnits);
+    }
+  }, [deploymentHours, deploymentTime]);
   
   // Calculate summary metrics from police data
   const calculateMetrics = () => {
@@ -101,41 +108,12 @@ const PoliceAllocation: React.FC<PoliceAllocationProps> = ({
           </div>
         </motion.div>
         
-        <div className="mb-6">
-          <div className="flex space-x-1 mb-4 border-b border-gray-800/50 pb-1">
-            <button 
-              className={`py-2 px-3 text-sm font-medium rounded-t-lg ${
-                activeTab === 'optimization' 
-                  ? 'bg-blue-900/20 text-blue-400 border-b-2 border-blue-500' 
-                  : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
-              }`}
-              onClick={() => setActiveTab('optimization')}
-            >
-              Optimization
-            </button>
-            <button 
-              className={`py-2 px-3 text-sm font-medium rounded-t-lg ${
-                activeTab === 'deployment' 
-                  ? 'bg-blue-900/20 text-blue-400 border-b-2 border-blue-500' 
-                  : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
-              }`}
-              onClick={() => setActiveTab('deployment')}
-            >
-              Deployment
-            </button>
-            <button 
-              className={`py-2 px-3 text-sm font-medium rounded-t-lg ${
-                activeTab === 'analytics' 
-                  ? 'bg-blue-900/20 text-blue-400 border-b-2 border-blue-500' 
-                  : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
-              }`}
-              onClick={() => setActiveTab('analytics')}
-            >
-              Analytics
-            </button>
+        <div>
+          <div className="border-b border-gray-700/50 pb-2 mb-4">
+            <h3 className="text-sm font-medium text-white">Resource Configuration</h3>
           </div>
           
-          <div className="mt-4">
+          <div>
             <div className="flex justify-between items-center mb-2">
               <label className="text-sm font-medium">Police Units</label>
               <span className="text-blue-400 font-semibold">{policeUnits} units</span>
@@ -164,45 +142,75 @@ const PoliceAllocation: React.FC<PoliceAllocationProps> = ({
             <div className="flex justify-between items-center mb-2">
               <label className="text-sm font-medium">Deployment Hours</label>
               <div className="flex items-center">
-                <button 
-                  className="w-6 h-6 bg-gray-800 rounded-md flex items-center justify-center text-gray-400 hover:bg-gray-700"
-                  onClick={() => setDeploymentHours(Math.max(4, deploymentHours - 1))}
+                <select 
+                  className="bg-gray-800 text-white text-sm rounded-md border border-gray-700 px-2 py-1"
+                  value={deploymentHours}
+                  onChange={(e) => setDeploymentHours(parseInt(e.target.value))}
                 >
-                  -
-                </button>
-                <span className="text-blue-400 font-semibold mx-2">{deploymentHours} hours</span>
-                <button 
-                  className="w-6 h-6 bg-gray-800 rounded-md flex items-center justify-center text-gray-400 hover:bg-gray-700"
-                  onClick={() => setDeploymentHours(Math.min(12, deploymentHours + 1))}
-                >
-                  +
-                </button>
+                  <option value="2">2 hours</option>
+                  <option value="4">4 hours</option>
+                  <option value="6">6 hours</option>
+                  <option value="8">8 hours</option>
+                </select>
               </div>
             </div>
-            <div className="relative pt-1">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-xs text-gray-500">4h</span>
-                <span className="text-xs text-gray-500">6h</span>
-                <span className="text-xs text-gray-500">8h</span>
-                <span className="text-xs text-gray-500">10h</span>
-                <span className="text-xs text-gray-500">12h</span>
+            
+            <div className="mt-3">
+              <div className="flex justify-between items-center mb-2">
+                <label className="text-sm font-medium">Start Time</label>
+                <div className="flex items-center">
+                  <select 
+                    className="bg-gray-800 text-white text-sm rounded-md border border-gray-700 px-2 py-1"
+                    value={deploymentTime}
+                    onChange={(e) => setDeploymentTime(e.target.value)}
+                  >
+                    {deploymentHours === 2 && (
+                      <>
+                        <option value="08:00">08:00 - 10:00</option>
+                        <option value="10:00">10:00 - 12:00</option>
+                        <option value="12:00">12:00 - 14:00</option>
+                        <option value="14:00">14:00 - 16:00</option>
+                        <option value="16:00">16:00 - 18:00</option>
+                        <option value="18:00">18:00 - 20:00</option>
+                        <option value="20:00">20:00 - 22:00</option>
+                        <option value="22:00">22:00 - 00:00</option>
+                        <option value="00:00">00:00 - 02:00</option>
+                        <option value="02:00">02:00 - 04:00</option>
+                        <option value="04:00">04:00 - 06:00</option>
+                        <option value="06:00">06:00 - 08:00</option>
+                      </>
+                    )}
+                    
+                    {deploymentHours === 4 && (
+                      <>
+                        <option value="08:00">08:00 - 12:00</option>
+                        <option value="12:00">12:00 - 16:00</option>
+                        <option value="16:00">16:00 - 20:00</option>
+                        <option value="20:00">20:00 - 00:00</option>
+                        <option value="00:00">00:00 - 04:00</option>
+                        <option value="04:00">04:00 - 08:00</option>
+                      </>
+                    )}
+                    
+                    {deploymentHours === 6 && (
+                      <>
+                        <option value="06:00">06:00 - 12:00</option>
+                        <option value="12:00">12:00 - 18:00</option>
+                        <option value="18:00">18:00 - 00:00</option>
+                        <option value="00:00">00:00 - 06:00</option>
+                      </>
+                    )}
+                    
+                    {deploymentHours === 8 && (
+                      <>
+                        <option value="08:00">08:00 - 16:00</option>
+                        <option value="16:00">16:00 - 00:00</option>
+                        <option value="00:00">00:00 - 08:00</option>
+                      </>
+                    )}
+                  </select>
+                </div>
               </div>
-              <input
-                type="range"
-                className="resource-slider"
-                min="4"
-                max="12"
-                step="1"
-                value={deploymentHours}
-                onChange={(e) => setDeploymentHours(parseInt(e.target.value))}
-              />
-              <div 
-                className="absolute h-4 w-4 bg-blue-500 rounded-full -mt-1 border-2 border-white shadow" 
-                style={{ 
-                  left: `${((deploymentHours - 4) / 8) * 100}%`, 
-                  top: '50%' 
-                }}
-              />
             </div>
           </div>
         </div>
@@ -234,6 +242,18 @@ const PoliceAllocation: React.FC<PoliceAllocationProps> = ({
             <div className="flex items-center">
               <span className="text-xs mr-2">⭐</span>
               <span className="text-sm font-medium">87.5%</span>
+            </div>
+          </div>
+          <div className="bg-gray-800/70 p-3 rounded-lg border border-gray-700/50 col-span-2">
+            <h3 className="text-xs text-gray-400 mb-1">Deployment Time</h3>
+            <div className="flex items-center">
+              <span className="text-xs mr-2">🕒</span>
+              <span className="text-sm font-medium">
+                {deploymentHours === 2 && `${deploymentTime} - ${parseInt(deploymentTime.split(':')[0]) + 2}:00`}
+                {deploymentHours === 4 && `${deploymentTime} - ${parseInt(deploymentTime.split(':')[0]) + 4}:00`}
+                {deploymentHours === 6 && `${deploymentTime} - ${parseInt(deploymentTime.split(':')[0]) + 6}:00`}
+                {deploymentHours === 8 && `${deploymentTime} - ${parseInt(deploymentTime.split(':')[0]) + 8}:00`}
+              </span>
             </div>
           </div>
         </div>

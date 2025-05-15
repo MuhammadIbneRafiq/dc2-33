@@ -1,18 +1,39 @@
-
 // Mock service functions to simulate API calls
 
 /**
- * Get optimized police allocation data based on the number of units
+ * Get optimized police allocation data based on the number of units, deployment hours, and time of day
  */
-export const getPoliceAllocation = async (units: number): Promise<any[]> => {
+export const getPoliceAllocation = async (
+  units: number, 
+  deploymentHours: number = 2, 
+  deploymentTime: string = '08:00'
+): Promise<any[]> => {
   // Simulate network delay
   await new Promise(resolve => setTimeout(resolve, 1500));
   
-  // Generate random police allocation data based on units
+  // Determine effectiveness modifier based on time of day
+  let timeEffectivenessModifier = 0;
+  
+  // Higher effectiveness during high crime hours (evening/night)
+  if (deploymentTime.startsWith('18:') || deploymentTime.startsWith('20:') || 
+      deploymentTime.startsWith('22:') || deploymentTime.startsWith('00:')) {
+    timeEffectivenessModifier = 10; // Better effectiveness during peak crime hours
+  } else if (deploymentTime.startsWith('08:') || deploymentTime.startsWith('16:')) {
+    timeEffectivenessModifier = 5; // Moderate effectiveness during transition hours
+  }
+  
+  // Deployment hours modifier (more hours can lead to fatigue but better coverage)
+  const hoursEffectivenessModifier = deploymentHours <= 4 ? 5 : 0;
+  
+  // Generate random police allocation data based on units and deployment parameters
   const policeUnits = Array.from({ length: units }, (_, index) => {
     const unitId = `PU-${String(index + 1).padStart(3, '0')}`;
     const estimatedBurglaries = Math.floor(Math.random() * 30) + 5;
-    const effectivenessScore = Math.floor(Math.random() * 40) + 60; // 60-99
+    
+    // Base effectiveness is 60-90, modified by time of day and deployment hours
+    const baseEffectiveness = Math.floor(Math.random() * 30) + 60;
+    const effectivenessScore = Math.min(99, baseEffectiveness + timeEffectivenessModifier + hoursEffectivenessModifier);
+    
     const patrolType = Math.random() > 0.6 ? 'Vehicle' : 'Foot';
     
     return {
@@ -20,6 +41,8 @@ export const getPoliceAllocation = async (units: number): Promise<any[]> => {
       estimated_burglaries: estimatedBurglaries,
       effectiveness_score: effectivenessScore,
       patrol_type: patrolType,
+      deployment_hours: deploymentHours,
+      deployment_time: deploymentTime,
       latitude: 51.5 + (Math.random() * 0.1) - 0.05,
       longitude: -0.12 + (Math.random() * 0.2) - 0.1,
     };

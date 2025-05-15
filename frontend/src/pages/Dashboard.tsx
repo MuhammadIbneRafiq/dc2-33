@@ -739,7 +739,7 @@ const Dashboard = () => {
                   <div className="p-4 bg-green-500/10 text-green-400 rounded-lg border border-green-500/20">
                     <h3 className="font-semibold mb-2">Optimization</h3>
                     <p className="text-sm">
-                      83.3% of high-risk areas covered with current allocation of 100 units and 8 hours deployment.
+                      83.3% of high-risk areas covered with current allocation of 100 units and 2 hours deployment.
                     </p>
                   </div>
                 </div>

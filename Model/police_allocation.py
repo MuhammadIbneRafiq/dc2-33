@@ -12,6 +12,7 @@ from shapely.geometry import Point, Polygon
 import branca.colormap as cm
 from sklearn.preprocessing import MinMaxScaler
 import warnings
+import seaborn as sns
 warnings.filterwarnings('ignore')
 
 # Set paths
@@ -678,9 +679,9 @@ def create_allocation_map(allocation_plans, ward_boundaries, lsoa_boundaries, ls
             location=[lat + (hash(ward['Ward ID']) % 100) / 1000, 
                      lon + (hash(ward['Ward ID']) % 100) / 1000],  # Slight offset for each ward
             radius=30,
-            color='blue',
+            color='#3b70c4',  # Colorblind-friendly blue
             fill=True,
-            fill_color='blue',
+            fill_color='#3b70c4',
             fill_opacity=0.2,
             tooltip=f"Ward: {ward['Ward Name']}<br>Risk: {ward['Average Risk']:.2f}"
         ).add_to(m)
@@ -690,23 +691,23 @@ def create_allocation_map(allocation_plans, ward_boundaries, lsoa_boundaries, ls
             location=[lat + (hash(ward['Ward ID']) % 100) / 1000, 
                      lon + (hash(ward['Ward ID']) % 100) / 1000],
             radius=10,
-            color='red',
+            color='#d55e00',  # Colorblind-friendly vermilion
             fill=True,
-            fill_color='red',
+            fill_color='#d55e00',
             fill_opacity=0.6,
             tooltip=f"Officers: 100<br>Patrol Times: {ward['Patrol Times']}"
         ).add_to(m)
     
-    # Add legend
+    # Add legend with colorblind-friendly palette
     legend_html = '''
     <div style="position: fixed; bottom: 50px; right: 50px; z-index: 1000; background-color: white;
                 border-radius: 5px; padding: 10px; opacity: 0.8; font-family: Arial;">
         <p><strong>Burglary Risk</strong></p>
-        <p><i style="background: #bd0026; width: 15px; height: 15px; display: inline-block;"></i> Very High</p>
-        <p><i style="background: #f03b20; width: 15px; height: 15px; display: inline-block;"></i> High</p>
-        <p><i style="background: #fd8d3c; width: 15px; height: 15px; display: inline-block;"></i> Medium</p>
-        <p><i style="background: #fecc5c; width: 15px; height: 15px; display: inline-block;"></i> Low</p>
-        <p><i style="background: #ffffb2; width: 15px; height: 15px; display: inline-block;"></i> Very Low</p>
+        <p><i style="background: #d55e00; width: 15px; height: 15px; display: inline-block;"></i> Very High</p>
+        <p><i style="background: #e69f00; width: 15px; height: 15px; display: inline-block;"></i> High</p>
+        <p><i style="background: #f0e442; width: 15px; height: 15px; display: inline-block;"></i> Medium</p>
+        <p><i style="background: #009e73; width: 15px; height: 15px; display: inline-block;"></i> Low</p>
+        <p><i style="background: #56b4e9; width: 15px; height: 15px; display: inline-block;"></i> Very Low</p>
     </div>
     '''
     m.get_root().html.add_child(folium.Element(legend_html))
@@ -725,7 +726,7 @@ def create_static_allocation_charts():
     
     # Create bar chart of ward risk levels
     plt.figure(figsize=(15, 8))
-    bars = plt.bar(allocation_data['Ward Name'], allocation_data['Average Risk'])
+    bars = plt.bar(allocation_data['Ward Name'], allocation_data['Average Risk'], color='#0072B2')  # Colorblind-friendly blue
     plt.xticks(rotation=90)
     plt.xlabel('Ward')
     plt.ylabel('Risk Score')
@@ -740,12 +741,166 @@ def create_static_allocation_charts():
     # Create heatmap of patrol times
     plt.figure(figsize=(15, 10))
     patrol_matrix = patrol_data.set_index('Ward').T
-    sns.heatmap(patrol_matrix, cmap='Blues', cbar_kws={'label': 'Officers Allocated'})
+    # Use YlOrBr (Yellow-Orange-Brown) colormap for patrol intensity (colorblind-friendly)
+    sns.heatmap(patrol_matrix, cmap='YlOrBr', cbar_kws={'label': 'Officers Allocated'})
     plt.title('Patrol Time Allocation by Ward')
     plt.tight_layout()
     plt.savefig(os.path.join(OUTPUT_DIR, 'patrol_time_heatmap.png'))
     
     return os.path.join(OUTPUT_DIR, 'ward_risk_scores.png'), os.path.join(OUTPUT_DIR, 'patrol_time_heatmap.png')
+
+def create_radar_chart(ward_risks, temporal_patterns, ward_boundaries, output_dir):
+    """
+    Create a radar chart showing hourly risk patterns for top risk wards
+    """
+    import matplotlib.pyplot as plt
+    import numpy as np
+    import pandas as pd
+    from matplotlib.patches import Circle, RegularPolygon
+    from matplotlib.path import Path
+    from matplotlib.projections.polar import PolarAxes
+    from matplotlib.projections import register_projection
+    from matplotlib.spines import Spine
+    from matplotlib.transforms import Affine2D
+    
+    print("Creating radar chart of risk patterns...")
+    
+    def radar_factory(num_vars, frame='circle'):
+        """Create a radar chart with `num_vars` axes."""
+        # Calculate evenly-spaced axis angles
+        theta = np.linspace(0, 2*np.pi, num_vars, endpoint=False)
+
+        class RadarAxes(PolarAxes):
+            name = 'radar'
+            # Use 1 line segment to connect specified points
+            RESOLUTION = 1
+
+            def __init__(self, *args, **kwargs):
+                super().__init__(*args, **kwargs)
+                # Rotate plot such that the first axis is at the top
+                self.set_theta_zero_location('N')
+
+            def fill(self, *args, closed=True, **kwargs):
+                """Override fill so that line is closed by default"""
+                return super().fill(closed=closed, *args, **kwargs)
+
+            def plot(self, *args, **kwargs):
+                """Override plot so that line is closed by default"""
+                lines = super().plot(*args, **kwargs)
+                for line in lines:
+                    self._close_line(line)
+                return lines
+
+            def _close_line(self, line):
+                x, y = line.get_data()
+                # FIXME: markers at x[0], y[0] get doubled-up
+                if x[0] != x[-1]:
+                    x = np.append(x, x[0])
+                    y = np.append(y, y[0])
+                    line.set_data(x, y)
+
+            def set_varlabels(self, labels):
+                self.set_thetagrids(np.degrees(theta), labels)
+
+            def _gen_axes_patch(self):
+                # The Axes patch must be centered at (0.5, 0.5) and of radius 0.5
+                # in axes coordinates.
+                if frame == 'circle':
+                    return Circle((0.5, 0.5), 0.5)
+                elif frame == 'polygon':
+                    return RegularPolygon((0.5, 0.5), num_vars,
+                                          radius=.5, edgecolor="k")
+                else:
+                    raise ValueError("Unknown value for 'frame': %s" % frame)
+
+            def _gen_axes_spines(self):
+                if frame == 'circle':
+                    return super()._gen_axes_spines()
+                elif frame == 'polygon':
+                    # spine_type must be 'left'/'right'/'top'/'bottom'/'circle'.
+                    spine = Spine(axes=self,
+                                  spine_type='circle',
+                                  path=Path.unit_regular_polygon(num_vars))
+                    # unit_regular_polygon gives a polygon of radius 1 centered at
+                    # (0, 0) but we want a polygon of radius 0.5 centered at (0.5,
+                    # 0.5) in axes coordinates.
+                    spine.set_transform(Affine2D().scale(.5).translate(.5, .5)
+                                        + self.transAxes)
+                    return {'polar': spine}
+                else:
+                    raise ValueError("Unknown value for 'frame': %s" % frame)
+
+        register_projection(RadarAxes)
+        return theta
+
+    # Get top 5 wards by risk score
+    top_wards = sorted(ward_risks.items(), key=lambda x: x[1]['avg_risk'], reverse=True)[:5]
+    
+    # Get ward names
+    ward_names = []
+    for ward_id, risk_data in top_wards:
+        ward_name = ward_id
+        for _, ward in ward_boundaries.iterrows():
+            if ward['ward_id'] == ward_id:
+                ward_name = ward['ward_name']
+                break
+        ward_names.append(ward_name)
+    
+    # Calculate hourly risk patterns for each ward (for a Monday)
+    target_date = pd.Timestamp('2023-01-02')  # A Monday
+    hourly_risk_data = []
+    
+    for ward_id, risk_data in top_wards:
+        hourly_risks = calculate_hourly_risks(risk_data['lsoas'], temporal_patterns, target_date)
+        # Get risk values for each hour
+        hourly_values = [hourly_risks[hour] for hour in range(24)]
+        hourly_risk_data.append(hourly_values)
+    
+    # Set up data for radar chart
+    data = [
+        ['Midnight', '1 AM', '2 AM', '3 AM', '4 AM', '5 AM', 
+         '6 AM', '7 AM', '8 AM', '9 AM', '10 AM', '11 AM',
+         'Noon', '1 PM', '2 PM', '3 PM', '4 PM', '5 PM',
+         '6 PM', '7 PM', '8 PM', '9 PM', '10 PM', '11 PM'],
+    ]
+    
+    for i, values in enumerate(hourly_risk_data):
+        data.append(ward_names[i])
+        data.append(values)
+    
+    # Set up radar chart
+    N = 24  # Number of hours
+    theta = radar_factory(N, frame='polygon')
+    
+    # Create the figure
+    fig, ax = plt.subplots(figsize=(10, 10), subplot_kw=dict(projection='radar'))
+    
+    # Plot each ward's risk pattern
+    colorblind_friendly = ['#0072B2', '#D55E00', '#009E73', '#CC79A7', '#E69F00']
+    
+    for i, (name, values) in enumerate(zip(ward_names, hourly_risk_data)):
+        # Scale the data to fit within [0, 1] range
+        scaled_values = np.array(values) / max(values)
+        line = ax.plot(theta, scaled_values, color=colorblind_friendly[i % len(colorblind_friendly)])
+        ax.fill(theta, scaled_values, alpha=0.1, color=colorblind_friendly[i % len(colorblind_friendly)])
+    
+    # Set labels and customize
+    ax.set_varlabels(data[0])
+    ax.set_rgrids([0.2, 0.4, 0.6, 0.8], angle=0)
+    ax.set_title('Hourly Burglary Risk Patterns by Ward', 
+                size=20, y=1.05, fontweight='bold')
+    
+    # Add legend
+    ax.legend(ward_names, loc=(0.9, 0.9), labelspacing=0.1)
+    
+    # Save the figure
+    plt.tight_layout()
+    output_file = os.path.join(output_dir, 'hourly_risk_radar.png')
+    plt.savefig(output_file, dpi=300, bbox_inches='tight')
+    plt.close()
+    
+    print(f"Radar chart saved to {output_file}")
+    return output_file
 
 # Main function
 def main():
@@ -832,10 +987,13 @@ def main():
         # Create interactive allocation map
         map_path = create_allocation_map(allocation_plans, ward_boundaries, lsoa_boundaries, lsoa_ward_mapping, risk_predictions)
         
+        # Create radar chart of risk patterns
+        radar_path = create_radar_chart(ward_risks, temporal_patterns, ward_boundaries, OUTPUT_DIR)
+        
         print("\nAllocation planning completed successfully!")
         print(f"Output files saved to {OUTPUT_DIR}")
         print(f"Interactive map: {map_path}")
-        # Add visualization with static charts
+        print(f"Radar chart: {radar_path}")
         
         # Return allocation data
         return {
@@ -843,7 +1001,8 @@ def main():
             'ward_risks': ward_risks,
             'allocation_summary': allocation_summary,
             'patrol_times': patrol_times,
-            'map_path': map_path
+            'map_path': map_path,
+            'radar_path': radar_path
         }
 
     except Exception as e:
