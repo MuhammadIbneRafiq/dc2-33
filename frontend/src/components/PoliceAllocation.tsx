@@ -1,15 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { getPoliceAllocation } from '../api/backendService';
+// import { getPoliceAllocation } from '../api/backendService';
 
 interface PoliceAllocationProps {
-  visible: boolean;
+  visible?: boolean;
+  showPoliceAllocation?: boolean;
   onToggle?: () => void;
+  onTogglePoliceAllocation?: () => void;
+  onPoliceDataLoaded?: (data: any[]) => void;
+  onMetricsUpdate?: (metrics: any) => void;
 }
 
 const PoliceAllocation: React.FC<PoliceAllocationProps> = ({ 
   visible,
-  onToggle
+  showPoliceAllocation,
+  onToggle,
+  onTogglePoliceAllocation,
+  onPoliceDataLoaded,
+  onMetricsUpdate
 }) => {
   const [policeUnits, setPoliceUnits] = useState(100);
   const [deploymentHours, setDeploymentHours] = useState(2);
@@ -27,17 +35,37 @@ const PoliceAllocation: React.FC<PoliceAllocationProps> = ({
     }
   };
   
-  if (!visible) return null;
+  // Use showPoliceAllocation if provided, otherwise fallback to visible
+  const isVisible = typeof showPoliceAllocation === 'boolean' ? showPoliceAllocation : visible;
   
-  // Load police allocation data
+  if (!isVisible) return null;
+  
+  // Replace getPoliceAllocation with a local mock function
+  const mockPoliceAllocation = async (units = 100, deploymentHours = 2, deploymentTime = '08:00') => {
+    // Return an array of mock police units
+    return Array.from({ length: units }, (_, i) => ({
+      unit_id: `PU-${String(i + 1).padStart(3, '0')}`,
+      estimated_burglaries: Math.floor(Math.random() * 30) + 5,
+      effectiveness_score: Math.floor(Math.random() * 30) + 60,
+      patrol_type: Math.random() > 0.6 ? 'Vehicle' : 'Foot',
+      deployment_hours: deploymentHours,
+      deployment_time: deploymentTime,
+      latitude: 51.5 + (Math.random() * 0.1) - 0.05,
+      longitude: -0.12 + (Math.random() * 0.2) - 0.1,
+    }));
+  };
+  
+  // In loadPoliceData, replace getPoliceAllocation with mockPoliceAllocation
   const loadPoliceData = async (units = 100) => {
     try {
       setIsLoading(true);
       setError(null);
-      
-      const data = await getPoliceAllocation(units, deploymentHours, deploymentTime);
+      // const data = await getPoliceAllocation(units, deploymentHours, deploymentTime);
+      const data = await mockPoliceAllocation(units, deploymentHours, deploymentTime);
       setPoliceData(data);
-      
+      if (onPoliceDataLoaded) {
+        onPoliceDataLoaded(data);
+      }
     } catch (error) {
       console.error('Error loading police data:', error);
       setError('Failed to load resource allocation data. Please try again.');
@@ -75,6 +103,10 @@ const PoliceAllocation: React.FC<PoliceAllocationProps> = ({
       vehiclePatrols,
       footPatrols
     };
+    
+    if (onMetricsUpdate) {
+      onMetricsUpdate(metrics);
+    }
     
     return metrics;
   };

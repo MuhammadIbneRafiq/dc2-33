@@ -2,18 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import MapComponent from '@/components/map/MapComponent';
 import { api } from '@/api/api';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import LoadingScreen from '@/components/ui/loading-screen';
 import { 
-  LayoutDashboard, 
-  Map, 
   Shield, 
-  BarChart3, 
   AlertTriangle,
-  ChevronRight,
-  ArrowUp,
   ArrowDown,
   TrendingUp,
   FileBarChart,

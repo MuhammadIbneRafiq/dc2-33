@@ -1,7 +1,6 @@
-
 import { useState, useEffect, useRef, useCallback } from 'react';
 import mapboxgl from 'mapbox-gl';
-import { getCrimeForecastData } from '../api/backendService';
+// import { getCrimeForecastData } from '../api/backendService';
 import { 
   crimeDataToGeoJSON, 
   highRiskPointsToGeoJSON, 
@@ -80,8 +79,8 @@ export const useMapbox = (
   useEffect(() => {
     const loadCrimeData = async () => {
       try {
-        const data = await getCrimeForecastData();
-        setCrimeData(data);
+        // const data = await getCrimeForecastData();
+        setCrimeData(await mockCrimeForecastData());
       } catch (error) {
         console.error("Failed to load crime forecast data:", error);
       }
@@ -191,4 +190,24 @@ export const useMapbox = (
     handleTokenSubmit,
     needsToken: !tokenSubmitted && DEMO_MAPBOX_TOKEN.includes('demo-api-key')
   };
+};
+
+// Add a mockCrimeForecastData function to simulate data
+const mockCrimeForecastData = async () => {
+  return Array.from({ length: 50 }, () => {
+    const latitude = 51.5 + (Math.random() * 0.2) - 0.1;
+    const longitude = -0.12 + (Math.random() * 0.2) - 0.1;
+    const intensity = Math.random();
+    const burglary_risk = Math.floor(Math.random() * 100) + 1;
+    const lsoa_code = `E${String(Math.floor(Math.random() * 90000) + 10000).padStart(5, '0')}`;
+    return {
+      latitude,
+      longitude,
+      intensity,
+      burglary_risk,
+      lsoa_code,
+      trend: Math.random() > 0.5 ? 'up' : 'down',
+      last_month_incidents: Math.floor(Math.random() * 30),
+    };
+  });
 };

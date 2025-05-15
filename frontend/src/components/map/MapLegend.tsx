@@ -7,10 +7,12 @@ interface MapLegendItem {
 
 interface MapLegendProps {
   position?: 'topright' | 'topleft' | 'bottomright' | 'bottomleft';
+  showPoliceAllocation?: boolean;
 }
 
 const MapLegend: React.FC<MapLegendProps> = ({ 
-  position = 'bottomright'
+  position = 'bottomright',
+  showPoliceAllocation
 }) => {
   return (
     <div className={`absolute ${position === 'bottomright' ? 'bottom-5 right-5' : 

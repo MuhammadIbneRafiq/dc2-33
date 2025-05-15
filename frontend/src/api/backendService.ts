@@ -159,3 +159,5 @@ export const getCrimeForecastData = async () => {
   
   return hotspots;
 };
+
+// All functions below are mock implementations and do not require a backend.

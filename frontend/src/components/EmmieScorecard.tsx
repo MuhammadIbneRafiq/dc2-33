@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { getEmmieScores, getLsoaWellbeingData } from '../api/backendService';
+// import { getLsoaWellbeingData } from '../api/backendService';
 
 interface EmmieScoreCardProps {
   selectedLSOA: string | null;
@@ -92,7 +92,8 @@ const EmmieScorecard: React.FC<EmmieScoreCardProps> = ({ selectedLSOA }) => {
       
       try {
         setIsLoading(true);
-        const wellbeingData = await getLsoaWellbeingData(selectedLSOA);
+        // Replace getLsoaWellbeingData with a local mock function
+        const wellbeingData = await mockLsoaWellbeingData(selectedLSOA);
         
         if (wellbeingData) {
           // Process wellbeing data into the format we need
@@ -162,6 +163,22 @@ const EmmieScorecard: React.FC<EmmieScoreCardProps> = ({ selectedLSOA }) => {
         {labels[level as keyof typeof labels]}
       </span>
     );
+  };
+
+  // Replace getLsoaWellbeingData with a local mock function
+  const mockLsoaWellbeingData = async (lsoaCode: string) => {
+    return {
+      lsoa_code: lsoaCode,
+      imd_score: Math.random() * 10,
+      housing_score: Math.floor(Math.random() * 50) + 20,
+      income_score: Math.random() * 0.4,
+      crime_score: Math.random(),
+      employment_score: Math.random(),
+      education_score: Math.random(),
+      health_score: Math.random(),
+      access_services_score: Math.random(),
+      living_environment_score: Math.random(),
+    };
   };
 
   if (isLoading) {

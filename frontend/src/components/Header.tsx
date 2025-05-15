@@ -197,7 +197,6 @@ const Header: React.FC<HeaderProps> = ({ onOpenTutorial, onDateRangeChange }) =>
                 onValueChange={handleRangeChange}
                 className="my-4"
                 minStepsBetweenThumbs={1}
-                range
               />
               
               <div className="flex justify-between text-xs text-gray-400 mt-2">

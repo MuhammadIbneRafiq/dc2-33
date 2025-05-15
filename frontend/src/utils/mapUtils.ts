@@ -1,4 +1,3 @@
-
 import mapboxgl from 'mapbox-gl';
 
 // Define GeoJSON types to match mapbox-gl's expected format
