@@ -340,12 +340,12 @@ def generate_predictions(model, data, lsoa_features):
     results['risk_score'] = ((results['predicted_risk'] - min_risk) / (max_risk - min_risk)) * 100
     
     # Save predictions to CSV
-    results.to_csv(os.path.join(RESULTS_DIR, 'risk_predictions.csv'), index=False)
+    results.to_csv(os.path.join(RESULTS_DIR, 'risk_predictions_GCN.csv'), index=False)
     print(f"Prediction results saved at {RESULTS_DIR}")
     return results
 
 # Create risk map visualization
-def create_risk_map(boundaries, risk_data, output_file='london_burglary_risk_map.png'):
+def create_risk_map(boundaries, risk_data, output_file='london_burglary_risk_map_GCN.png'):
     print("Creating burglary risk heatmap...")
     
     # Merge boundaries with risk predictions
@@ -391,7 +391,7 @@ def create_risk_map(boundaries, risk_data, output_file='london_burglary_risk_map
     return risk_map
 
 # Visualize borough-level risk
-def visualize_borough_risk(risk_map, output_file='borough_risk_summary.png'):
+def visualize_borough_risk(risk_map, output_file='borough_risk_summary_GCN.png'):
     print("Creating borough-level risk summary...")
     
     # Calculate average risk by borough
@@ -451,7 +451,7 @@ def main():
         
         # Train GCN model - using fewer epochs for demo
         model = GCNModel(num_features=len(feature_cols))
-        losses = train_gcn_model(model, data, epochs=50)
+        losses = train_gcn_model(model, data, epochs=150)
         
         # Generate predictions and visualizations
         risk_predictions = generate_predictions(model, data, lsoa_features)
@@ -463,10 +463,11 @@ def main():
         
         # Enhanced loss visualization
         plt.figure(figsize=(10, 5))
-        plt.plot(losses)
+        plt.plot(losses, color='blue')
         plt.title('Training Loss for GCN Model')
         plt.xlabel('Epochs')
         plt.ylabel('Mean Squared Error Loss')
+        plt.grid(True, linestyle='--', alpha=0.7)  
         plt.tight_layout()
         plt.savefig(os.path.join(RESULTS_DIR, 'gcn_loss.png'))
         plt.close()
@@ -476,13 +477,6 @@ def main():
             'risk_predictions': risk_predictions,
             'risk_map': risk_map,
             'training_losses': losses
-        }
-        
-        # Return results as demonstration artifact
-        return {
-            'model': model,
-            'risk_predictions': risk_predictions,
-            'risk_map': risk_map
         }
         
     except Exception as e:
