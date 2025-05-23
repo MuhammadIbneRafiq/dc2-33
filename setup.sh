@@ -24,20 +24,14 @@ fi
 echo -e "${GREEN}Setting up backend...${NC}"
 cd backend || exit 1
 
-# Create virtual environment if it doesn't exist
-if [ ! -d "venv" ]; then
-    echo "Creating Python virtual environment..."
-    python -m venv venv
-fi
+# Create and activate a virtual environment
+echo "Creating virtual environment..."
+python -m venv venv
 
-# Activate virtual environment
-if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" ]]; then
-    source venv/Scripts/activate
-else
-    source venv/bin/activate
-fi
+# Activate the virtual environment (Unix-based systems)
+source venv/bin/activate
 
-# Install Python dependencies
+# Install dependencies
 echo "Installing Python dependencies..."
 pip install -r requirements.txt
 
@@ -48,12 +42,26 @@ cd ..
 echo -e "${GREEN}Setting up frontend...${NC}"
 cd frontend || exit 1
 
-# Install Node.js dependencies
+# Install node modules
 echo "Installing Node.js dependencies..."
 npm install
 
 # Return to root directory
 cd ..
+
+# Start the servers in separate terminals
+echo "Starting backend server..."
+cd backend
+python app.py &
+
+# Wait for the backend to start
+sleep 3
+
+echo "Starting frontend server..."
+cd frontend
+npm run dev
+
+# To stop both servers, press Ctrl+C
 
 echo -e "${GREEN}Setup complete!${NC}"
 echo -e "${BLUE}To start the backend:${NC}"
