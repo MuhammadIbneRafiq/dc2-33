@@ -68,8 +68,8 @@ def load_borough_boundaries():
 
 # Load and preprocess crime data
 def load_crime_data():
-    print("Loading and preprocessing burglary data...")
-    burglary_file = os.path.join(DATA_DIR, 'cleaned_spatial_monthly_burglary_data/2010-12_burglary_cleaned_spatial.csv')
+    print("Loading and preprocessing burglary data...") 
+    burglary_file = os.path.join(DATA_DIR, 'data\cleaned_spatial_monthly_data\cleaned_monthly_burglary_data\2017-07_burglary_cleaned.csv')
     burglary_data = pd.read_csv(burglary_file)
     
     # Convert date and extract time components
