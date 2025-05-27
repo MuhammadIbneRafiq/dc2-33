@@ -550,8 +550,9 @@ def evaluate_model(model, test_data):
         plt.xlabel('Actual Burglary Risk')
         plt.ylabel('Predicted Burglary Risk')
         plt.title('Predicted vs Actual Burglary Risk')
+        plt.grid(True, linestyle='--', alpha=0.7)
         plt.tight_layout()
-        plt.savefig(os.path.join(RESULTS_DIR, 'predicted_vs_actual.png'))
+        plt.savefig(os.path.join(RESULTS_DIR, 'predicted_vs_actual_LSTM.png'))
         plt.close()
         
         # Residual plot
@@ -562,8 +563,9 @@ def evaluate_model(model, test_data):
         plt.xlabel('Predicted Burglary Risk')
         plt.ylabel('Residuals')
         plt.title('Residual Plot')
+        plt.grid(True, linestyle='--', alpha=0.7)
         plt.tight_layout()
-        plt.savefig(os.path.join(RESULTS_DIR, 'residual_plot.png'))
+        plt.savefig(os.path.join(RESULTS_DIR, 'residual_plot_LSTM.png'))
         plt.close()
         
         return {
@@ -645,6 +647,7 @@ def train_lstm_gcn_model(model, data, test_size=0.2, epochs=150):
         if (epoch + 1) % 20 == 0:
             print(f"Epoch {epoch+1}/{epochs}, Train Loss: {train_loss.item():.4f}, Val Loss: {val_loss.item():.4f}")
     
+    val_out.to_csv(os.path.join(RESULTS_DIR, 'val_out.csv'), index=False)
     print(f"Final Training Loss: {train_loss.item():.4f}")
     print(f"Final Validation Loss: {val_loss.item():.4f}")
     
@@ -786,6 +789,9 @@ def create_risk_map(boundaries, risk_data, output_file='london_burglary_risk_map
                "Data period: 2010-2025", 
                ha="left", fontsize=10)
     
+    plt.grid(True, linestyle='--', alpha=0.7)
+    plt.tight_layout()
+    
     # Save the figure
     plt.savefig(os.path.join(RESULTS_DIR, output_file), dpi=300, bbox_inches='tight')
     plt.close()
@@ -820,6 +826,7 @@ def visualize_borough_risk(risk_map, output_file='borough_risk_summary_LSTM.png'
                f'{borough_risk.iloc[i]["risk_score"]:.1f}',
                ha='center', va='bottom', fontsize=9)
     
+    plt.grid(True, linestyle='--', alpha=0.7)
     plt.tight_layout()
     plt.savefig(os.path.join(RESULTS_DIR, output_file), dpi=300, bbox_inches='tight')
     plt.close()
@@ -854,6 +861,7 @@ def visualize_borough_risk(risk_map, output_file='borough_risk_summary_LSTM.png'
                f'{borough_risk.iloc[i]["risk_score"]:.1f}',
                ha='center', va='bottom', fontsize=9)
     
+    plt.grid(True, linestyle='--', alpha=0.7)
     plt.tight_layout()
     plt.savefig(os.path.join(RESULTS_DIR, output_file), dpi=300, bbox_inches='tight')
     plt.close()
@@ -939,12 +947,13 @@ def main():
         
         # Visualize training and validation losses
         plt.figure(figsize=(10, 5))
-        plt.plot(training_results['train_losses'], label='Training Loss')
-        plt.plot(training_results['val_losses'], label='Validation Loss')
+        plt.plot(training_results['train_losses'], label='Training Loss', color='blue')
+        plt.plot(training_results['val_losses'], label='Validation Loss', color='red')
         plt.title('Training and Validation Losses')
         plt.xlabel('Epochs')
         plt.ylabel('Mean Squared Error Loss')
         plt.legend()
+        plt.grid(True, linestyle='--', alpha=0.7)
         plt.tight_layout()
         plt.savefig(os.path.join(RESULTS_DIR, 'lstm_gcn_losses.png'))
         plt.close()

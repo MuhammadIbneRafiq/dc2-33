@@ -1,0 +1,575 @@
+Type,Date,Latitude,Longitude,Gender,Age range,Legislation,Object of search,Outcome,Outcome linked to object of search,Removal of more than just outer clothing,datetime
+Person search,2018-02-01T16:30:00+00:00,51.512598,-0.084967,Female,over 34,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,Nothing found - no further action,False,False,2018-02-01 16:30:00+00:00
+Person search,2018-02-01T22:17:00+00:00,51.518864,-0.097562,Male,25-34,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Suspect arrested,True,False,2018-02-01 22:17:00+00:00
+Person and Vehicle search,2018-02-01T23:00:00+00:00,51.516078,-0.08498,Male,25-34,Police and Criminal Evidence Act 1984 (section 1),Evidence of offences under the Act,Nothing found - no further action,False,False,2018-02-01 23:00:00+00:00
+Person search,2018-02-02T00:00:00+00:00,51.517032,-0.089451,Female,25-34,Police and Criminal Evidence Act 1984 (section 1),Anything to threaten or harm anyone,Nothing found - no further action,False,False,2018-02-02 00:00:00+00:00
+Person search,2018-02-02T00:28:00+00:00,51.516814,-0.08162,Male,25-34,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Nothing found - no further action,False,False,2018-02-02 00:28:00+00:00
+Person and Vehicle search,2018-02-02T00:32:00+00:00,51.513606,-0.083959,Male,over 34,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Nothing found - no further action,False,False,2018-02-02 00:32:00+00:00
+Person search,2018-02-06T13:00:00+00:00,51.516032,-0.104281,Male,over 34,Police and Criminal Evidence Act 1984 (section 1),Article for use in theft,Suspect arrested,False,,2018-02-06 13:00:00+00:00
+Person search,2018-02-06T14:30:00+00:00,51.522965,-0.098717,Male,18-24,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Nothing found - no further action,False,False,2018-02-06 14:30:00+00:00
+Person search,2018-02-06T20:41:00+00:00,51.52029,-0.078591,Male,18-24,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Nothing found - no further action,False,False,2018-02-06 20:41:00+00:00
+Person search,2018-02-06T20:53:00+00:00,51.520985,-0.078749,Male,18-24,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Offender given drugs possession warning,True,False,2018-02-06 20:53:00+00:00
+Person search,2018-02-07T08:50:00+00:00,51.518433,-0.078856,Male,18-24,Police and Criminal Evidence Act 1984 (section 1),Evidence of offences under the Act,Suspect arrested,True,False,2018-02-07 08:50:00+00:00
+Person and Vehicle search,2018-02-07T14:10:00+00:00,51.508066,-0.08778,Male,10-17,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Suspect arrested,True,False,2018-02-07 14:10:00+00:00
+Person search,2018-02-08T14:35:00+00:00,51.513606,-0.083959,Male,25-34,Police and Criminal Evidence Act 1984 (section 1),Evidence of offences under the Act,Suspect arrested,False,False,2018-02-08 14:35:00+00:00
+Person search,2018-02-08T14:58:00+00:00,51.506255,-0.074901,Female,over 34,Police and Criminal Evidence Act 1984 (section 1),Article for use in theft,Nothing found - no further action,False,False,2018-02-08 14:58:00+00:00
+Person search,2018-02-08T14:58:00+00:00,51.506255,-0.074901,Female,18-24,Police and Criminal Evidence Act 1984 (section 1),Article for use in theft,Nothing found - no further action,False,False,2018-02-08 14:58:00+00:00
+Person search,2018-02-08T15:00:00+00:00,51.506255,-0.074901,Male,over 34,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,Nothing found - no further action,False,False,2018-02-08 15:00:00+00:00
+Person search,2018-02-08T15:00:00+00:00,51.506255,-0.074901,Male,18-24,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,Nothing found - no further action,True,False,2018-02-08 15:00:00+00:00
+Person search,2018-02-08T17:53:00+00:00,51.511625,-0.081549,Male,18-24,Police and Criminal Evidence Act 1984 (section 1),Article for use in theft,Nothing found - no further action,False,False,2018-02-08 17:53:00+00:00
+Person search,2018-02-08T18:02:00+00:00,51.511625,-0.081549,Male,25-34,Police and Criminal Evidence Act 1984 (section 1),Article for use in theft,Nothing found - no further action,False,False,2018-02-08 18:02:00+00:00
+Person search,2018-02-09T14:15:00+00:00,51.514203,-0.094628,Male,over 34,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,Local resolution,True,False,2018-02-09 14:15:00+00:00
+Person search,2018-02-09T14:15:00+00:00,51.514203,-0.094628,Female,25-34,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,Local resolution,True,False,2018-02-09 14:15:00+00:00
+Person and Vehicle search,2018-02-09T23:50:00+00:00,51.511794,-0.088042,Male,18-24,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Suspect arrested,True,False,2018-02-09 23:50:00+00:00
+Person search,2018-02-10T00:27:00+00:00,51.512139,-0.093821,Male,18-24,Police and Criminal Evidence Act 1984 (section 1),Anything to threaten or harm anyone,Nothing found - no further action,False,False,2018-02-10 00:27:00+00:00
+Person search,2018-02-10T00:27:00+00:00,51.512139,-0.093821,Male,25-34,Police and Criminal Evidence Act 1984 (section 1),Anything to threaten or harm anyone,Nothing found - no further action,False,False,2018-02-10 00:27:00+00:00
+Person and Vehicle search,2018-02-11T06:00:00+00:00,51.517032,-0.089451,Male,25-34,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,Suspect summonsed to court,False,,2018-02-11 06:00:00+00:00
+Person and Vehicle search,2018-02-12T01:35:00+00:00,51.520985,-0.078749,Male,25-34,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Nothing found - no further action,False,False,2018-02-12 01:35:00+00:00
+Person search,2018-02-12T02:30:00+00:00,51.516814,-0.08162,Male,over 34,Police and Criminal Evidence Act 1984 (section 1),Article for use in theft,Nothing found - no further action,False,False,2018-02-12 02:30:00+00:00
+Person and Vehicle search,2018-02-12T11:02:00+00:00,51.513885,-0.102741,Male,18-24,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Offender given drugs possession warning,True,False,2018-02-12 11:02:00+00:00
+Person search,2018-02-12T20:20:00+00:00,51.519017,-0.099818,Male,over 34,Police and Criminal Evidence Act 1984 (section 1),Article for use in theft,Suspect arrested,True,False,2018-02-12 20:20:00+00:00
+Person search,2018-02-13T01:02:00+00:00,51.516814,-0.08162,Male,over 34,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,Nothing found - no further action,False,False,2018-02-13 01:02:00+00:00
+Person and Vehicle search,2018-02-13T23:00:00+00:00,51.484424,-0.094358,Male,18-24,Firearms Act 1968 (section 47),Firearms,Suspect arrested,True,False,2018-02-13 23:00:00+00:00
+Person search,2018-02-15T11:20:00+00:00,51.512598,-0.084967,Male,over 34,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,Suspect arrested,,,2018-02-15 11:20:00+00:00
+Person search,2018-02-15T18:00:00+00:00,51.49915,-0.133797,Male,10-17,Criminal Justice and Public Order Act 1994 (section 60),Evidence of offences under the Act,Nothing found - no further action,False,False,2018-02-15 18:00:00+00:00
+Person search,2018-02-15T18:26:00+00:00,51.54187,-0.002028,Male,10-17,Criminal Justice and Public Order Act 1994 (section 60),Evidence of offences under the Act,Nothing found - no further action,,False,2018-02-15 18:26:00+00:00
+Person search,2018-02-16T02:12:00+00:00,51.513171,-0.077694,Male,25-34,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,Nothing found - no further action,False,False,2018-02-16 02:12:00+00:00
+Person search,2018-02-17T13:04:00+00:00,51.506255,-0.074901,Female,25-34,Police and Criminal Evidence Act 1984 (section 1),Article for use in theft,Nothing found - no further action,False,False,2018-02-17 13:04:00+00:00
+Person search,2018-02-18T14:35:00+00:00,51.500195,-0.073327,Male,25-34,Police and Criminal Evidence Act 1984 (section 1),Article for use in theft,Nothing found - no further action,False,False,2018-02-18 14:35:00+00:00
+Person search,2018-02-18T22:14:00+00:00,51.513007,-0.081938,Male,18-24,Police and Criminal Evidence Act 1984 (section 1),Article for use in theft,Nothing found - no further action,,False,2018-02-18 22:14:00+00:00
+Person search,2018-02-18T22:30:00+00:00,51.513463,-0.082913,Male,18-24,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,Nothing found - no further action,False,False,2018-02-18 22:30:00+00:00
+Person and Vehicle search,2018-02-18T23:30:00+00:00,51.518017,-0.075991,Male,25-34,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Nothing found - no further action,False,False,2018-02-18 23:30:00+00:00
+Person search,2018-02-19T18:00:00+00:00,51.517526,-0.108283,Male,over 34,Police and Criminal Evidence Act 1984 (section 1),Article for use in theft,Local resolution,False,False,2018-02-19 18:00:00+00:00
+Person search,2018-02-19T22:40:00+00:00,51.528433,-0.027399,Male,18-24,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Nothing found - no further action,False,False,2018-02-19 22:40:00+00:00
+Person search,2018-02-20T14:00:00+00:00,51.517244,-0.080376,Male,18-24,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,Nothing found - no further action,True,,2018-02-20 14:00:00+00:00
+Person search,2018-02-20T15:45:00+00:00,51.514203,-0.094628,Male,10-17,Police and Criminal Evidence Act 1984 (section 1),Article for use in theft,Suspect arrested,True,False,2018-02-20 15:45:00+00:00
+Person and Vehicle search,2018-02-21T14:10:00+00:00,51.509848,-0.104494,Male,25-34,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Suspect arrested,True,False,2018-02-21 14:10:00+00:00
+Person and Vehicle search,2018-02-21T17:00:00+00:00,51.504245,-0.07624,Male,18-24,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Nothing found - no further action,False,False,2018-02-21 17:00:00+00:00
+Person search,2018-02-22T15:22:00+00:00,51.510477,-0.086728,Other,,Police and Criminal Evidence Act 1984 (section 1),Evidence of offences under the Act,Nothing found - no further action,False,False,2018-02-22 15:22:00+00:00
+Person search,2018-02-23T11:15:00+00:00,51.512388,-0.088075,Male,over 34,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,Nothing found - no further action,False,False,2018-02-23 11:15:00+00:00
+Person search,2018-02-24T00:43:00+00:00,51.515031,-0.100748,Male,25-34,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Nothing found - no further action,False,False,2018-02-24 00:43:00+00:00
+Person search,2018-02-24T00:48:00+00:00,51.51445,-0.100974,Male,25-34,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Offender given drugs possession warning,True,False,2018-02-24 00:48:00+00:00
+Person search,2018-02-24T01:00:00+00:00,51.515031,-0.100748,Male,25-34,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Nothing found - no further action,False,False,2018-02-24 01:00:00+00:00
+Person search,2018-02-24T10:45:00+00:00,51.515381,-0.112422,Male,over 34,Police and Criminal Evidence Act 1984 (section 1),Evidence of offences under the Act,Nothing found - no further action,False,False,2018-02-24 10:45:00+00:00
+Person search,2018-02-25T00:10:00+00:00,51.51868,-0.085173,Male,25-34,Police and Criminal Evidence Act 1984 (section 1),Anything to threaten or harm anyone,Nothing found - no further action,False,False,2018-02-25 00:10:00+00:00
+Person search,2018-02-25T08:42:00+00:00,51.517576,-0.079786,Male,18-24,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Nothing found - no further action,False,False,2018-02-25 08:42:00+00:00
+Person search,2018-02-26T14:15:00+00:00,51.506255,-0.074901,Male,25-34,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,Nothing found - no further action,False,False,2018-02-26 14:15:00+00:00
+Person search,2018-02-27T09:12:00+00:00,51.513524,-0.090506,Male,25-34,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Offender given drugs possession warning,True,False,2018-02-27 09:12:00+00:00
+Person search,2018-02-27T17:50:00+00:00,51.514158,-0.100179,Male,over 34,Police and Criminal Evidence Act 1984 (section 1),Anything to threaten or harm anyone,Nothing found - no further action,,False,2018-02-27 17:50:00+00:00
+Person search,2018-02-27T21:00:00+00:00,51.517244,-0.080376,Male,over 34,Police and Criminal Evidence Act 1984 (section 1),Article for use in theft,Nothing found - no further action,False,False,2018-02-27 21:00:00+00:00
+Person search,2018-02-28T20:00:00+00:00,51.511445,-0.07608,Male,over 34,Police and Criminal Evidence Act 1984 (section 1),Article for use in theft,Nothing found - no further action,False,False,2018-02-28 20:00:00+00:00
+Vehicle search,2018-02-01T02:05:00+00:00,51.600685,-0.003794,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Arrest,,,2018-02-01 02:05:00+00:00
+Person and Vehicle search,2018-02-01T02:30:00+00:00,51.5446,0.013971,Male,,Criminal Justice and Public Order Act 1994 (section 60),Anything to threaten or harm anyone,A no further action disposal,,,2018-02-01 02:30:00+00:00
+Vehicle search,2018-02-01T02:33:00+00:00,51.582995,-0.262608,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Arrest,,,2018-02-01 02:33:00+00:00
+Person search,2018-02-01T04:28:00+00:00,51.495351,-0.140896,Male,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,Arrest,,,2018-02-01 04:28:00+00:00
+Person search,2018-02-01T11:30:00+00:00,51.491683,-0.087846,Male,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,A no further action disposal,,,2018-02-01 11:30:00+00:00
+Vehicle search,2018-02-01T12:10:00+00:00,51.376336,-0.098476,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-01 12:10:00+00:00
+Person search,2018-02-01T14:30:00+00:00,51.508335,-0.154533,Male,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,Arrest,,,2018-02-01 14:30:00+00:00
+Vehicle search,2018-02-01T14:30:00+00:00,51.400467,-0.086535,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-01 14:30:00+00:00
+Vehicle search,2018-02-01T15:40:00+00:00,51.60801,-0.081215,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-01 15:40:00+00:00
+Person search,2018-02-01T15:42:00+00:00,51.581102,-0.033274,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-01 15:42:00+00:00
+Person search,2018-02-01T15:51:00+00:00,51.513224,0.031755,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-01 15:51:00+00:00
+Person search,2018-02-01T16:55:00+00:00,51.582047,-0.033868,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-01 16:55:00+00:00
+Vehicle search,2018-02-02T01:00:00+00:00,51.508337,-0.14776,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-02 01:00:00+00:00
+Person search,2018-02-02T04:15:00+00:00,51.483743,-0.219848,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-02 04:15:00+00:00
+Person search,2018-02-02T12:40:00+00:00,51.491428,-0.184415,Male,,Police and Criminal Evidence Act 1984 (section 1),Evidence of offences under the Act,A no further action disposal,,,2018-02-02 12:40:00+00:00
+Person and Vehicle search,2018-02-02T13:00:00+00:00,51.381412,-0.112608,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-02 13:00:00+00:00
+Person search,2018-02-02T14:55:00+00:00,51.519227,-0.167858,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-02 14:55:00+00:00
+Person search,2018-02-02T16:17:00+00:00,51.532052,0.016762,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-02 16:17:00+00:00
+Vehicle search,2018-02-02T17:55:00+00:00,51.531836,-0.105672,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-02 17:55:00+00:00
+Person search,2018-02-02T19:34:00+00:00,51.481665,-0.173022,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-02 19:34:00+00:00
+Person search,2018-02-02T21:15:00+00:00,51.500269,-0.196742,Male,,Police and Criminal Evidence Act 1984 (section 1),Articles for use in criminal damage,Arrest,,,2018-02-02 21:15:00+00:00
+Person search,2018-02-02T22:22:00+00:00,51.369168,-0.11903,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-02 22:22:00+00:00
+Person search,2018-02-02T23:20:00+00:00,51.588894,-0.110142,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-02 23:20:00+00:00
+Person search,2018-02-02T23:30:00+00:00,51.521003,0.196807,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-02 23:30:00+00:00
+Person and Vehicle search,2018-02-03T00:01:00+00:00,51.466208,-0.180578,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-03 00:01:00+00:00
+Person search,2018-02-03T00:54:00+00:00,51.536996,-0.243091,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-03 00:54:00+00:00
+Person search,2018-02-03T01:00:00+00:00,51.546506,-0.028911,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-03 01:00:00+00:00
+Person and Vehicle search,2018-02-03T01:18:00+00:00,51.501579,-0.361404,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-03 01:18:00+00:00
+Person search,2018-02-03T02:28:00+00:00,51.466273,-0.077564,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-03 02:28:00+00:00
+Person and Vehicle search,2018-02-03T02:30:00+00:00,51.467191,-0.105816,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-03 02:30:00+00:00
+Person search,2018-02-03T03:06:00+00:00,51.483743,-0.219848,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-03 03:06:00+00:00
+Person search,2018-02-03T14:45:00+00:00,51.526514,-0.438455,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-03 14:45:00+00:00
+Person search,2018-02-03T17:35:00+00:00,51.536811,-0.118659,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-03 17:35:00+00:00
+Vehicle search,2018-02-03T18:24:00+00:00,51.653843,-0.215114,,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,A no further action disposal,,,2018-02-03 18:24:00+00:00
+Person search,2018-02-03T20:20:00+00:00,51.506461,-0.378809,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-03 20:20:00+00:00
+Person search,2018-02-03T20:50:00+00:00,51.470526,-0.10683,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-03 20:50:00+00:00
+Person search,2018-02-03T22:30:00+00:00,51.504029,-0.233423,Female,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-03 22:30:00+00:00
+Person search,2018-02-03T23:32:00+00:00,51.463499,-0.115543,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-03 23:32:00+00:00
+Vehicle search,2018-02-04T00:01:00+00:00,51.531132,-0.10547,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-04 00:01:00+00:00
+Person search,2018-02-04T01:10:00+00:00,51.520075,-0.201711,Male,,Police and Criminal Evidence Act 1984 (section 1),Evidence of offences under the Act,Community resolution,,,2018-02-04 01:10:00+00:00
+Person search,2018-02-04T01:30:00+00:00,51.465152,-0.399175,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-04 01:30:00+00:00
+Person search,2018-02-04T01:50:00+00:00,51.524494,-0.144754,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-04 01:50:00+00:00
+Person search,2018-02-04T02:00:00+00:00,51.524494,-0.144754,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-04 02:00:00+00:00
+Person search,2018-02-04T06:40:00+00:00,51.505103,-0.099677,Female,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-04 06:40:00+00:00
+Person search,2018-02-04T13:40:00+00:00,51.479133,-0.077081,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-04 13:40:00+00:00
+Person search,2018-02-04T14:35:00+00:00,51.582047,-0.033868,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-04 14:35:00+00:00
+Person search,2018-02-04T14:40:00+00:00,51.582047,-0.033868,Female,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-04 14:40:00+00:00
+Person and Vehicle search,2018-02-04T15:11:00+00:00,51.52737,-0.072209,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-04 15:11:00+00:00
+Person search,2018-02-04T15:25:00+00:00,51.540553,-0.117596,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-04 15:25:00+00:00
+Vehicle search,2018-02-04T16:15:00+00:00,51.387309,-0.083146,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Arrest,,,2018-02-04 16:15:00+00:00
+Person search,2018-02-04T17:00:00+00:00,51.537248,-0.246672,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-04 17:00:00+00:00
+Person search,2018-02-04T18:00:00+00:00,51.398301,-0.08549,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-04 18:00:00+00:00
+Person search,2018-02-04T19:15:00+00:00,51.498855,-0.051513,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-04 19:15:00+00:00
+Person search,2018-02-04T20:22:00+00:00,51.536811,-0.114708,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-04 20:22:00+00:00
+Person search,2018-02-04T20:30:00+00:00,51.512465,-0.158661,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-04 20:30:00+00:00
+Person and Vehicle search,2018-02-04T20:46:00+00:00,51.474047,-0.063082,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-04 20:46:00+00:00
+Person search,2018-02-04T23:15:00+00:00,51.502909,-0.049294,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-04 23:15:00+00:00
+Person search,2018-02-04T23:42:00+00:00,51.546501,0.010103,Male,,Criminal Justice and Public Order Act 1994 (section 60),Anything to threaten or harm anyone,A no further action disposal,,,2018-02-04 23:42:00+00:00
+Vehicle search,2018-02-05T00:20:00+00:00,51.526474,0.166218,,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,A no further action disposal,,,2018-02-05 00:20:00+00:00
+Person search,2018-02-05T10:20:00+00:00,51.517311,-0.207384,Male,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,A no further action disposal,,,2018-02-05 10:20:00+00:00
+Person search,2018-02-05T12:00:00+00:00,51.584109,-0.024397,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-05 12:00:00+00:00
+Person search,2018-02-05T13:00:00+00:00,51.581102,-0.033274,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-05 13:00:00+00:00
+Person search,2018-02-05T13:45:00+00:00,51.469113,-0.364338,Male,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,A no further action disposal,,,2018-02-05 13:45:00+00:00
+Person search,2018-02-05T14:00:00+00:00,51.512141,-0.383118,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-05 14:00:00+00:00
+Person and Vehicle search,2018-02-05T14:28:00+00:00,51.543497,-0.210883,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-05 14:28:00+00:00
+Person search,2018-02-05T16:15:00+00:00,51.571556,-0.101193,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-05 16:15:00+00:00
+Person search,2018-02-05T17:00:00+00:00,51.514409,-0.128662,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-05 17:00:00+00:00
+Vehicle search,2018-02-05T17:05:00+00:00,51.589936,-0.102866,,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,A no further action disposal,,,2018-02-05 17:05:00+00:00
+Person search,2018-02-05T17:30:00+00:00,51.476765,-0.100077,Male,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,A no further action disposal,,,2018-02-05 17:30:00+00:00
+Person search,2018-02-05T18:00:00+00:00,51.539634,-0.252954,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-05 18:00:00+00:00
+Vehicle search,2018-02-05T18:30:00+00:00,51.49236,-0.060087,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-05 18:30:00+00:00
+Person search,2018-02-05T18:40:00+00:00,51.593822,-0.035699,Male,,Criminal Justice and Public Order Act 1994 (section 60),Anything to threaten or harm anyone,A no further action disposal,,,2018-02-05 18:40:00+00:00
+Vehicle search,2018-02-05T19:45:00+00:00,51.5958,-0.068749,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-05 19:45:00+00:00
+Person search,2018-02-05T19:45:00+00:00,51.517197,-0.126443,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Arrest,,,2018-02-05 19:45:00+00:00
+Person search,2018-02-05T19:45:00+00:00,51.541901,0.163504,Male,,Police and Criminal Evidence Act 1984 (section 1),Evidence of offences under the Act,Arrest,,,2018-02-05 19:45:00+00:00
+Person search,2018-02-05T19:58:00+00:00,51.5958,-0.068749,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-05 19:58:00+00:00
+Person search,2018-02-05T20:40:00+00:00,51.392237,0.10496,Male,,Police and Criminal Evidence Act 1984 (section 1),Evidence of offences under the Act,A no further action disposal,,,2018-02-05 20:40:00+00:00
+Person search,2018-02-05T21:35:00+00:00,51.49207,-0.063773,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Arrest,,,2018-02-05 21:35:00+00:00
+Vehicle search,2018-02-05T22:10:00+00:00,51.540707,0.061057,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Arrest,,,2018-02-05 22:10:00+00:00
+Person search,2018-02-05T22:20:00+00:00,51.539634,-0.252954,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-05 22:20:00+00:00
+Vehicle search,2018-02-05T23:00:00+00:00,51.397578,-0.092981,,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,A no further action disposal,,,2018-02-05 23:00:00+00:00
+Vehicle search,2018-02-05T23:15:00+00:00,51.510317,-0.040547,,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-05 23:15:00+00:00
+Person search,2018-02-06T01:01:00+00:00,51.513904,-0.130801,Male,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,A no further action disposal,,,2018-02-06 01:01:00+00:00
+Person search,2018-02-06T01:20:00+00:00,51.513904,-0.130801,Male,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,A no further action disposal,,,2018-02-06 01:20:00+00:00
+Person search,2018-02-06T02:25:00+00:00,51.510713,-0.056209,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-06 02:25:00+00:00
+Vehicle search,2018-02-06T11:00:00+00:00,51.596712,-0.336744,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-06 11:00:00+00:00
+Vehicle search,2018-02-06T12:05:00+00:00,51.47803,-0.05276,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Khat or Cannabis warning,,,2018-02-06 12:05:00+00:00
+Person search,2018-02-06T12:20:00+00:00,51.540531,0.051069,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-06 12:20:00+00:00
+Person search,2018-02-06T14:00:00+00:00,51.613536,-0.328503,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-06 14:00:00+00:00
+Person search,2018-02-06T16:00:00+00:00,51.520526,-0.176151,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-06 16:00:00+00:00
+Person search,2018-02-06T16:15:00+00:00,51.527273,-0.11601,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-06 16:15:00+00:00
+Person search,2018-02-06T16:15:00+00:00,51.527273,-0.11601,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-06 16:15:00+00:00
+Person search,2018-02-06T16:36:00+00:00,51.513474,-0.129824,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Community resolution,,,2018-02-06 16:36:00+00:00
+Person search,2018-02-06T19:05:00+00:00,51.575473,-0.012995,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-06 19:05:00+00:00
+Person search,2018-02-06T20:30:00+00:00,51.522586,-0.214773,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-06 20:30:00+00:00
+Person and Vehicle search,2018-02-06T20:46:00+00:00,51.431444,-0.05736,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-06 20:46:00+00:00
+Vehicle search,2018-02-06T21:00:00+00:00,51.583492,0.116747,,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,A no further action disposal,,,2018-02-06 21:00:00+00:00
+Person search,2018-02-06T23:46:00+00:00,51.634384,0.011255,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-06 23:46:00+00:00
+Person search,2018-02-07T02:15:00+00:00,51.508945,-0.12266,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-07 02:15:00+00:00
+Person search,2018-02-07T02:25:00+00:00,51.510953,-0.133012,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-07 02:25:00+00:00
+Person search,2018-02-07T02:30:00+00:00,51.510953,-0.133012,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-07 02:30:00+00:00
+Vehicle search,2018-02-07T08:40:00+00:00,51.569219,-0.14227,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-07 08:40:00+00:00
+Person search,2018-02-07T09:15:00+00:00,51.373008,-0.10008,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-07 09:15:00+00:00
+Person search,2018-02-07T14:00:00+00:00,51.514409,-0.128662,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-07 14:00:00+00:00
+Person and Vehicle search,2018-02-07T15:30:00+00:00,51.48984,-0.096696,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-07 15:30:00+00:00
+Person search,2018-02-07T15:35:00+00:00,51.575842,-0.033819,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-07 15:35:00+00:00
+Person search,2018-02-07T15:43:00+00:00,51.575842,-0.033819,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-07 15:43:00+00:00
+Person search,2018-02-07T16:28:00+00:00,51.530777,-0.132129,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-07 16:28:00+00:00
+Person search,2018-02-07T16:28:00+00:00,51.530777,-0.132129,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-07 16:28:00+00:00
+Vehicle search,2018-02-07T18:10:00+00:00,51.526361,-0.112977,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Khat or Cannabis warning,,,2018-02-07 18:10:00+00:00
+Vehicle search,2018-02-07T18:30:00+00:00,51.381188,-0.091018,,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-07 18:30:00+00:00
+Person and Vehicle search,2018-02-07T19:30:00+00:00,51.504329,-0.057879,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,Arrest,,,2018-02-07 19:30:00+00:00
+Person and Vehicle search,2018-02-07T19:30:00+00:00,51.504329,-0.057879,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,Arrest,,,2018-02-07 19:30:00+00:00
+Vehicle search,2018-02-07T19:45:00+00:00,51.552226,0.021823,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-07 19:45:00+00:00
+Person search,2018-02-07T23:50:00+00:00,51.472297,-0.093495,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-07 23:50:00+00:00
+Vehicle search,2018-02-08T00:14:00+00:00,51.459027,-0.191315,,,Police and Criminal Evidence Act 1984 (section 1),Evidence of offences under the Act,A no further action disposal,,,2018-02-08 00:14:00+00:00
+Person search,2018-02-08T01:10:00+00:00,51.469807,-0.118062,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-08 01:10:00+00:00
+Person search,2018-02-08T02:24:00+00:00,51.540169,-0.145977,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-08 02:24:00+00:00
+Vehicle search,2018-02-08T09:30:00+00:00,51.594388,-0.082958,,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-08 09:30:00+00:00
+Vehicle search,2018-02-08T10:00:00+00:00,51.484478,-0.12391,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-08 10:00:00+00:00
+Person and Vehicle search,2018-02-08T11:50:00+00:00,51.589936,-0.102866,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-08 11:50:00+00:00
+Person search,2018-02-08T14:16:00+00:00,51.396337,-0.068867,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-08 14:16:00+00:00
+Vehicle search,2018-02-08T15:25:00+00:00,51.491409,0.053877,,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,Arrest,,,2018-02-08 15:25:00+00:00
+Person search,2018-02-08T17:25:00+00:00,51.478031,-0.118343,Female,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-08 17:25:00+00:00
+Person search,2018-02-08T18:30:00+00:00,51.534142,-0.114847,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-08 18:30:00+00:00
+Person search,2018-02-08T18:34:00+00:00,51.582939,-0.22703,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-08 18:34:00+00:00
+Person search,2018-02-08T18:36:00+00:00,51.534142,-0.114847,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-08 18:36:00+00:00
+Person search,2018-02-08T18:38:00+00:00,51.534142,-0.114847,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-08 18:38:00+00:00
+Person search,2018-02-08T19:15:00+00:00,51.378427,-0.102657,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-08 19:15:00+00:00
+Person and Vehicle search,2018-02-08T21:00:00+00:00,51.648644,-0.049404,Female,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-08 21:00:00+00:00
+Person search,2018-02-09T01:00:00+00:00,51.408864,-0.04122,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-09 01:00:00+00:00
+Person and Vehicle search,2018-02-09T01:25:00+00:00,51.567078,0.126287,Male,,Police and Criminal Evidence Act 1984 (section 1),,A no further action disposal,,,2018-02-09 01:25:00+00:00
+Vehicle search,2018-02-09T01:35:00+00:00,51.501815,-0.15847,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Penalty Notice for Disorder,,,2018-02-09 01:35:00+00:00
+Person and Vehicle search,2018-02-09T02:30:00+00:00,51.540169,-0.145977,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-09 02:30:00+00:00
+Person search,2018-02-09T03:20:00+00:00,51.52979,-0.132284,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-09 03:20:00+00:00
+Person search,2018-02-09T04:08:00+00:00,51.500195,-0.073327,Female,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Arrest,,,2018-02-09 04:08:00+00:00
+Vehicle search,2018-02-09T10:50:00+00:00,51.465334,0.04077,,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,A no further action disposal,,,2018-02-09 10:50:00+00:00
+Person and Vehicle search,2018-02-09T11:00:00+00:00,51.478031,-0.118343,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-09 11:00:00+00:00
+Vehicle search,2018-02-09T12:15:00+00:00,51.364868,-0.197282,,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-09 12:15:00+00:00
+Person search,2018-02-09T12:20:00+00:00,51.604407,-0.069872,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Khat or Cannabis warning,,,2018-02-09 12:20:00+00:00
+Person search,2018-02-09T15:30:00+00:00,51.539449,0.011753,Male,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,A no further action disposal,,,2018-02-09 15:30:00+00:00
+Person search,2018-02-09T15:30:00+00:00,51.495695,-0.086252,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-09 15:30:00+00:00
+Person and Vehicle search,2018-02-09T15:50:00+00:00,51.531424,0.046796,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-09 15:50:00+00:00
+Person search,2018-02-09T15:55:00+00:00,51.45138,0.048812,Female,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-09 15:55:00+00:00
+Person search,2018-02-09T16:10:00+00:00,51.512763,-0.294969,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,Penalty Notice for Disorder,,,2018-02-09 16:10:00+00:00
+Vehicle search,2018-02-09T20:20:00+00:00,51.580776,-0.339159,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-09 20:20:00+00:00
+Person search,2018-02-09T20:30:00+00:00,51.512141,-0.383118,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-09 20:30:00+00:00
+Person and Vehicle search,2018-02-09T22:00:00+00:00,51.531325,0.081063,Female,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Khat or Cannabis warning,,,2018-02-09 22:00:00+00:00
+Vehicle search,2018-02-09T22:10:00+00:00,51.464793,0.009605,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-09 22:10:00+00:00
+Person search,2018-02-09T22:35:00+00:00,51.433917,-0.103496,Male,,Firearms Act 1968 (section 47),Firearms,A no further action disposal,,,2018-02-09 22:35:00+00:00
+Person search,2018-02-09T23:00:00+00:00,51.457066,0.093,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-09 23:00:00+00:00
+Vehicle search,2018-02-10T02:30:00+00:00,51.401618,0.054711,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-10 02:30:00+00:00
+Person search,2018-02-10T03:28:00+00:00,51.52979,-0.132284,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-10 03:28:00+00:00
+Person search,2018-02-10T08:39:00+00:00,51.466003,-0.150842,Male,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,A no further action disposal,,,2018-02-10 08:39:00+00:00
+Vehicle search,2018-02-10T11:15:00+00:00,51.646058,-0.114602,,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,A no further action disposal,,,2018-02-10 11:15:00+00:00
+Person search,2018-02-10T13:10:00+00:00,51.482348,-0.07405,Male,,Police and Criminal Evidence Act 1984 (section 1),Evidence of offences under the Act,A no further action disposal,,,2018-02-10 13:10:00+00:00
+Person search,2018-02-10T15:28:00+00:00,51.52979,-0.132284,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-10 15:28:00+00:00
+Vehicle search,2018-02-10T17:25:00+00:00,51.496096,-0.051645,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Arrest,,,2018-02-10 17:25:00+00:00
+Person search,2018-02-10T20:28:00+00:00,51.463466,-0.01068,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-10 20:28:00+00:00
+Person and Vehicle search,2018-02-10T21:42:00+00:00,51.538858,0.010559,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-10 21:42:00+00:00
+Person search,2018-02-10T22:15:00+00:00,51.511057,-0.128237,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-10 22:15:00+00:00
+Person and Vehicle search,2018-02-10T23:20:00+00:00,51.504286,-0.217145,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-10 23:20:00+00:00
+Person search,2018-02-11T00:25:00+00:00,51.483743,-0.219848,Male,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,A no further action disposal,,,2018-02-11 00:25:00+00:00
+Person search,2018-02-11T00:30:00+00:00,51.545458,0.026282,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-11 00:30:00+00:00
+Person search,2018-02-11T00:30:00+00:00,51.46017,0.113944,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-11 00:30:00+00:00
+Person search,2018-02-11T01:00:00+00:00,51.493895,-0.086169,Male,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,A no further action disposal,,,2018-02-11 01:00:00+00:00
+Person search,2018-02-11T01:15:00+00:00,51.521962,-0.221082,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-11 01:15:00+00:00
+Person search,2018-02-11T01:17:00+00:00,51.533027,0.052866,Male,,Police and Criminal Evidence Act 1984 (section 1),Evidence of offences under the Act,A no further action disposal,,,2018-02-11 01:17:00+00:00
+Person search,2018-02-11T01:35:00+00:00,51.551744,-0.234143,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,Arrest,,,2018-02-11 01:35:00+00:00
+Person search,2018-02-11T06:20:00+00:00,51.451988,-0.040915,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-11 06:20:00+00:00
+Person search,2018-02-11T09:00:00+00:00,51.435406,-0.160236,Male,,Police and Criminal Evidence Act 1984 (section 1),Evidence of offences under the Act,A no further action disposal,,,2018-02-11 09:00:00+00:00
+Person search,2018-02-11T11:50:00+00:00,51.433163,-0.217614,Male,,Police and Criminal Evidence Act 1984 (section 1),Evidence of offences under the Act,A no further action disposal,,,2018-02-11 11:50:00+00:00
+Person search,2018-02-11T13:10:00+00:00,51.540609,-0.209612,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-11 13:10:00+00:00
+Person search,2018-02-11T13:20:00+00:00,51.405896,-0.281362,Male,,Police and Criminal Evidence Act 1984 (section 1),Evidence of offences under the Act,Arrest,,,2018-02-11 13:20:00+00:00
+Person search,2018-02-11T16:00:00+00:00,51.49316,-0.100706,Male,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,A no further action disposal,,,2018-02-11 16:00:00+00:00
+Person search,2018-02-11T16:30:00+00:00,51.602172,-0.066313,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-11 16:30:00+00:00
+Person search,2018-02-11T23:08:00+00:00,51.536375,0.010132,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-11 23:08:00+00:00
+Person search,2018-02-12T00:02:00+00:00,51.478042,-0.363025,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-12 00:02:00+00:00
+Person search,2018-02-12T00:10:00+00:00,51.511238,-0.133922,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-12 00:10:00+00:00
+Person search,2018-02-12T00:30:00+00:00,51.590277,0.063458,Male,,Police and Criminal Evidence Act 1984 (section 1),Evidence of offences under the Act,A no further action disposal,,,2018-02-12 00:30:00+00:00
+Person search,2018-02-12T01:00:00+00:00,51.501237,-0.212985,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-12 01:00:00+00:00
+Person search,2018-02-12T01:30:00+00:00,51.652283,-0.07975,Male,,Criminal Justice and Public Order Act 1994 (section 60),Anything to threaten or harm anyone,A no further action disposal,,,2018-02-12 01:30:00+00:00
+Person search,2018-02-12T01:44:00+00:00,51.460156,-0.127499,Male,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,A no further action disposal,,,2018-02-12 01:44:00+00:00
+Person search,2018-02-12T02:00:00+00:00,51.460156,-0.127499,Female,,Police and Criminal Evidence Act 1984 (section 1),Evidence of offences under the Act,A no further action disposal,,,2018-02-12 02:00:00+00:00
+Person search,2018-02-12T04:35:00+00:00,51.49556,-0.181758,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-12 04:35:00+00:00
+Person search,2018-02-12T09:30:00+00:00,51.457474,-0.02594,Male,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,A no further action disposal,,,2018-02-12 09:30:00+00:00
+Vehicle search,2018-02-12T10:32:00+00:00,51.603545,-0.206574,,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,Summons / charged by post,,,2018-02-12 10:32:00+00:00
+Person and Vehicle search,2018-02-12T11:27:00+00:00,51.393048,-0.071737,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-12 11:27:00+00:00
+Vehicle search,2018-02-12T12:23:00+00:00,51.491618,0.118942,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-12 12:23:00+00:00
+Person search,2018-02-12T13:15:00+00:00,51.498539,-0.066668,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-12 13:15:00+00:00
+Person search,2018-02-12T14:50:00+00:00,51.490429,0.075268,Other,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,A no further action disposal,,,2018-02-12 14:50:00+00:00
+Person search,2018-02-12T15:00:00+00:00,51.556094,0.174593,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-12 15:00:00+00:00
+Person search,2018-02-12T15:35:00+00:00,51.400673,0.049148,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-12 15:35:00+00:00
+Person search,2018-02-12T16:14:00+00:00,51.497555,-0.049637,Male,,Police and Criminal Evidence Act 1984 (section 1),Evidence of offences under the Act,A no further action disposal,,,2018-02-12 16:14:00+00:00
+Person search,2018-02-12T19:15:00+00:00,51.541963,0.001481,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-12 19:15:00+00:00
+Person search,2018-02-12T19:28:00+00:00,51.445826,-0.190728,Male,,Police and Criminal Evidence Act 1984 (section 1),Evidence of offences under the Act,A no further action disposal,,,2018-02-12 19:28:00+00:00
+Person search,2018-02-12T20:00:00+00:00,51.464974,-0.130152,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-12 20:00:00+00:00
+Person search,2018-02-12T20:50:00+00:00,51.640826,-0.007971,Male,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,A no further action disposal,,,2018-02-12 20:50:00+00:00
+Vehicle search,2018-02-12T22:00:00+00:00,51.571022,0.109082,,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,A no further action disposal,,,2018-02-12 22:00:00+00:00
+Vehicle search,2018-02-12T23:30:00+00:00,51.563323,-0.140765,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Khat or Cannabis warning,,,2018-02-12 23:30:00+00:00
+Person search,2018-02-12T23:30:00+00:00,51.574835,-0.009833,Male,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,A no further action disposal,,,2018-02-12 23:30:00+00:00
+Person search,2018-02-13T01:25:00+00:00,51.540636,-0.24895,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-13 01:25:00+00:00
+Person search,2018-02-13T13:00:00+00:00,51.516188,-0.361139,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-13 13:00:00+00:00
+Person search,2018-02-13T14:45:00+00:00,51.46838,-0.11992,Male,,Police and Criminal Evidence Act 1984 (section 1),,A no further action disposal,,,2018-02-13 14:45:00+00:00
+Person search,2018-02-13T15:05:00+00:00,51.399954,0.016969,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-13 15:05:00+00:00
+Person search,2018-02-13T15:15:00+00:00,51.399954,0.016969,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-13 15:15:00+00:00
+Vehicle search,2018-02-13T15:22:00+00:00,51.568915,-0.346806,,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,Arrest,,,2018-02-13 15:22:00+00:00
+Person and Vehicle search,2018-02-13T15:25:00+00:00,51.472364,-0.005613,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-13 15:25:00+00:00
+Person and Vehicle search,2018-02-13T15:41:00+00:00,51.467934,-0.008988,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-13 15:41:00+00:00
+Person search,2018-02-13T16:10:00+00:00,51.40589,0.01539,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-13 16:10:00+00:00
+Person search,2018-02-13T16:10:00+00:00,51.465708,-0.17448,Male,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,A no further action disposal,,,2018-02-13 16:10:00+00:00
+Person search,2018-02-13T18:48:00+00:00,51.530983,-0.119707,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-13 18:48:00+00:00
+Person search,2018-02-13T19:15:00+00:00,51.503164,-0.223226,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-13 19:15:00+00:00
+Vehicle search,2018-02-13T20:10:00+00:00,51.541762,0.071603,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-13 20:10:00+00:00
+Person and Vehicle search,2018-02-13T22:25:00+00:00,51.564916,0.102566,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-13 22:25:00+00:00
+Vehicle search,2018-02-13T23:00:00+00:00,51.561089,-0.04643,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-13 23:00:00+00:00
+Person search,2018-02-13T23:30:00+00:00,51.394132,-0.091255,Male,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,A no further action disposal,,,2018-02-13 23:30:00+00:00
+Vehicle search,2018-02-13T23:56:00+00:00,51.531769,-0.14022,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-13 23:56:00+00:00
+Person and Vehicle search,2018-02-14T00:06:00+00:00,51.531769,-0.14022,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-14 00:06:00+00:00
+Vehicle search,2018-02-14T00:50:00+00:00,51.446424,-0.145532,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-14 00:50:00+00:00
+Vehicle search,2018-02-14T01:30:00+00:00,51.602594,-0.174092,,,Police and Criminal Evidence Act 1984 (section 1),Evidence of offences under the Act,Arrest,,,2018-02-14 01:30:00+00:00
+Person and Vehicle search,2018-02-14T02:25:00+00:00,51.465192,-0.374671,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-14 02:25:00+00:00
+Person search,2018-02-14T03:18:00+00:00,51.48872,-0.227792,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-14 03:18:00+00:00
+Vehicle search,2018-02-14T07:53:00+00:00,51.455196,-0.113107,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-14 07:53:00+00:00
+Vehicle search,2018-02-14T11:40:00+00:00,51.428065,-0.010362,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-14 11:40:00+00:00
+Person search,2018-02-14T12:30:00+00:00,51.548028,-0.122206,Male,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,A no further action disposal,,,2018-02-14 12:30:00+00:00
+Person search,2018-02-14T14:25:00+00:00,51.570989,-0.096194,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-14 14:25:00+00:00
+Person search,2018-02-14T14:25:00+00:00,51.570989,-0.096194,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-14 14:25:00+00:00
+Person search,2018-02-14T15:08:00+00:00,51.550616,-0.241052,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-14 15:08:00+00:00
+Person and Vehicle search,2018-02-14T17:41:00+00:00,51.399381,0.108753,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-14 17:41:00+00:00
+Person search,2018-02-14T23:30:00+00:00,51.394132,-0.091255,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-14 23:30:00+00:00
+Person search,2018-02-15T00:47:00+00:00,51.614788,-0.010859,Male,,Police and Criminal Evidence Act 1984 (section 1),Evidence of offences under the Act,A no further action disposal,,,2018-02-15 00:47:00+00:00
+Person search,2018-02-15T02:30:00+00:00,51.451042,-0.423646,Male,,Police and Criminal Evidence Act 1984 (section 1),,A no further action disposal,,,2018-02-15 02:30:00+00:00
+Vehicle search,2018-02-15T04:10:00+00:00,51.548114,0.011977,,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,Arrest,,,2018-02-15 04:10:00+00:00
+Person search,2018-02-15T12:30:00+00:00,51.4456,-0.127692,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-15 12:30:00+00:00
+Person search,2018-02-15T14:45:00+00:00,51.399954,0.016969,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-15 14:45:00+00:00
+Vehicle search,2018-02-15T15:00:00+00:00,51.608204,-0.281229,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Penalty Notice for Disorder,,,2018-02-15 15:00:00+00:00
+Person search,2018-02-15T15:50:00+00:00,51.54187,-0.002028,Male,,Criminal Justice and Public Order Act 1994 (section 60),Anything to threaten or harm anyone,A no further action disposal,,,2018-02-15 15:50:00+00:00
+Person search,2018-02-15T16:25:00+00:00,51.562317,-0.282483,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-15 16:25:00+00:00
+Person search,2018-02-15T16:30:00+00:00,51.562317,-0.282483,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-15 16:30:00+00:00
+Person search,2018-02-15T16:43:00+00:00,51.541963,0.001481,Male,,Criminal Justice and Public Order Act 1994 (section 60),Anything to threaten or harm anyone,A no further action disposal,,,2018-02-15 16:43:00+00:00
+Person and Vehicle search,2018-02-15T17:03:00+00:00,51.521667,-0.067145,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-15 17:03:00+00:00
+Person search,2018-02-15T17:12:00+00:00,51.54034,-0.001951,Male,,Criminal Justice and Public Order Act 1994 (section 60),Anything to threaten or harm anyone,A no further action disposal,,,2018-02-15 17:12:00+00:00
+Person search,2018-02-15T17:30:00+00:00,51.569445,0.258985,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-15 17:30:00+00:00
+Person search,2018-02-15T17:45:00+00:00,51.538812,-0.246021,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-15 17:45:00+00:00
+Vehicle search,2018-02-15T18:10:00+00:00,51.512231,-0.068092,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-15 18:10:00+00:00
+Person search,2018-02-15T18:45:00+00:00,51.450538,0.064549,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-15 18:45:00+00:00
+Person search,2018-02-15T19:10:00+00:00,51.486955,-0.083032,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-15 19:10:00+00:00
+Person search,2018-02-15T19:15:00+00:00,51.45528,-0.321509,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-15 19:15:00+00:00
+Person search,2018-02-15T19:45:00+00:00,51.527419,-0.167255,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-15 19:45:00+00:00
+Person and Vehicle search,2018-02-15T20:00:00+00:00,51.525254,-0.167414,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Summons / charged by post,,,2018-02-15 20:00:00+00:00
+Person search,2018-02-15T21:00:00+00:00,51.401573,0.018018,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-15 21:00:00+00:00
+Person search,2018-02-15T21:50:00+00:00,51.527419,-0.167255,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-15 21:50:00+00:00
+Person search,2018-02-15T22:15:00+00:00,51.610449,0.20625,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-15 22:15:00+00:00
+Person search,2018-02-15T23:02:00+00:00,51.521748,-0.211736,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-15 23:02:00+00:00
+Person search,2018-02-15T23:05:00+00:00,51.521748,-0.211736,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-15 23:05:00+00:00
+Person and Vehicle search,2018-02-16T03:45:00+00:00,51.539439,-0.078837,Male,,Police and Criminal Evidence Act 1984 (section 1),Evidence of offences under the Act,Arrest,,,2018-02-16 03:45:00+00:00
+Person search,2018-02-16T10:40:00+00:00,51.480234,-0.089434,Male,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,Arrest,,,2018-02-16 10:40:00+00:00
+Vehicle search,2018-02-16T12:42:00+00:00,51.368101,-0.22527,,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,Arrest,,,2018-02-16 12:42:00+00:00
+Person search,2018-02-16T13:45:00+00:00,51.486498,-0.201794,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-16 13:45:00+00:00
+Vehicle search,2018-02-16T14:35:00+00:00,51.541223,-0.208059,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Arrest,,,2018-02-16 14:35:00+00:00
+Person search,2018-02-16T14:44:00+00:00,51.603358,-0.057512,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-16 14:44:00+00:00
+Person search,2018-02-16T15:00:00+00:00,51.517955,-0.145251,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-16 15:00:00+00:00
+Person search,2018-02-16T15:10:00+00:00,51.541959,-0.172367,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-16 15:10:00+00:00
+Person search,2018-02-16T15:15:00+00:00,51.602264,-0.059898,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-16 15:15:00+00:00
+Person search,2018-02-16T15:17:00+00:00,51.485569,-0.39558,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-16 15:17:00+00:00
+Person search,2018-02-16T15:18:00+00:00,51.602264,-0.059898,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-16 15:18:00+00:00
+Person search,2018-02-16T15:30:00+00:00,51.503093,-0.248344,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-16 15:30:00+00:00
+Person search,2018-02-16T15:37:00+00:00,51.587275,-0.029745,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-16 15:37:00+00:00
+Person search,2018-02-16T16:00:00+00:00,51.399954,0.016969,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-16 16:00:00+00:00
+Person search,2018-02-16T16:10:00+00:00,51.541959,-0.172367,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-16 16:10:00+00:00
+Person search,2018-02-16T16:15:00+00:00,51.532142,-0.207536,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-16 16:15:00+00:00
+Person search,2018-02-16T18:35:00+00:00,51.602264,-0.059898,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-16 18:35:00+00:00
+Vehicle search,2018-02-16T19:05:00+00:00,51.49194,0.126491,,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,Penalty Notice for Disorder,,,2018-02-16 19:05:00+00:00
+Person search,2018-02-16T19:06:00+00:00,51.521222,-0.20083,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-16 19:06:00+00:00
+Person search,2018-02-16T21:00:00+00:00,51.399954,0.016969,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-16 21:00:00+00:00
+Person search,2018-02-16T21:00:00+00:00,51.399954,0.016969,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-16 21:00:00+00:00
+Person search,2018-02-16T21:06:00+00:00,51.399954,0.016969,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-16 21:06:00+00:00
+Vehicle search,2018-02-16T21:10:00+00:00,51.669455,-0.16967,,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,A no further action disposal,,,2018-02-16 21:10:00+00:00
+Person search,2018-02-16T23:23:00+00:00,51.461137,-0.119124,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-16 23:23:00+00:00
+Person search,2018-02-16T23:38:00+00:00,51.461137,-0.119124,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-16 23:38:00+00:00
+Person search,2018-02-16T23:48:00+00:00,51.451048,-0.406188,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,Arrest,,,2018-02-16 23:48:00+00:00
+Vehicle search,2018-02-17T00:01:00+00:00,51.547299,-0.141923,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-17 00:01:00+00:00
+Person search,2018-02-17T01:56:00+00:00,51.468418,-0.114433,Male,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,A no further action disposal,,,2018-02-17 01:56:00+00:00
+Person search,2018-02-17T11:58:00+00:00,51.552725,-0.071945,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-17 11:58:00+00:00
+Person search,2018-02-17T11:58:00+00:00,51.552725,-0.071945,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-17 11:58:00+00:00
+Vehicle search,2018-02-17T12:12:00+00:00,51.547299,-0.141923,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Arrest,,,2018-02-17 12:12:00+00:00
+Vehicle search,2018-02-17T17:04:00+00:00,51.601329,-0.396471,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-17 17:04:00+00:00
+Person and Vehicle search,2018-02-17T17:20:00+00:00,51.51666,0.016053,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-17 17:20:00+00:00
+Person and Vehicle search,2018-02-17T17:20:00+00:00,51.51666,0.016053,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-17 17:20:00+00:00
+Vehicle search,2018-02-17T17:30:00+00:00,51.516047,-0.075411,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-17 17:30:00+00:00
+Person search,2018-02-17T19:09:00+00:00,51.539947,-0.117347,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-17 19:09:00+00:00
+Vehicle search,2018-02-17T21:10:00+00:00,51.530378,-0.210359,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Penalty Notice for Disorder,,,2018-02-17 21:10:00+00:00
+Person search,2018-02-17T22:20:00+00:00,51.459196,-0.01291,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-17 22:20:00+00:00
+Person search,2018-02-17T22:51:00+00:00,51.514938,-0.396235,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-17 22:51:00+00:00
+Person search,2018-02-17T23:25:00+00:00,51.66355,-0.084176,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Khat or Cannabis warning,,,2018-02-17 23:25:00+00:00
+Person search,2018-02-17T23:35:00+00:00,51.49316,-0.100706,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-17 23:35:00+00:00
+Vehicle search,2018-02-17T23:40:00+00:00,51.649158,-0.04785,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Khat or Cannabis warning,,,2018-02-17 23:40:00+00:00
+Person search,2018-02-18T03:10:00+00:00,51.506744,-0.245956,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-18 03:10:00+00:00
+Person search,2018-02-18T03:45:00+00:00,51.462142,-0.320307,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-18 03:45:00+00:00
+Person search,2018-02-18T04:20:00+00:00,51.476083,-0.070988,Female,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-18 04:20:00+00:00
+Person search,2018-02-18T06:00:00+00:00,51.601564,-0.086858,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-18 06:00:00+00:00
+Person and Vehicle search,2018-02-18T06:00:00+00:00,51.601564,-0.086858,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-18 06:00:00+00:00
+Person search,2018-02-18T11:35:00+00:00,51.566195,-0.120116,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-18 11:35:00+00:00
+Vehicle search,2018-02-18T12:03:00+00:00,51.60098,-0.310684,,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,A no further action disposal,,,2018-02-18 12:03:00+00:00
+Person search,2018-02-18T16:00:00+00:00,51.532285,-0.119595,Male,,Police and Criminal Evidence Act 1984 (section 1),Evidence of offences under the Act,A no further action disposal,,,2018-02-18 16:00:00+00:00
+Person search,2018-02-18T16:30:00+00:00,51.392017,-0.037786,Female,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-18 16:30:00+00:00
+Vehicle search,2018-02-18T16:44:00+00:00,51.473436,0.182583,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Khat or Cannabis warning,,,2018-02-18 16:44:00+00:00
+Person search,2018-02-18T17:14:00+00:00,51.456212,0.045042,Male,,Firearms Act 1968 (section 47),Firearms,A no further action disposal,,,2018-02-18 17:14:00+00:00
+Person search,2018-02-18T17:45:00+00:00,51.456212,0.045042,Male,,Firearms Act 1968 (section 47),Firearms,A no further action disposal,,,2018-02-18 17:45:00+00:00
+Person search,2018-02-18T18:22:00+00:00,51.571691,-0.065976,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-18 18:22:00+00:00
+Person search,2018-02-18T18:36:00+00:00,51.526315,0.11679,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-18 18:36:00+00:00
+Person search,2018-02-18T19:29:00+00:00,51.472176,0.182119,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-18 19:29:00+00:00
+Person and Vehicle search,2018-02-18T20:00:00+00:00,51.387423,-0.181679,Male,,Police and Criminal Evidence Act 1984 (section 1),Articles for use in criminal damage,A no further action disposal,,,2018-02-18 20:00:00+00:00
+Person search,2018-02-18T20:07:00+00:00,51.537626,-0.248489,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-18 20:07:00+00:00
+Person search,2018-02-18T20:25:00+00:00,51.644899,-0.046963,Male,,Police and Criminal Evidence Act 1984 (section 1),Evidence of offences under the Act,A no further action disposal,,,2018-02-18 20:25:00+00:00
+Person search,2018-02-18T21:15:00+00:00,51.533489,-0.052283,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-18 21:15:00+00:00
+Person search,2018-02-18T22:20:00+00:00,51.514163,-0.295364,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-18 22:20:00+00:00
+Person search,2018-02-18T22:31:00+00:00,51.382426,-0.101385,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-18 22:31:00+00:00
+Person search,2018-02-19T00:34:00+00:00,51.367622,-0.120746,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-19 00:34:00+00:00
+Vehicle search,2018-02-19T00:57:00+00:00,51.425923,0.066144,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-19 00:57:00+00:00
+Person search,2018-02-19T01:00:00+00:00,51.534841,0.034419,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-19 01:00:00+00:00
+Person search,2018-02-19T02:30:00+00:00,51.63469,-0.047907,Female,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-19 02:30:00+00:00
+Person search,2018-02-19T02:30:00+00:00,51.580527,0.001255,Male,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,A no further action disposal,,,2018-02-19 02:30:00+00:00
+Person search,2018-02-19T11:30:00+00:00,51.550539,0.048548,Female,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,A no further action disposal,,,2018-02-19 11:30:00+00:00
+Vehicle search,2018-02-19T12:50:00+00:00,51.494605,-0.234609,,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,Arrest,,,2018-02-19 12:50:00+00:00
+Person search,2018-02-19T13:52:00+00:00,51.585718,-0.392517,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-19 13:52:00+00:00
+Person search,2018-02-19T14:07:00+00:00,51.469594,-0.072845,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-19 14:07:00+00:00
+Vehicle search,2018-02-19T14:10:00+00:00,51.580526,0.183886,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Khat or Cannabis warning,,,2018-02-19 14:10:00+00:00
+Person search,2018-02-19T14:18:00+00:00,51.552251,-0.158857,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-19 14:18:00+00:00
+Person search,2018-02-19T14:18:00+00:00,51.484686,-0.219754,Male,,Police and Criminal Evidence Act 1984 (section 1),Evidence of offences under the Act,Arrest,,,2018-02-19 14:18:00+00:00
+Vehicle search,2018-02-19T14:45:00+00:00,51.538115,0.051422,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-19 14:45:00+00:00
+Person and Vehicle search,2018-02-19T15:00:00+00:00,51.51539,-0.070437,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-19 15:00:00+00:00
+Person search,2018-02-19T16:00:00+00:00,51.5124,-0.231601,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-19 16:00:00+00:00
+Person search,2018-02-19T16:00:00+00:00,51.512488,-0.232635,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-19 16:00:00+00:00
+Person search,2018-02-19T16:00:00+00:00,51.588894,-0.110142,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-19 16:00:00+00:00
+Person search,2018-02-19T16:16:00+00:00,51.43121,-0.101263,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-19 16:16:00+00:00
+Person search,2018-02-19T18:48:00+00:00,51.536326,0.076951,Male,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,A no further action disposal,,,2018-02-19 18:48:00+00:00
+Person and Vehicle search,2018-02-19T19:00:00+00:00,51.441356,-0.136139,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-19 19:00:00+00:00
+Person search,2018-02-19T19:20:00+00:00,51.547587,-0.000306,Female,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-19 19:20:00+00:00
+Person search,2018-02-19T19:30:00+00:00,51.50021,-0.158232,Male,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,A no further action disposal,,,2018-02-19 19:30:00+00:00
+Person search,2018-02-19T22:29:00+00:00,51.510291,-0.05627,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-19 22:29:00+00:00
+Person search,2018-02-19T23:59:00+00:00,51.51751,-0.020621,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-19 23:59:00+00:00
+Person search,2018-02-20T00:25:00+00:00,51.551195,0.195708,Male,,Police and Criminal Evidence Act 1984 (section 1),Evidence of offences under the Act,A no further action disposal,,,2018-02-20 00:25:00+00:00
+Person search,2018-02-20T00:38:00+00:00,51.427423,-0.080777,Male,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,A no further action disposal,,,2018-02-20 00:38:00+00:00
+Person search,2018-02-20T02:24:00+00:00,51.47803,-0.05276,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-20 02:24:00+00:00
+Vehicle search,2018-02-20T02:30:00+00:00,51.411823,0.11351,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Arrest,,,2018-02-20 02:30:00+00:00
+Person search,2018-02-20T02:52:00+00:00,51.488129,-0.270163,Female,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,A no further action disposal,,,2018-02-20 02:52:00+00:00
+Person search,2018-02-20T03:00:00+00:00,51.488129,-0.270163,Male,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,A no further action disposal,,,2018-02-20 03:00:00+00:00
+Person search,2018-02-20T03:48:00+00:00,51.547734,0.018912,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-20 03:48:00+00:00
+Vehicle search,2018-02-20T04:15:00+00:00,51.605787,-0.113859,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Arrest,,,2018-02-20 04:15:00+00:00
+Person search,2018-02-20T04:30:00+00:00,51.497104,-0.136358,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-20 04:30:00+00:00
+Person search,2018-02-20T04:34:00+00:00,51.495905,-0.139015,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-20 04:34:00+00:00
+Person search,2018-02-20T04:35:00+00:00,51.497104,-0.136358,Female,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-20 04:35:00+00:00
+Person search,2018-02-20T12:45:00+00:00,51.480965,-0.025516,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-20 12:45:00+00:00
+Person search,2018-02-20T13:05:00+00:00,51.529238,-0.056228,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-20 13:05:00+00:00
+Vehicle search,2018-02-20T13:55:00+00:00,51.506169,-0.059861,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-20 13:55:00+00:00
+Person search,2018-02-20T15:35:00+00:00,51.578839,-0.337599,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-20 15:35:00+00:00
+Person search,2018-02-20T15:37:00+00:00,51.578839,-0.337599,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-20 15:37:00+00:00
+Person search,2018-02-20T15:38:00+00:00,51.578839,-0.337599,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-20 15:38:00+00:00
+Person search,2018-02-20T16:35:00+00:00,51.489013,-0.118452,Female,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-20 16:35:00+00:00
+Person search,2018-02-20T17:06:00+00:00,51.588857,-0.064829,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-20 17:06:00+00:00
+Person and Vehicle search,2018-02-20T18:05:00+00:00,51.492098,-0.039988,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-20 18:05:00+00:00
+Vehicle search,2018-02-20T19:07:00+00:00,51.507861,-0.230523,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Arrest,,,2018-02-20 19:07:00+00:00
+Vehicle search,2018-02-20T21:20:00+00:00,51.585228,-0.361644,,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,Community resolution,,,2018-02-20 21:20:00+00:00
+Person search,2018-02-20T23:15:00+00:00,51.531265,-0.392777,Male,,Firearms Act 1968 (section 47),Firearms,A no further action disposal,,,2018-02-20 23:15:00+00:00
+Person search,2018-02-21T01:30:00+00:00,51.545107,0.001662,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-21 01:30:00+00:00
+Vehicle search,2018-02-21T02:10:00+00:00,51.592207,-0.121034,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-21 02:10:00+00:00
+Vehicle search,2018-02-21T02:10:00+00:00,51.573998,-0.398876,,,Police and Criminal Evidence Act 1984 (section 1),Evidence of offences under the Act,A no further action disposal,,,2018-02-21 02:10:00+00:00
+Person and Vehicle search,2018-02-21T03:45:00+00:00,51.525401,-0.070591,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-21 03:45:00+00:00
+Person search,2018-02-21T04:00:00+00:00,51.547715,-0.117257,Male,,Police and Criminal Evidence Act 1984 (section 1),Articles for use in criminal damage,Arrest,,,2018-02-21 04:00:00+00:00
+Vehicle search,2018-02-21T11:00:00+00:00,51.627676,-0.12347,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-21 11:00:00+00:00
+Person search,2018-02-21T11:58:00+00:00,51.574807,-0.086005,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-21 11:58:00+00:00
+Person search,2018-02-21T12:45:00+00:00,51.541654,0.08077,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-21 12:45:00+00:00
+Person search,2018-02-21T13:15:00+00:00,51.53291,0.043056,Male,,Police and Criminal Evidence Act 1984 (section 1),Evidence of offences under the Act,A no further action disposal,,,2018-02-21 13:15:00+00:00
+Person search,2018-02-21T14:25:00+00:00,51.574807,-0.086005,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-21 14:25:00+00:00
+Person search,2018-02-21T14:55:00+00:00,51.531836,-0.105672,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-21 14:55:00+00:00
+Person and Vehicle search,2018-02-21T15:00:00+00:00,51.569352,-0.035585,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-21 15:00:00+00:00
+Person search,2018-02-21T16:00:00+00:00,51.40589,0.01539,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-21 16:00:00+00:00
+Person search,2018-02-21T16:10:00+00:00,51.54307,-0.131063,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,Arrest,,,2018-02-21 16:10:00+00:00
+Person search,2018-02-21T16:38:00+00:00,51.526086,0.030035,Male,,Police and Criminal Evidence Act 1984 (section 1),Evidence of offences under the Act,A no further action disposal,,,2018-02-21 16:38:00+00:00
+Person search,2018-02-21T17:03:00+00:00,51.483535,-0.104995,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-21 17:03:00+00:00
+Person search,2018-02-21T18:00:00+00:00,51.6395,-0.058699,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-21 18:00:00+00:00
+Vehicle search,2018-02-21T19:25:00+00:00,51.469372,-0.356497,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Arrest,,,2018-02-21 19:25:00+00:00
+Person search,2018-02-21T19:30:00+00:00,51.536279,-0.146827,Male,,Criminal Justice and Public Order Act 1994 (section 60),Anything to threaten or harm anyone,A no further action disposal,,,2018-02-21 19:30:00+00:00
+Person and Vehicle search,2018-02-21T22:00:00+00:00,51.534912,-0.138823,Male,,Criminal Justice and Public Order Act 1994 (section 60),Anything to threaten or harm anyone,A no further action disposal,,,2018-02-21 22:00:00+00:00
+Vehicle search,2018-02-21T22:00:00+00:00,51.546347,0.007024,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-21 22:00:00+00:00
+Person search,2018-02-21T22:12:00+00:00,51.539189,-0.142008,Male,,Criminal Justice and Public Order Act 1994 (section 60),Anything to threaten or harm anyone,A no further action disposal,,,2018-02-21 22:12:00+00:00
+Person and Vehicle search,2018-02-21T23:00:00+00:00,51.515546,-0.070056,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Arrest,,,2018-02-21 23:00:00+00:00
+Person search,2018-02-21T23:55:00+00:00,51.531972,-0.39715,Male,,Police and Criminal Evidence Act 1984 (section 1),Evidence of offences under the Act,A no further action disposal,,,2018-02-21 23:55:00+00:00
+Person search,2018-02-21T23:55:00+00:00,51.531972,-0.39715,Male,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,A no further action disposal,,,2018-02-21 23:55:00+00:00
+Vehicle search,2018-02-22T01:00:00+00:00,51.550556,-0.076191,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-22 01:00:00+00:00
+Person search,2018-02-22T01:00:00+00:00,51.509475,-0.146402,Male,,Police and Criminal Evidence Act 1984 (section 1),Evidence of offences under the Act,A no further action disposal,,,2018-02-22 01:00:00+00:00
+Person search,2018-02-22T01:30:00+00:00,51.517974,-0.127781,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-22 01:30:00+00:00
+Person search,2018-02-22T06:20:00+00:00,51.46488,-0.113053,Male,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,Arrest,,,2018-02-22 06:20:00+00:00
+Person and Vehicle search,2018-02-22T11:05:00+00:00,51.518973,-0.057068,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-22 11:05:00+00:00
+Person search,2018-02-22T16:15:00+00:00,51.409906,-0.303486,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-22 16:15:00+00:00
+Person search,2018-02-22T16:37:00+00:00,51.512763,-0.294969,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-22 16:37:00+00:00
+Person search,2018-02-22T17:00:00+00:00,51.373082,-0.100795,Male,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,A no further action disposal,,,2018-02-22 17:00:00+00:00
+Person search,2018-02-22T17:17:00+00:00,51.414037,-0.124337,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-22 17:17:00+00:00
+Person and Vehicle search,2018-02-22T20:10:00+00:00,51.484737,-0.09204,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-22 20:10:00+00:00
+Person search,2018-02-22T20:53:00+00:00,51.530777,-0.132129,Male,,Criminal Justice and Public Order Act 1994 (section 60),Anything to threaten or harm anyone,A no further action disposal,,,2018-02-22 20:53:00+00:00
+Person search,2018-02-22T20:53:00+00:00,51.531514,-0.132099,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-22 20:53:00+00:00
+Person search,2018-02-22T21:05:00+00:00,51.530777,-0.132129,Male,,Criminal Justice and Public Order Act 1994 (section 60),Anything to threaten or harm anyone,A no further action disposal,,,2018-02-22 21:05:00+00:00
+Person search,2018-02-22T21:24:00+00:00,51.554202,-0.145133,Male,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,A no further action disposal,,,2018-02-22 21:24:00+00:00
+Person search,2018-02-22T21:30:00+00:00,51.550996,-0.156817,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-22 21:30:00+00:00
+Vehicle search,2018-02-22T22:42:00+00:00,51.555995,-0.211417,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-22 22:42:00+00:00
+Person search,2018-02-23T00:05:00+00:00,51.583279,-0.072875,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-23 00:05:00+00:00
+Person search,2018-02-23T00:10:00+00:00,51.574807,-0.086005,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-23 00:10:00+00:00
+Vehicle search,2018-02-23T01:20:00+00:00,51.455955,-1e-05,,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-23 01:20:00+00:00
+Person search,2018-02-23T01:40:00+00:00,51.538109,-0.14198,Male,,Criminal Justice and Public Order Act 1994 (section 60),Anything to threaten or harm anyone,A no further action disposal,,,2018-02-23 01:40:00+00:00
+Vehicle search,2018-02-23T03:12:00+00:00,51.487136,0.083473,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-23 03:12:00+00:00
+Person search,2018-02-23T08:30:00+00:00,51.570081,-0.003143,Male,,Police and Criminal Evidence Act 1984 (section 1),Evidence of offences under the Act,A no further action disposal,,,2018-02-23 08:30:00+00:00
+Person search,2018-02-23T08:30:00+00:00,51.570081,-0.003143,Male,,Police and Criminal Evidence Act 1984 (section 1),Fireworks,A no further action disposal,,,2018-02-23 08:30:00+00:00
+Person search,2018-02-23T10:45:00+00:00,51.549938,-0.111209,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-23 10:45:00+00:00
+Person search,2018-02-23T15:20:00+00:00,51.563038,-0.322969,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-23 15:20:00+00:00
+Person and Vehicle search,2018-02-23T16:15:00+00:00,51.533527,-0.131454,Male,,Criminal Justice and Public Order Act 1994 (section 60),Anything to threaten or harm anyone,A no further action disposal,,,2018-02-23 16:15:00+00:00
+Person search,2018-02-23T17:00:00+00:00,51.557527,-0.299975,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-23 17:00:00+00:00
+Person and Vehicle search,2018-02-23T19:45:00+00:00,51.482541,-0.093572,Male,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,A no further action disposal,,,2018-02-23 19:45:00+00:00
+Person search,2018-02-23T21:00:00+00:00,51.549357,-0.205403,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Arrest,,,2018-02-23 21:00:00+00:00
+Person search,2018-02-23T21:27:00+00:00,51.5156,-0.357673,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-23 21:27:00+00:00
+Person search,2018-02-23T22:00:00+00:00,51.539189,-0.142008,Male,,Criminal Justice and Public Order Act 1994 (section 60),Anything to threaten or harm anyone,A no further action disposal,,,2018-02-23 22:00:00+00:00
+Person search,2018-02-23T22:25:00+00:00,51.578657,0.178947,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-23 22:25:00+00:00
+Person search,2018-02-23T22:35:00+00:00,51.551643,-0.249609,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-23 22:35:00+00:00
+Person search,2018-02-23T22:45:00+00:00,51.477226,-0.058497,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-23 22:45:00+00:00
+Person search,2018-02-23T23:00:00+00:00,51.598308,-0.091226,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-23 23:00:00+00:00
+Vehicle search,2018-02-24T00:00:00+00:00,51.563231,-0.060131,,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-24 00:00:00+00:00
+Person search,2018-02-24T00:10:00+00:00,51.550097,-0.135217,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-24 00:10:00+00:00
+Vehicle search,2018-02-24T00:20:00+00:00,51.484632,-0.173566,,,Police and Criminal Evidence Act 1984 (section 1),,Arrest,,,2018-02-24 00:20:00+00:00
+Vehicle search,2018-02-24T00:20:00+00:00,51.484632,-0.173566,,,Police and Criminal Evidence Act 1984 (section 1),Evidence of offences under the Act,Arrest,,,2018-02-24 00:20:00+00:00
+Person and Vehicle search,2018-02-24T00:40:00+00:00,51.575155,0.070394,Male,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,A no further action disposal,,,2018-02-24 00:40:00+00:00
+Vehicle search,2018-02-24T00:44:00+00:00,51.565979,-0.019541,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-24 00:44:00+00:00
+Person and Vehicle search,2018-02-24T00:45:00+00:00,51.565979,-0.019541,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-24 00:45:00+00:00
+Person search,2018-02-24T00:51:00+00:00,51.374219,-0.096049,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-24 00:51:00+00:00
+Person search,2018-02-24T01:00:00+00:00,51.54408,-0.151082,Male,,Criminal Justice and Public Order Act 1994 (section 60),Anything to threaten or harm anyone,A no further action disposal,,,2018-02-24 01:00:00+00:00
+Person search,2018-02-24T02:10:00+00:00,51.54408,-0.151082,Male,,Criminal Justice and Public Order Act 1994 (section 60),Anything to threaten or harm anyone,Arrest,,,2018-02-24 02:10:00+00:00
+Person search,2018-02-24T03:31:00+00:00,51.554181,-0.007316,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-24 03:31:00+00:00
+Person search,2018-02-24T04:15:00+00:00,51.525853,-0.143748,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-24 04:15:00+00:00
+Person and Vehicle search,2018-02-24T04:30:00+00:00,51.480946,-0.357175,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-24 04:30:00+00:00
+Person search,2018-02-24T05:30:00+00:00,51.510953,-0.133012,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-24 05:30:00+00:00
+Person search,2018-02-24T08:20:00+00:00,51.589302,-0.001275,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-24 08:20:00+00:00
+Person search,2018-02-24T12:52:00+00:00,51.558923,0.075009,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-24 12:52:00+00:00
+Person search,2018-02-24T14:39:00+00:00,51.495812,-0.097312,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-24 14:39:00+00:00
+Person search,2018-02-24T19:50:00+00:00,51.560573,-0.253263,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-24 19:50:00+00:00
+Vehicle search,2018-02-24T19:50:00+00:00,51.542631,0.129517,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-24 19:50:00+00:00
+Person search,2018-02-24T21:10:00+00:00,51.514509,-0.189449,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-24 21:10:00+00:00
+Person search,2018-02-24T22:15:00+00:00,51.526315,0.11679,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-24 22:15:00+00:00
+Person search,2018-02-24T23:30:00+00:00,51.506744,-0.245956,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-24 23:30:00+00:00
+Person and Vehicle search,2018-02-25T00:50:00+00:00,51.551769,-0.296035,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-25 00:50:00+00:00
+Person and Vehicle search,2018-02-25T00:50:00+00:00,51.551769,-0.296035,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-25 00:50:00+00:00
+Person and Vehicle search,2018-02-25T00:55:00+00:00,51.551769,-0.296035,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-25 00:55:00+00:00
+Vehicle search,2018-02-25T03:10:00+00:00,51.477618,-0.039356,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Arrest,,,2018-02-25 03:10:00+00:00
+Vehicle search,2018-02-25T08:30:00+00:00,51.597019,-0.101517,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-25 08:30:00+00:00
+Vehicle search,2018-02-25T11:38:00+00:00,51.547854,-0.249365,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-25 11:38:00+00:00
+Vehicle search,2018-02-25T13:16:00+00:00,51.516038,-0.436464,,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,A no further action disposal,,,2018-02-25 13:16:00+00:00
+Vehicle search,2018-02-25T14:40:00+00:00,51.515138,-0.165673,,,Firearms Act 1968 (section 47),Firearms,A no further action disposal,,,2018-02-25 14:40:00+00:00
+Person search,2018-02-25T16:10:00+00:00,51.512767,-0.12834,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-25 16:10:00+00:00
+Person search,2018-02-25T17:37:00+00:00,51.504416,-0.199187,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-25 17:37:00+00:00
+Person search,2018-02-25T20:45:00+00:00,51.505878,-0.274289,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-25 20:45:00+00:00
+Person search,2018-02-25T22:15:00+00:00,51.481498,-0.044418,Male,,Police and Criminal Evidence Act 1984 (section 1),Evidence of offences under the Act,A no further action disposal,,,2018-02-25 22:15:00+00:00
+Person search,2018-02-26T00:55:00+00:00,51.464881,0.101017,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-26 00:55:00+00:00
+Person search,2018-02-26T00:55:00+00:00,51.591615,-0.102695,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-26 00:55:00+00:00
+Person search,2018-02-26T04:00:00+00:00,51.487479,-0.118703,Male,,Police and Criminal Evidence Act 1984 (section 1),Evidence of offences under the Act,A no further action disposal,,,2018-02-26 04:00:00+00:00
+Person and Vehicle search,2018-02-26T12:40:00+00:00,51.565704,0.06425,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-26 12:40:00+00:00
+Person and Vehicle search,2018-02-26T12:40:00+00:00,51.568633,0.123373,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-26 12:40:00+00:00
+Person search,2018-02-26T12:50:00+00:00,51.431839,0.046744,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-26 12:50:00+00:00
+Person and Vehicle search,2018-02-26T13:00:00+00:00,51.522345,-0.204346,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-26 13:00:00+00:00
+Person and Vehicle search,2018-02-26T13:26:00+00:00,51.537922,-0.007305,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-26 13:26:00+00:00
+Person search,2018-02-26T13:35:00+00:00,51.468042,-0.073587,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-26 13:35:00+00:00
+Person search,2018-02-26T13:40:00+00:00,51.468042,-0.073587,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-26 13:40:00+00:00
+Person search,2018-02-26T15:50:00+00:00,51.435931,-0.196371,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-26 15:50:00+00:00
+Person search,2018-02-26T15:50:00+00:00,51.435931,-0.196371,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-26 15:50:00+00:00
+Person and Vehicle search,2018-02-26T16:45:00+00:00,51.548066,0.01584,Female,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-26 16:45:00+00:00
+Person search,2018-02-26T16:50:00+00:00,51.451805,-0.007675,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-26 16:50:00+00:00
+Person search,2018-02-26T17:05:00+00:00,51.451066,-0.006513,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-26 17:05:00+00:00
+Person search,2018-02-26T17:15:00+00:00,51.571556,-0.101193,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Arrest,,,2018-02-26 17:15:00+00:00
+Person search,2018-02-26T17:25:00+00:00,51.399954,0.016969,Male,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,Arrest,,,2018-02-26 17:25:00+00:00
+Person search,2018-02-26T17:50:00+00:00,51.518492,-0.216432,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-26 17:50:00+00:00
+Person search,2018-02-26T20:03:00+00:00,51.409612,-0.137847,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-26 20:03:00+00:00
+Vehicle search,2018-02-26T20:15:00+00:00,51.525788,-0.482476,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Arrest,,,2018-02-26 20:15:00+00:00
+Person search,2018-02-26T21:00:00+00:00,51.409612,-0.137847,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-26 21:00:00+00:00
+Person search,2018-02-26T21:45:00+00:00,51.463466,-0.01068,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-26 21:45:00+00:00
+Person and Vehicle search,2018-02-27T03:00:00+00:00,51.609474,-0.061973,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-27 03:00:00+00:00
+Person and Vehicle search,2018-02-27T03:34:00+00:00,51.609474,-0.061973,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-27 03:34:00+00:00
+Person search,2018-02-27T11:10:00+00:00,51.588886,-0.015456,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-27 11:10:00+00:00
+Vehicle search,2018-02-27T11:44:00+00:00,51.492862,-0.07803,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-27 11:44:00+00:00
+Vehicle search,2018-02-27T12:05:00+00:00,51.48189,-0.01479,Male,,Police and Criminal Evidence Act 1984 (section 1),,Arrest,,,2018-02-27 12:05:00+00:00
+Person search,2018-02-27T12:30:00+00:00,51.462755,-0.364335,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-27 12:30:00+00:00
+Vehicle search,2018-02-27T14:15:00+00:00,51.438398,0.152983,Male,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,A no further action disposal,,,2018-02-27 14:15:00+00:00
+Person search,2018-02-27T14:30:00+00:00,51.363587,0.111892,Male,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,A no further action disposal,,,2018-02-27 14:30:00+00:00
+Person search,2018-02-27T15:00:00+00:00,51.430727,-0.037581,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-27 15:00:00+00:00
+Vehicle search,2018-02-27T15:00:00+00:00,51.469683,-0.362662,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Arrest,,,2018-02-27 15:00:00+00:00
+Vehicle search,2018-02-27T15:20:00+00:00,51.48043,-0.19368,,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,A no further action disposal,,,2018-02-27 15:20:00+00:00
+Person and Vehicle search,2018-02-27T17:15:00+00:00,51.504515,-0.215062,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Arrest,,,2018-02-27 17:15:00+00:00
+Person search,2018-02-27T17:30:00+00:00,51.559059,-0.284756,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-27 17:30:00+00:00
+Person search,2018-02-27T17:40:00+00:00,51.559059,-0.284756,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-27 17:40:00+00:00
+Person search,2018-02-27T17:50:00+00:00,51.402344,-0.002853,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-27 17:50:00+00:00
+Person search,2018-02-27T19:20:00+00:00,51.48148,-0.025652,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-27 19:20:00+00:00
+Person search,2018-02-27T19:30:00+00:00,51.456116,-0.126743,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-27 19:30:00+00:00
+Person search,2018-02-27T19:35:00+00:00,51.581033,-0.026508,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-27 19:35:00+00:00
+Person search,2018-02-27T20:47:00+00:00,51.516701,-0.18524,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-27 20:47:00+00:00
+Person search,2018-02-27T22:40:00+00:00,51.51963,-0.031196,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-27 22:40:00+00:00
+Person search,2018-02-27T22:45:00+00:00,51.58359,-0.094657,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-27 22:45:00+00:00
+Person search,2018-02-28T01:50:00+00:00,51.435001,-0.149951,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-28 01:50:00+00:00
+Person search,2018-02-28T02:48:00+00:00,51.510004,-0.07323,Male,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,A no further action disposal,,,2018-02-28 02:48:00+00:00
+Person search,2018-02-28T03:36:00+00:00,51.482264,-0.184375,Male,,Police and Criminal Evidence Act 1984 (section 1),Evidence of offences under the Act,A no further action disposal,,,2018-02-28 03:36:00+00:00
+Vehicle search,2018-02-28T08:30:00+00:00,51.540628,-0.234616,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-28 08:30:00+00:00
+Vehicle search,2018-02-28T09:47:00+00:00,51.419842,-0.078592,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-28 09:47:00+00:00
+Person search,2018-02-28T12:00:00+00:00,51.492773,-0.163934,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Arrest,,,2018-02-28 12:00:00+00:00
+Person search,2018-02-28T15:00:00+00:00,51.574807,-0.086005,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-28 15:00:00+00:00
+Person search,2018-02-28T16:09:00+00:00,51.54187,-0.002028,Male,,Police and Criminal Evidence Act 1984 (section 1),Stolen goods,A no further action disposal,,,2018-02-28 16:09:00+00:00
+Person search,2018-02-28T16:45:00+00:00,51.402601,0.018854,Male,,Police and Criminal Evidence Act 1984 (section 1),Offensive weapons,A no further action disposal,,,2018-02-28 16:45:00+00:00
+Person search,2018-02-28T16:50:00+00:00,51.406883,-0.0649,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-28 16:50:00+00:00
+Person search,2018-02-28T17:00:00+00:00,51.362644,-0.145255,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-28 17:00:00+00:00
+Vehicle search,2018-02-28T23:37:00+00:00,51.54408,-0.151082,,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,A no further action disposal,,,2018-02-28 23:37:00+00:00

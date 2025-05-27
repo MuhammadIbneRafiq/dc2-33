@@ -1,0 +1,14 @@
+Type,Date,Latitude,Longitude,Gender,Age range,Legislation,Object of search,Outcome,Outcome linked to object of search,Removal of more than just outer clothing,datetime
+Person search,2016-05-31T23:01:00+00:00,51.455989,-0.043536,Male,10-17,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Nothing found - no further action,,,2016-05-31 23:01:00+00:00
+Person and Vehicle search,2016-05-31T23:05:00+00:00,51.475561,-0.07533,Male,,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Nothing found - no further action,,,2016-05-31 23:05:00+00:00
+Person search,2016-05-31T23:07:00+00:00,51.53303,-0.203277,Male,18-24,Police and Criminal Evidence Act 1984 (section 1),Articles for use in criminal damage,Nothing found - no further action,,,2016-05-31 23:07:00+00:00
+Person search,2016-05-31T23:10:00+00:00,51.553184,-0.176043,Male,18-24,Police and Criminal Evidence Act 1984 (section 1),Articles for use in criminal damage,Nothing found - no further action,,,2016-05-31 23:10:00+00:00
+Person search,2016-05-31T23:10:00+00:00,51.553184,-0.176043,Female,18-24,Police and Criminal Evidence Act 1984 (section 1),Articles for use in criminal damage,Nothing found - no further action,,,2016-05-31 23:10:00+00:00
+Person search,2016-05-31T23:12:00+00:00,51.533658,-0.20021,Male,18-24,Police and Criminal Evidence Act 1984 (section 1),Articles for use in criminal damage,Nothing found - no further action,,,2016-05-31 23:12:00+00:00
+Person and Vehicle search,2016-05-31T23:15:00+00:00,51.526474,0.166218,Male,25-34,Police and Criminal Evidence Act 1984 (section 1),Articles for use in criminal damage,Nothing found - no further action,,,2016-05-31 23:15:00+00:00
+Person search,2016-05-31T23:15:00+00:00,51.526474,0.166218,Male,18-24,Police and Criminal Evidence Act 1984 (section 1),Articles for use in criminal damage,Nothing found - no further action,,,2016-05-31 23:15:00+00:00
+Person search,2016-05-31T23:15:00+00:00,51.526474,0.166218,Male,25-34,Police and Criminal Evidence Act 1984 (section 1),Articles for use in criminal damage,Nothing found - no further action,,,2016-05-31 23:15:00+00:00
+Person and Vehicle search,2016-05-31T23:20:00+00:00,51.559077,-0.46938,Male,10-17,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Nothing found - no further action,,,2016-05-31 23:20:00+00:00
+Person and Vehicle search,2016-05-31T23:25:00+00:00,51.435698,-0.004938,Male,18-24,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Offender given drugs possession warning,,,2016-05-31 23:25:00+00:00
+Person search,2016-05-31T23:35:00+00:00,51.491844,0.031467,Male,10-17,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Nothing found - no further action,,,2016-05-31 23:35:00+00:00
+Person and Vehicle search,2016-05-31T23:38:00+00:00,51.464897,-0.117472,Male,25-34,Misuse of Drugs Act 1971 (section 23),Controlled drugs,Nothing found - no further action,,,2016-05-31 23:38:00+00:00
