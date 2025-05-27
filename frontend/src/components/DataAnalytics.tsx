@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { 
   LineChart, Line, BarChart, Bar, PieChart, Pie, Cell,
@@ -7,6 +6,27 @@ import {
 } from 'recharts';
 import { motion } from 'framer-motion';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
+// Define props interface
+interface LsoaWellbeingData {
+  lsoa_code: string;
+  lsoa_name?: string; // Or 'name' as per Dashboard.tsx useQuery for lsoaData
+  imd_score?: number;
+  income_score?: number;
+  employment_score?: number;
+  education_score?: number;
+  health_score?: number;
+  crime_score?: number;
+  housing_score?: number;
+  living_environment_score?: number;
+  // Add other properties from your backend's LSOA wellbeing data structure
+}
+
+interface DataAnalyticsProps {
+  selectedLsoaCode: string | null;
+  lsoaWellbeingData: LsoaWellbeingData | null;
+  isLoadingLsoaData: boolean;
+}
 
 const burglaryHistoricalData = [
   { month: 'Jan', actual: 823, predicted: 845 },
@@ -76,17 +96,57 @@ const reducedBurglaries = [
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8'];
 
-const DataAnalytics: React.FC = () => {
+const DataAnalytics: React.FC<DataAnalyticsProps> = ({ 
+  selectedLsoaCode,
+  lsoaWellbeingData,
+  isLoadingLsoaData 
+}) => {
   const [activeTab, setActiveTab] = useState('forecast');
 
+  // Determine title based on selected LSOA
+  const analyticsTitle = selectedLsoaCode 
+    ? `Analytics for ${lsoaWellbeingData?.lsoa_name || selectedLsoaCode}` 
+    : "Overall London Burglary Analytics";
+
   return (
-    <div className="p-6">
+    <div className="p-6 bg-gray-800/70 rounded-xl border border-gray-700/50 shadow-lg">
       <motion.div 
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <h2 className="text-2xl font-bold text-white mb-6">Residential Burglary Analytics</h2>
+        <h2 className="text-2xl font-bold text-white mb-6">{analyticsTitle}</h2>
+
+        {isLoadingLsoaData && selectedLsoaCode && (
+          <div className="text-center text-white py-4">
+            <p>Loading wellbeing data for {selectedLsoaCode}...</p>
+            {/* You can add a spinner here */}
+          </div>
+        )}
+
+        {!isLoadingLsoaData && selectedLsoaCode && !lsoaWellbeingData && (
+          <div className="text-center text-orange-400 py-4">
+            <p>No wellbeing data found for {selectedLsoaCode}.</p>
+          </div>
+        )}
+
+        {/* TODO: Integrate lsoaWellbeingData into the charts below */}
+        {/* For example, the 'Risk Factors' tab could display IMD scores */}
+        {selectedLsoaCode && lsoaWellbeingData && (
+          <div className="mb-6 p-4 bg-gray-900/50 rounded-lg">
+            <h3 className="text-lg font-semibold text-blue-300 mb-2">Wellbeing Scores for {lsoaWellbeingData.lsoa_name || selectedLsoaCode}:</h3>
+            <ul className="grid grid-cols-2 gap-x-4 gap-y-1 text-sm">
+              {lsoaWellbeingData.imd_score && <li>IMD Score: <span className="font-semibold text-white">{lsoaWellbeingData.imd_score.toFixed(2)}</span></li>}
+              {lsoaWellbeingData.income_score && <li>Income Score: <span className="font-semibold text-white">{lsoaWellbeingData.income_score.toFixed(2)}</span></li>}
+              {lsoaWellbeingData.employment_score && <li>Employment: <span className="font-semibold text-white">{lsoaWellbeingData.employment_score.toFixed(2)}</span></li>}
+              {lsoaWellbeingData.education_score && <li>Education: <span className="font-semibold text-white">{lsoaWellbeingData.education_score.toFixed(2)}</span></li>}
+              {lsoaWellbeingData.health_score && <li>Health Score: <span className="font-semibold text-white">{lsoaWellbeingData.health_score.toFixed(2)}</span></li>}
+              {lsoaWellbeingData.crime_score && <li>Crime Score: <span className="font-semibold text-white">{lsoaWellbeingData.crime_score.toFixed(2)}</span></li>}
+              {lsoaWellbeingData.housing_score && <li>Housing Score: <span className="font-semibold text-white">{lsoaWellbeingData.housing_score.toFixed(2)}</span></li>}
+              {lsoaWellbeingData.living_environment_score && <li>Environment: <span className="font-semibold text-white">{lsoaWellbeingData.living_environment_score.toFixed(2)}</span></li>}
+            </ul>
+          </div>
+        )}
 
         <Tabs defaultValue="forecast" onValueChange={setActiveTab} className="w-full">
           <TabsList className="mb-6 w-full grid grid-cols-2 lg:grid-cols-4 bg-gray-800 p-1 rounded-md">

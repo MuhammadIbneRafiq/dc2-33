@@ -131,6 +131,28 @@ const Dashboard = () => {
     retryDelay: 1000
   });
   
+  // Fetch Burglary Time Series Data
+  const { 
+    data: timeSeriesData, 
+    isLoading: isLoadingTimeSeries,
+    error: errorTimeSeries,
+  } = useQuery({
+    queryKey: ['burglaryTimeSeries', selectedLSOA, dateRange, numPoints], // Include numPoints if it affects API call
+    queryFn: async () => {
+      // Determine the number of days for historical data based on numPoints or dateRange[0]
+      // The API might expect 'days' or a similar parameter.
+      // For now, let's assume numPoints dictates the length of historical data requested.
+      // Adjust the 'days' parameter based on your API's expectation.
+      const daysToFetch = dateRange[0] || numPoints; // Example logic, adjust as needed
+      return api.burglary.getTimeSeries({ 
+        lsoa_code: selectedLSOA || undefined, // Pass LSOA code if selected
+        days: daysToFetch // Or another relevant parameter like 'limit' or 'count'
+      });
+    },
+    enabled: true, // Fetch whenever key parameters change
+    retry: 1,
+  });
+  
   // Handle LSOA selection
   const handleLSOASelect = (lsoa: string) => {
     setSelectedLSOA(lsoa);
@@ -185,30 +207,51 @@ const Dashboard = () => {
   
   // Create a time series visualization component at the bottom of the map
   const renderTimeSeriesPanel = () => {
-    const historyDays = Math.min(dateRange[0], numPoints);
-    const futureDays = Math.min(dateRange[1], Math.floor(numPoints / 4)); // Limit future points for clarity
-    // Generate mock historical data
-    const historicalPoints = Array.from({ length: historyDays }, (_, i) => ({
-      date: new Date(Date.now() - (historyDays - i) * 24 * 60 * 60 * 1000),
-      value: Math.floor(15 + Math.random() * 25)
-    }));
-    // Generate mock forecast data
-    const forecastPoints = Array.from({ length: futureDays }, (_, i) => {
-      let baseValue = 20;
-      if (predictionModel === 'sarima') {
-        baseValue = 20 + 5 * Math.sin(i / 3);
-      } else if (predictionModel === 'lstm') {
-        baseValue = 22 - i * 0.3;
-      } else {
-        baseValue = 18 + i * 0.2;
-      }
-      return {
-        date: new Date(Date.now() + i * 24 * 60 * 60 * 1000),
-        value: Math.floor(baseValue + Math.random() * 4)
-      };
-    });
+    // Use fetched timeSeriesData and forecastData
+    const historicalPoints = timeSeriesData?.time_series 
+      ? timeSeriesData.time_series.map((p: any) => ({
+          date: new Date(p.date), // Assuming p.date is a string like 'YYYY-MM-DD' or timestamp
+          value: p.burglary_count,
+        }))
+      : [];
+
+    // The forecastData useQuery is already defined above, let's use its result
+    // It's fetched based on selectedLSOA.
+    const forecastApiValues = forecastData?.forecast; // Array of numbers
+    const forecastApiDates = forecastData?.dates;   // Array of date strings like 'YYYY-MM'
+
+    let forecastPoints: { date: Date; value: number }[] = [];
+    if (showPredictions && forecastApiValues && forecastApiDates) {
+      forecastPoints = forecastApiValues.map((val: number, index: number) => ({
+        date: new Date(forecastApiDates[index]), // Ensure dates are parsed correctly
+        value: val,
+      }));
+    }
+    
     // Combine for line chart
     const allPoints = [...historicalPoints, ...forecastPoints];
+
+    if (isLoadingTimeSeries) {
+      return (
+        <div className="mt-6 bg-gray-800/70 rounded-xl border border-gray-700/50 p-4 shadow-lg text-center text-white">
+          Loading Time Series Data...
+        </div>
+      );
+    }
+    if (errorTimeSeries) {
+      return (
+        <div className="mt-6 bg-red-700/70 rounded-xl border border-red-600/50 p-4 shadow-lg text-center text-white">
+          Error loading time series: {(errorTimeSeries as Error).message}
+        </div>
+      );
+    }
+    if (allPoints.length === 0) {
+      return (
+        <div className="mt-6 bg-gray-800/70 rounded-xl border border-gray-700/50 p-4 shadow-lg text-center text-white">
+          No time series data available for the current selection.
+        </div>
+      );
+    }
     // SVG line chart dimensions
     const width = 600;
     const height = 220;
@@ -363,390 +406,45 @@ const Dashboard = () => {
     switch (activeView) {
       case 'dashboard':
         return (
-          <div className="p-6">
-            <h1 className="text-2xl font-bold text-white mb-6">
-              <span className="mr-2">📊</span>
-              London Residential Burglary Overview
-            </h1>
-            
-            {/* Summary Stats Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-              <div className="bg-gray-800/70 rounded-xl border border-gray-700/50 p-4 shadow-lg">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h3 className="text-sm text-gray-400 mb-1">Total Burglaries</h3>
-                    <p className="text-2xl font-bold text-white">3,487</p>
-                    <p className="text-xs text-gray-400 mt-1">Last 30 days</p>
-                  </div>
-                  <div className="bg-blue-500/20 p-2 rounded-lg">
-                    <FileBarChart className="text-blue-400" size={20} />
-                  </div>
-                </div>
-                <div className="flex items-center mt-3">
-                  <ArrowDown className="text-green-400 mr-1" size={14} />
-                  <span className="text-green-400 text-sm font-medium">8.5%</span>
-                  <span className="text-xs text-gray-400 ml-2">from previous period</span>
-                </div>
-              </div>
-              
-              <div className="bg-gray-800/70 rounded-xl border border-gray-700/50 p-4 shadow-lg">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h3 className="text-sm text-gray-400 mb-1">High Risk Areas</h3>
-                    <p className="text-2xl font-bold text-white">126</p>
-                    <p className="text-xs text-gray-400 mt-1">Out of 633 total areas</p>
-                  </div>
-                  <div className="bg-red-500/20 p-2 rounded-lg">
-                    <AlertTriangle className="text-red-400" size={20} />
-                  </div>
-                </div>
-                <div className="flex items-center mt-3">
-                  <ArrowDown className="text-green-400 mr-1" size={14} />
-                  <span className="text-green-400 text-sm font-medium">2.3%</span>
-                  <span className="text-xs text-gray-400 ml-2">from previous period</span>
-                </div>
-              </div>
-              
-              <div className="bg-gray-800/70 rounded-xl border border-gray-700/50 p-4 shadow-lg">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h3 className="text-sm text-gray-400 mb-1">Deployed Officers</h3>
-                    <p className="text-2xl font-bold text-white">{showPoliceAllocation ? "147" : "0"}</p>
-                    <p className="text-xs text-gray-400 mt-1">Across hotspot areas</p>
-                  </div>
-                  <div className="bg-purple-500/20 p-2 rounded-lg">
-                    <Shield className="text-purple-400" size={20} />
-                  </div>
-                </div>
-                <div className="flex items-center mt-3">
-                  <span className={`text-xs ${showPoliceAllocation ? 'text-blue-400' : 'text-gray-400'} ml-2`}>
-                    {showPoliceAllocation ? "Resource allocation active" : "Not currently deployed"}
-                  </span>
-                </div>
-              </div>
-              
-              <div className="bg-gray-800/70 rounded-xl border border-gray-700/50 p-4 shadow-lg">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h3 className="text-sm text-gray-400 mb-1">Projected Reduction</h3>
-                    <p className="text-2xl font-bold text-white">{showPoliceAllocation ? "32%" : "0%"}</p>
-                    <p className="text-xs text-gray-400 mt-1">Potential with current allocation</p>
-                  </div>
-                  <div className="bg-green-500/20 p-2 rounded-lg">
-                    <TrendingUp className="text-green-400" size={20} />
-                  </div>
-                </div>
-                <div className="flex items-center mt-3">
-                  {showPoliceAllocation ? (
-                    <span className="text-xs text-green-400">
-                      EMMIE-based optimization active
-                    </span>
-                  ) : (
-                    <span className="text-xs text-gray-400">
-                      Enable resource allocation to see projections
-                    </span>
-                  )}
-                </div>
-              </div>
-            </div>
-            
-            {/* Main Dashboard Content */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <div className="lg:col-span-2 bg-gray-800/70 rounded-xl border border-gray-700/50 p-4 shadow-lg overflow-hidden">
-                <h3 className="text-lg font-semibold text-white mb-4">London Burglary Risk Map</h3>
-                <div className="h-[50vh]">
-                  <MapComponent 
-                    onLSOASelect={handleLSOASelect}
-                    showPoliceAllocation={showPoliceAllocation}
-                    selectedLSOA={selectedLSOA}
-                    policeAllocationData={policeAllocationData}
-                    showPredictions={showPredictions}
-                    predictionModel={predictionModel}
-                    dateRange={dateRange}
-                  />
-                </div>
-                
-                {/* Add the time series visualization below the map */}
-                {renderTimeSeriesPanel()}
-                
-                <div className="flex items-center space-x-4 mt-4 p-2 bg-gray-900/50 rounded-lg">
-                  <div className="flex items-center space-x-2">
-                    <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                    <span className="text-sm text-gray-300">High Risk</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                    <span className="text-sm text-gray-300">Medium Risk</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                    <span className="text-sm text-gray-300">Low Risk</span>
-                  </div>
-                  {showPoliceAllocation && (
-                    <div className="flex items-center space-x-2">
-                      <div className="w-3 h-3 rounded-full bg-blue-500"></div>
-                      <span className="text-sm text-gray-300">Police Units</span>
-                    </div>
-                  )}
-                </div>
-              </div>
-              
-              <div className="flex flex-col gap-6">
-                <div className="bg-gray-800/70 rounded-xl border border-gray-700/50 p-4 shadow-lg">
-                  <h3 className="text-lg font-semibold text-white mb-4">Resource Allocation</h3>
-                  <div className="mb-4">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm text-gray-400">Allocation Status</span>
-                      <div className="flex items-center">
-                        <div 
-                          className={`h-2 w-2 rounded-full mr-2 ${showPoliceAllocation ? 'bg-green-500' : 'bg-gray-500'}`}
-                        ></div>
-                        <span className={`text-sm ${showPoliceAllocation ? 'text-green-400' : 'text-gray-400'}`}>
-                          {showPoliceAllocation ? 'Active' : 'Inactive'}
-                        </span>
-                      </div>
-                    </div>
-                    <Button 
-                      variant={showPoliceAllocation ? "default" : "outline"} 
-                      className="w-full" 
-                      onClick={handleTogglePoliceAllocation}
-                    >
-                      {showPoliceAllocation ? 'Disable Allocation' : 'Enable Resource Allocation'}
-                    </Button>
-                  </div>
-                  
-                  {showPoliceAllocation && (
-                    <div className="mt-4">
-                      <div className="grid grid-cols-2 gap-2 mb-4">
-                        <div className="bg-gray-900/50 p-2 rounded-lg">
-                          <p className="text-xs text-gray-400">Allocation Method</p>
-                          <p className="text-sm text-white">CPTED Principles</p>
-                        </div>
-                        <div className="bg-gray-900/50 p-2 rounded-lg">
-                          <p className="text-xs text-gray-400">Coverage</p>
-                          <p className="text-sm text-white">Police deployment based on environmental risk factors</p>
-                        </div>
-                      </div>
-                      <div className="bg-blue-500/10 text-blue-300 p-3 rounded-md text-xs border border-blue-500/20">
-                        <p>
-                          Police resources are now allocated using CPTED (Crime Prevention Through Environmental Design) strategies. Officers are deployed to maximize natural surveillance, reinforce territoriality, control access, support positive activity, and maintain safe environments in high-risk areas.
-                        </p>
-                      </div>
-                    </div>
-                  )}
-                </div>
-                
-                {/* Crime Prediction Panel */}
-                <div className="bg-gray-800/70 rounded-xl border border-gray-700/50 p-4 shadow-lg">
-                  <h3 className="text-lg font-semibold text-white mb-4">Crime Prediction</h3>
-                  
-                  <div className="mb-4">
-                    <label className="text-sm text-gray-400 block mb-2">Prediction Model</label>
-                    <select 
-                      className="w-full bg-gray-700/80 text-white text-sm rounded-md border border-gray-600 px-3 py-2"
-                      defaultValue="sdgcn"
-                      onChange={handleModelChange}
-                    >
-                      <option value="lstm-gcn">LSTM-GCN (Spatial-Temporal)</option>
-                      <option value="sdgcn">SDGCN (Social-Economic)</option>
-                      <option value="sarima">SARIMA (Seasonal)</option>
-                    </select>
-                    <p className="mt-2 text-xs text-gray-400">
-                      {predictionModel === 'lstm-gcn' && 
-                        "Using socioeconomic factors: income, housing, education, health"
-                      }
-                      {predictionModel === 'sdgcn' && 
-                        "Using socioeconomic factors: income, employment, education, crime density"
-                      }
-                      {predictionModel === 'sarima' && 
-                        "Using time series data only (no socioeconomic factors)"
-                      }
-                    </p>
-                  </div>
-                  
-                  <div className="mt-2 p-2 bg-indigo-900/30 border border-indigo-700/30 rounded-md mb-4">
-                    <div className="text-xs text-indigo-300">
-                      {predictionModel === 'lstm-gcn' && (
-                        <span className="font-semibold">LSTM-GCN:</span>
-                      )}
-                      {predictionModel === 'sdgcn' && (
-                        <span className="font-semibold">SDGCN:</span>
-                      )}
-                      {predictionModel === 'sarima' && (
-                        <span className="font-semibold">SARIMA:</span>
-                      )}
-                      {' '}
-                      {predictionModel === 'lstm-gcn' && 
-                        "Long Short-Term Memory with Graph Convolutional Networks. Combines temporal patterns with spatial relationships."
-                      }
-                      {predictionModel === 'sdgcn' && 
-                        "Socioeconomic Dynamic Graph Convolutional Network. Integrates socioeconomic indicators with spatio-temporal crime data."
-                      }
-                      {predictionModel === 'sarima' && 
-                        "Seasonal AutoRegressive Integrated Moving Average. Captures seasonal patterns in historical crime data."
-                      }
-                    </div>
-                  </div>
-                  
-                  <Button 
-                    variant="default"
-                    className={`w-full ${showPredictions 
-                      ? 'bg-gradient-to-r from-green-500 to-teal-500 hover:from-green-600 hover:to-teal-600' 
-                      : 'bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600'} 
-                      text-white`}
-                    onClick={handleGeneratePrediction}
-                  >
-                    {showPredictions ? 'Predictions Active' : 'Generate Prediction'}
-                  </Button>
-                  
-                  {/* Prediction Status */}
-                  {showPredictions && (
-                    <div className="mt-3 p-2 bg-green-500/10 text-green-300 text-xs rounded-md border border-green-500/20 flex items-center">
-                      <div className="h-2 w-2 rounded-full bg-green-500 mr-2 animate-pulse"></div>
-                      <p>Prediction model active - {Math.floor(30 + Math.random() * 20)} hotspots identified</p>
-                    </div>
-                  )}
-                </div>
-                
-                <div className="bg-gray-800/70 rounded-xl border border-gray-700/50 p-4 shadow-lg">
-                  <h3 className="text-lg font-semibold text-white mb-4">Selected Area Details</h3>
-                  {selectedLSOA ? (
-                    <div className="space-y-3">
-                      <div>
-                        <h3 className="text-sm font-medium text-gray-400">LSOA Code</h3>
-                        <p className="text-sm text-white">{selectedLSOA}</p>
-                      </div>
-                      {lsoaData && (
-                        <>
-                          <div>
-                            <h3 className="text-sm font-medium text-gray-400">Area Name</h3>
-                            <p className="text-sm text-white">{lsoaData.name || "Unknown"}</p>
-                          </div>
-                          <div>
-                            <h3 className="text-sm font-medium text-gray-400">Risk Level</h3>
-                            <div className="flex items-center gap-2">
-                              <div 
-                                className={`h-3 w-3 rounded-full ${
-                                  lsoaData.risk_level === 'High' ? 'bg-red-500' : 
-                                  lsoaData.risk_level === 'Medium' ? 'bg-amber-500' : 'bg-green-500'
-                                }`}
-                              ></div>
-                              <p className="text-sm text-white">{lsoaData.risk_level || "Medium"}</p>
-                            </div>
-                          </div>
-                          {forecastData && (
-                            <div>
-                              <h3 className="text-sm font-medium text-gray-400">SARIMA Forecast</h3>
-                              <p className="text-sm text-gray-300">
-                                Expected burglaries next month: 
-                                <span className="font-bold text-amber-400 ml-1">
-                                  {Math.round(forecastData.forecast[0])}
-                                </span>
-                              </p>
-                            </div>
-                          )}
-                        </>
-                      )}
-                    </div>
-                  ) : (
-                    <div className="text-center p-4 text-gray-400 bg-gray-900/50 rounded-lg">
-                      <p>Select an area on the map to view details</p>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        );
-        
-      case 'map':
-        return (
-          <div className="p-6 relative">
-            <div className="mb-6">
-              <h1 className="text-2xl font-bold text-white mb-2">
-                <span className="mr-2">📍</span>
-                London Residential Burglary Risk Map
-              </h1>
-              <div className="flex items-center space-x-4 mt-4">
-                <div className="flex items-center space-x-2">
-                  <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                  <span className="text-sm text-gray-300">High Risk</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                  <span className="text-sm text-gray-300">Medium Risk</span>
-                </div>
-              </div>
-            </div>
-            
-            <div className="flex items-start">
-              <div className="flex-1 max-w-[calc(100%-300px)]">
-                <div className="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden shadow-2xl shadow-black/50 h-[70vh]">
-                  <MapComponent 
-                    onLSOASelect={handleLSOASelect}
-                    showPoliceAllocation={showPoliceAllocation}
-                    selectedLSOA={selectedLSOA}
-                    policeAllocationData={policeAllocationData}
-                  />
-                </div>
-              </div>
-              
-              <div className="ml-6">
-                <PoliceAllocation 
-                  visible={true} 
-                  onToggle={() => setShowPoliceAllocation(!showPoliceAllocation)}
-                />
-              </div>
-            </div>
-          </div>
-        );
-        
-      case 'allocation':
-        return (
-          <div className="p-6">
-            <h1 className="text-2xl font-bold text-white mb-6">
-              <span className="mr-2">👮</span>
-              Police Resource Allocation
-            </h1>
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <div className="lg:col-span-2 bg-gray-900 border border-gray-800 rounded-xl overflow-hidden shadow-2xl shadow-black/50">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 p-6">
+            {/* Main content area */}
+            <div className="lg:col-span-2">
+              {/* Map Component taking up the majority of the space */}
+              <div className="h-[600px] rounded-xl shadow-2xl overflow-hidden border border-gray-700/50 relative">
                 <MapComponent 
-                  onLSOASelect={handleLSOASelect}
-                  showPoliceAllocation={true}
+                  onLSOASelect={handleLSOASelect} 
+                  showPoliceAllocation={showPoliceAllocation}
                   selectedLSOA={selectedLSOA}
-                  policeAllocationData={policeAllocationData}
+                  showPredictions={showPredictions}
+                  predictionModel={predictionModel}
+                  dateRange={dateRange} // Pass dateRange to map
                 />
-              </div>
-              <div className="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden shadow-2xl shadow-black/50 p-6">
-                <h2 className="text-xl font-bold text-white mb-4">Allocation Strategy</h2>
-                <p className="text-gray-300 mb-4">
-                  Configure and deploy police resources based on predictive crime modeling and geographic profiling.
-                </p>
-                <div className="space-y-4">
-                  <div className="p-4 bg-blue-500/10 text-blue-400 rounded-lg border border-blue-500/20">
-                    <h3 className="font-semibold mb-2">CPTED Principles</h3>
-                    <p className="text-sm">
-                      Our algorithm uses CPTED (Crime Prevention Through Environmental Design) principles to identify crime hotspots and allocate resources efficiently.
-                    </p>
-                  </div>
-                  <div className="p-4 bg-green-500/10 text-green-400 rounded-lg border border-green-500/20">
-                    <h3 className="font-semibold mb-2">Optimization</h3>
-                    <p className="text-sm">
-                      83.3% of high-risk areas covered with current allocation of 100 units and 2 hours deployment.
-                    </p>
+                 {/* Time Series Panel - to be rendered below the map */}
+                 <div className="absolute bottom-0 left-0 right-0 z-[1000] p-2 pointer-events-none">
+                  <div className="pointer-events-auto max-w-3xl mx-auto">
+                    {renderTimeSeriesPanel()} 
                   </div>
                 </div>
               </div>
             </div>
+
+            {/* Sidebar/Details Area */}
+            <div className="lg:col-span-1 space-y-6">
+              <PoliceAllocation 
+                onToggle={handleTogglePoliceAllocation}
+                showPoliceAllocation={showPoliceAllocation}
+              />
+              <DataAnalytics 
+                selectedLsoaCode={selectedLSOA} 
+                lsoaWellbeingData={lsoaData} 
+                isLoadingLsoaData={isLoadingLsoaData} 
+              />
+              <EmmieExplanation />
+            </div>
           </div>
         );
-        
-      case 'analytics':
-        return <DataAnalytics />;
-        
-      case 'emmie':
-        return <EmmieExplanation selectedLSOA={selectedLSOA} lsoaFactors={lsoaRiskFactors} />;
-        
+      case 'chat':
+        return <PoliceChat />;
       default:
         return <div>Select a view</div>;
     }

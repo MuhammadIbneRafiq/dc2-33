@@ -203,7 +203,7 @@ interface MapComponentProps {
   onLSOASelect?: (lsoa: string) => void;
   showPoliceAllocation?: boolean;
   selectedLSOA?: string | null;
-  policeAllocationData?: { clusters: any[] } | null;
+  // policeAllocationData?: { clusters: any[] } | null; // This prop might be deprecated if we fetch internally
   showPredictions?: boolean;
   predictionModel?: string;
   predictionRange?: number;
@@ -297,7 +297,7 @@ const MapComponent = ({
   onLSOASelect, 
   showPoliceAllocation = false, 
   selectedLSOA = null,
-  policeAllocationData = null,
+  // policeAllocationData = null, // Comment out if fetching internally
   showPredictions = false,
   predictionModel = 'lstm-gcn',
   predictionRange = 60,
@@ -306,6 +306,9 @@ const MapComponent = ({
   const [lsoaData, setLsoaData] = useState<LSOAGeoJSON | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [policeAllocationPoints, setPoliceAllocationPoints] = useState<any[]>([]);
+  const [loadingPoliceData, setLoadingPoliceData] = useState<boolean>(false);
+  const [errorPoliceData, setErrorPoliceData] = useState<string | null>(null);
   const geoJsonLayerRef = useRef<L.GeoJSON | null>(null);
   const [predictionMarkers, setPredictionMarkers] = useState<Array<{lat: number, lon: number, risk: string}>>([]);
   const [historicalData, setHistoricalData] = useState<any>(null);
@@ -358,49 +361,36 @@ const MapComponent = ({
   
   // Use static mock data instead of fetching
   useEffect(() => {
-    // Generate 60 mock LSOA polygons randomly across London
-    const features = [];
-    const minLat = 51.28, maxLat = 51.70;
-    const minLon = -0.51, maxLon = 0.34;
-    for (let i = 0; i < 60; i++) {
-      // Random center
-      const centerLat = minLat + Math.random() * (maxLat - minLat);
-      const centerLon = minLon + Math.random() * (maxLon - minLon);
-      // Small rectangle around center
-      const dLat = 0.008 + Math.random() * 0.006;
-      const dLon = 0.012 + Math.random() * 0.008;
-      const lat1 = centerLat - dLat / 2;
-      const lat2 = centerLat + dLat / 2;
-      const lon1 = centerLon - dLon / 2;
-      const lon2 = centerLon + dLon / 2;
-      const riskLevels = ['Very Low', 'Low', 'Medium', 'High', 'Very High'];
-      const risk = riskLevels[Math.floor(Math.random() * riskLevels.length)];
-      features.push({
-        type: 'Feature',
-        properties: {
-          lsoa_code: `E0100${(1000 + i).toString().padStart(4, '0')}`,
-          lsoa_name: `LSOA ${i + 1}`,
-          burglary_count: Math.floor(10 + Math.random() * 50),
-          risk_level: risk
-        },
-        geometry: {
-          type: 'Polygon',
-          coordinates: [[
-            [lon1, lat1],
-            [lon2, lat1],
-            [lon2, lat2],
-            [lon1, lat2],
-            [lon1, lat1]
-          ]]
+    const fetchLsoaData = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const response = await api.lsoa.getBoundaries(); // Corrected to use the defined API structure
+        // The backend already returns JSON, so response.data should be the GeoJSON object
+        // The fetchApi in api.ts already parses JSON, so 'response' here is the data itself.
+        const geojsonData = response;
+
+        if (geojsonData) {
+          const sanitizedData = sanitizeGeoJSON(geojsonData); // Sanitize if necessary
+          if (sanitizedData) {
+            setLsoaData(sanitizedData as LSOAGeoJSON);
+          } else {
+            setError('Failed to process LSOA data. Invalid GeoJSON structure after sanitization.');
+            setLsoaData(null); // Clear any previous data
+          }
+        } else {
+          setError('No LSOA data received from server.');
+          setLsoaData(null);
         }
-      });
-    }
-    const mockLsoaData = {
-      type: 'FeatureCollection' as const,
-      features
+      } catch (err: any) {
+        console.error("Error fetching LSOA data:", err);
+        setError(err.message || 'Failed to fetch LSOA data. Please check the network connection and backend server.');
+        setLsoaData(null);
+      }
+      setLoading(false);
     };
-    setLsoaData(mockLsoaData);
-    setLoading(false);
+
+    fetchLsoaData();
   }, []);
   
   // Generate predictions when showPredictions changes
@@ -412,6 +402,34 @@ const MapComponent = ({
       setPredictionMarkers([]);
     }
   }, [showPredictions, generateRandomPredictions, predictionModel, predictionRange]);
+  
+  // Fetch police allocation data when showPoliceAllocation is true
+  useEffect(() => {
+    if (showPoliceAllocation) {
+      const fetchPoliceData = async () => {
+        setLoadingPoliceData(true);
+        setErrorPoliceData(null);
+        try {
+          // Default to 100 units, can be made configurable later via props if needed
+          const data = await api.police.optimize({ clusters: 100 }); 
+          if (data && data.police_allocation) {
+            setPoliceAllocationPoints(data.police_allocation);
+          } else {
+            setPoliceAllocationPoints([]);
+            setErrorPoliceData('No police allocation data received or data is in unexpected format.');
+          }
+        } catch (err: any) {
+          console.error("Error fetching police allocation data:", err);
+          setErrorPoliceData(err.message || 'Failed to fetch police allocation data.');
+          setPoliceAllocationPoints([]);
+        }
+        setLoadingPoliceData(false);
+      };
+      fetchPoliceData();
+    } else {
+      setPoliceAllocationPoints([]); // Clear data when not shown
+    }
+  }, [showPoliceAllocation]);
   
   // Load historical data when component mounts or dateRange changes
   useEffect(() => {
@@ -607,28 +625,62 @@ const MapComponent = ({
         
         {/* Police Allocation Layer - Only shown when enabled */}
         {showPoliceAllocation && (
-          <div className="police-allocation-layer">
-            {/* Use scattered mock police allocation data */}
-            {Array.from({ length: 8 }).map((_, index) => {
-              // Random position in London
-              const lat = 51.28 + Math.random() * (51.70 - 51.28);
-              const lon = -0.51 + Math.random() * (0.34 + 0.51);
-              return (
-                <ZoomAwareMarker
-                  key={`officer-${index}`}
-                  position={[lat, lon]}
-                  patrolType={index % 3 === 0 ? 'vehicle' : 'officer'}
-                >
-                  <Popup>
-                    <div>
-                      <h3 className="font-bold mb-1">Patrol {index + 1}</h3>
-                      <p>Officers: {2 + Math.floor(Math.random() * 4)}</p>
-                      <p>Risk Score: {(0.6 + Math.random() * 0.4).toFixed(2)}</p>
-                    </div>
-                  </Popup>
-                </ZoomAwareMarker>
-              );
-            })}
+          <div className="police-allocation-overlay absolute inset-0 pointer-events-none z-[500]">
+            {loadingPoliceData && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-25">
+                <div className="text-white text-lg bg-slate-700 bg-opacity-80 p-4 rounded-md">Loading Police Allocation...</div>
+              </div>
+            )}
+            {errorPoliceData && (
+              <div className="absolute top-10 left-1/2 -translate-x-1/2 bg-orange-600 text-white p-2 text-center text-sm rounded-md shadow-lg z-20">
+                Error loading police data: {errorPoliceData}
+              </div>
+            )}
+            {!loadingPoliceData && !errorPoliceData && policeAllocationPoints.length > 0 && (
+              <MapContainer
+                key="police-map-overlay" // Ensure this MapContainer instance is separate
+                center={[51.515, -0.09]} // Should match main map
+                zoom={12} // Should match main map initial zoom
+                style={{ height: '100%', width: '100%', background: 'transparent' }}
+                zoomControl={false}
+                attributionControl={false}
+                scrollWheelZoom={false}
+                dragging={false}
+                doubleClickZoom={false}
+                touchZoom={false}
+                className="pointer-events-auto"
+              >
+                <FeatureGroup>
+                  {policeAllocationPoints.map((point, index) => {
+                    if (typeof point.lat !== 'number' || typeof point.lon !== 'number') {
+                      console.warn('Skipping police allocation point with invalid coordinates:', point);
+                      return null;
+                    }
+                    // Determine patrol type based on officer_count or other logic if available
+                    // For now, let's alternate or use a simple logic like the mock data had.
+                    const patrolType = point.officer_count && point.officer_count > 2 ? 'vehicle' : 'officer';
+
+                    return (
+                      <ZoomAwareMarker
+                        key={`police-point-${index}`}
+                        position={[point.lat, point.lon]}
+                        patrolType={patrolType}
+                      >
+                        <Popup>
+                          <div>
+                            <h3 className="font-bold mb-1">Optimized Patrol Point {index + 1}</h3>
+                            <p>Coordinates: {point.lat.toFixed(4)}, {point.lon.toFixed(4)}</p>
+                            {point.officer_count && <p>Officers: {point.officer_count}</p>}
+                            {point.cluster_risk_score && <p>Risk Score: {point.cluster_risk_score.toFixed(3)}</p>}
+                            {/* Add more details from the point data if available */}
+                          </div>
+                        </Popup>
+                      </ZoomAwareMarker>
+                    );
+                  })}
+                </FeatureGroup>
+              </MapContainer>
+            )}
           </div>
         )}
         
