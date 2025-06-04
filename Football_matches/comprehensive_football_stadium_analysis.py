@@ -1,42 +1,26 @@
-#!/usr/bin/env python3
-"""
-Enhanced Comprehensive Football Stadium Burglary Analysis
-Analyzes 8+ years of burglary patterns near London football stadiums (2017-2025)
-Using cleaned spatial crime data and Premier League match schedules
-Enhanced with LSOA analysis, distance calculations, and comprehensive testing
-"""
-
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 import os
-from datetime import datetime, timedelta
 import warnings
 warnings.filterwarnings('ignore')
 
-def load_spatial_monthly_data(months_to_load=12*8):  # Last 8 years for comprehensive analysis
-    """Load cleaned spatial monthly burglary data with enhanced processing"""
+def load_spatial_monthly_data(months_to_load=12*12):  # Last 8 years for comprehensive analysis
     
     data_dir = "./data/cleaned_spatial_monthly_data/cleaned_spatial_monthly_burglary_data"
-    # Get all spatial files
     spatial_files = []
     for file in os.listdir(data_dir):
         if file.endswith('_burglary_cleaned_spatial.csv'):
             spatial_files.append(file)
     
     spatial_files.sort(reverse=True)  # Most recent first
-    if months_to_load > 0:
-        spatial_files = spatial_files[:months_to_load]  # Take last N months
-    
-    print(f"Found {len(spatial_files)} spatial burglary files")
-    
-    # Load first file to understand structure
+    spatial_files = spatial_files[:months_to_load]  # Take last N months
+        
     sample_file = os.path.join(data_dir, spatial_files[0])
     sample = pd.read_csv(sample_file)
     print(f"Sample file columns: {list(sample.columns)}")
     
-    # Load all files with enhanced processing
     all_data = []
     for file in spatial_files:
         filepath = os.path.join(data_dir, file)
@@ -55,19 +39,15 @@ def load_spatial_monthly_data(months_to_load=12*8):  # Last 8 years for comprehe
         all_data.append(df)
         print(f"Loaded {file}: {len(df)} valid records for {date.strftime('%Y-%m')}")
 
-    if all_data:
-        combined = pd.concat(all_data, ignore_index=True)
-        print(f"Combined dataset: {len(combined)} total burglary records")
-        print(f"Date range: {combined['month_date'].min().strftime('%Y-%m')} to {combined['month_date'].max().strftime('%Y-%m')}")
-        print(f"Unique LSOAs: {combined['LSOA code'].nunique()}")
-        return combined
-    else:
-        return None
+    combined = pd.concat(all_data, ignore_index=True)
+    print(f"Combined dataset: {len(combined)} total burglary records")
+    print(f"Date range: {combined['month_date'].min().strftime('%Y-%m')} to {combined['month_date'].max().strftime('%Y-%m')}")
+    print(f"Unique LSOAs: {combined['LSOA code'].nunique()}")
+    return combined
 
-def define_london_stadiums():
-    """Define London football stadiums with known coordinates and LSOA information"""
-    
-    stadiums = {
+
+def define_london_stadiums():    
+    return {
         'Arsenal': {
             'venue': 'Emirates Stadium',
             'lat': 51.5549, 'lon': -0.1084,
@@ -106,10 +86,7 @@ def define_london_stadiums():
         }
     }
     
-    return stadiums
-
 def calculate_distance(lat1, lon1, lat2, lon2):
-    """Calculate distance between two points using Haversine formula"""
     from math import radians, cos, sin, asin, sqrt
     
     # Convert decimal degrees to radians
@@ -125,11 +102,7 @@ def calculate_distance(lat1, lon1, lat2, lon2):
     r = 6371
     return c * r
 
-def identify_stadium_nearby_crimes_enhanced(crime_data, stadiums, radius_km=2.0):
-    """Enhanced identification of crimes within radius of each stadium with LSOA analysis"""
-    print(f"Identifying crimes within {radius_km}km of stadiums with LSOA analysis...")
-    
-    # Add stadium proximity columns and detailed distance analysis
+def identify_stadium_nearby_crimes_enhanced(crime_data, stadiums, radius_km=25.0):
     for team, stadium in stadiums.items():
         distance_col = f'distance_to_{team.lower()}'
         near_col = f'near_{team.lower()}'
@@ -811,45 +784,23 @@ def generate_enhanced_comprehensive_report(results, detailed_results, stadiums):
     return summary_df, detailed_df
 
 def main():
-    """Main analysis function with enhanced capabilities"""
     print("ENHANCED COMPREHENSIVE FOOTBALL STADIUM BURGLARY ANALYSIS")
-    print("Analyzing 8+ years of spatial crime data with LSOA analysis (2017-2025)")
-    print("Examining burglary patterns within 2km radius of London football stadiums")
     print("Including statistical testing, effect sizes, and correlation analysis")
     print("="*100)
-    
-    # Load data
-    crime_data = load_spatial_monthly_data()  # Last 8 years
-    if crime_data is None:
-        print("Cannot proceed without crime data")
-        return
-    
-    # Define stadiums
+    crime_data = load_spatial_monthly_data()  # Last 12 years
     stadiums = define_london_stadiums()
     
-    # Identify crimes near stadiums with enhanced analysis
-    crime_data = identify_stadium_nearby_crimes_enhanced(crime_data, stadiums, radius_km=2.0)
+    crime_data = identify_stadium_nearby_crimes_enhanced(crime_data, stadiums, radius_km=25.0)
     
-    # Load match data with enhanced handling
     matches, match_summary, match_dates_by_team = load_premier_league_data()
-    if matches is None:
-        print("Cannot proceed without match data")
-        return
     
-    # Enhanced burglary-match analysis
     results, detailed_results = enhanced_burglary_match_analysis(
-        crime_data, matches, match_summary, match_dates_by_team, stadiums
-    )
-    
-    if not results:
-        print("No analysis results generated")
-        return
-    
-    # Create visualizations and enhanced report
+        crime_data, matches, match_summary, match_dates_by_team, stadiums)
+
     create_comprehensive_visualizations(results, stadiums)
-    summary_df, detailed_df = generate_enhanced_comprehensive_report(results, detailed_results, stadiums)
+    summary_df, detailed_df = generate_enhanced_comprehensive_report(
+        results, detailed_results, stadiums)
     
-    print("\nEnhanced analysis completed successfully!")
     print("Generated files:")
     print("- comprehensive_football_stadium_analysis.png")
     print("- Football_matches/enhanced_stadium_analysis_summary.csv")
