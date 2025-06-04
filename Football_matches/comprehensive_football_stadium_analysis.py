@@ -184,6 +184,7 @@ def load_premier_league_data():
 def enhanced_burglary_match_analysis(crime_data, matches, match_summary, match_dates_by_team, stadiums):
     """Enhanced analysis of burglary patterns around match days"""
     print("Performing enhanced burglary-match relationship analysis...")
+    print("Excluding June and July (summer break months) from analysis...")
     
     # Ensure we have the month_date as date for comparison
     crime_data['crime_date'] = crime_data['month_date'].dt.date
@@ -204,7 +205,14 @@ def enhanced_burglary_match_analysis(crime_data, matches, match_summary, match_d
             print(f"  No burglary data near {team} stadium")
             continue
         
-        print(f"  Found {len(team_burglary)} burglaries near {team} stadium")
+        # EXCLUDE JUNE AND JULY (months 6 and 7) - summer break
+        team_burglary = team_burglary[~team_burglary['month_date'].dt.month.isin([6, 7])]
+        
+        if team_burglary.empty:
+            print(f"  No burglary data near {team} stadium after excluding summer months")
+            continue
+        
+        print(f"  Found {len(team_burglary)} burglaries near {team} stadium (excluding Jun/Jul)")
         
         # Enhanced monthly analysis
         team_burglary['year_month'] = team_burglary['month_date'].dt.to_period('M')
@@ -217,8 +225,9 @@ def enhanced_burglary_match_analysis(crime_data, matches, match_summary, match_d
         # Flatten column names
         monthly_burglary.columns = ['year_month', 'burglary_count', 'avg_distance', 'min_distance', 'max_distance', 'unique_lsoas']
         
-        # Get team's match data
+        # Get team's match data - also exclude June and July
         team_matches = match_summary[match_summary['Home'] == team].copy()
+        team_matches = team_matches[~team_matches['year_month'].dt.month.isin([6, 7])]
         
         # Enhanced merge with attendance and goals data
         combined = pd.merge(monthly_burglary, team_matches, on='year_month', how='left')
@@ -226,12 +235,7 @@ def enhanced_burglary_match_analysis(crime_data, matches, match_summary, match_d
         combined['has_matches'] = combined['match_count'] > 0
         combined['avg_attendance'] = combined['Attendance'].fillna(0)
         combined['avg_home_goals'] = combined['Home Goals'].fillna(0)
-        
-        # Ensure we have sufficient data
-        if len(combined) < 3:
-            print(f"  Insufficient data for {team}")
-            continue
-        
+
         # Statistical analysis
         match_months = combined[combined['has_matches']]
         no_match_months = combined[~combined['has_matches']]
@@ -611,6 +615,7 @@ def generate_enhanced_comprehensive_report(results, detailed_results, stadiums):
     print("\n" + "="*100)
     print("ENHANCED COMPREHENSIVE FOOTBALL STADIUM BURGLARY ANALYSIS")
     print("8+ Years of London Crime Data with LSOA and Statistical Analysis (2017-2025)")
+    print("Excluding June/July (summer break months) from match-burglary analysis")
     print("="*100)
     
     if not results:
@@ -722,7 +727,7 @@ def generate_enhanced_comprehensive_report(results, detailed_results, stadiums):
     
     print(f"\n7. METHODOLOGY:")
     print(f"   • Radius: 2km around each stadium")
-    print(f"   • Time period: Monthly aggregation")
+    print(f"   • Time period: Monthly aggregation (excluding June/July summer break)")
     print(f"   • Statistical tests: Independent t-test and Mann-Whitney U test")
     print(f"   • Effect size: Cohen's d for practical significance")
     print(f"   • LSOA analysis: Lower Layer Super Output Area crime distribution")
@@ -787,6 +792,7 @@ def generate_enhanced_comprehensive_report(results, detailed_results, stadiums):
 def main():
     print("ENHANCED COMPREHENSIVE FOOTBALL STADIUM BURGLARY ANALYSIS")
     print("Including statistical testing, effect sizes, and correlation analysis")
+    print("Excluding June/July (summer break) from match-burglary correlations")
     print("="*100)
     crime_data = load_spatial_monthly_data()  # Last 12 years
     stadiums = define_london_stadiums()
