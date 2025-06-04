@@ -1,0 +1,970 @@
+Unnamed: 0,Season,Date,Home,xG,Home Goals,Away Goals,xG.1,Away,Attendance,Venue
+1,2023/2024,2023-08-12,Arsenal,0.8,2.0,1.0,1.2,Nott'ham Forest,59984.0,Emirates Stadium
+8,2023/2024,2023-08-13,Chelsea,1.4,1.0,1.0,1.3,Liverpool,40096.0,Stamford Bridge
+15,2023/2024,2023-08-19,Tottenham,1.7,2.0,0.0,2.1,Manchester Utd,61910.0,Tottenham Hotspur Stadium
+18,2023/2024,2023-08-20,West Ham,1.8,3.0,1.0,2.5,Chelsea,62451.0,London Stadium
+21,2023/2024,2023-08-25,Chelsea,2.2,3.0,0.0,0.4,Luton Town,39893.0,Stamford Bridge
+26,2023/2024,2023-08-26,Arsenal,3.2,2.0,2.0,0.6,Fulham,59961.0,Emirates Stadium
+34,2023/2024,2023-09-02,Chelsea,2.3,0.0,1.0,0.8,Nott'ham Forest,39820.0,Stamford Bridge
+41,2023/2024,2023-09-03,Arsenal,2.3,3.0,1.0,0.9,Manchester Utd,60192.0,Emirates Stadium
+45,2023/2024,2023-09-16,West Ham,0.9,1.0,3.0,3.6,Manchester City,62475.0,London Stadium
+48,2023/2024,2023-09-16,Tottenham,2.1,2.0,1.0,0.7,Sheffield Utd,61706.0,Tottenham Hotspur Stadium
+59,2023/2024,2023-09-24,Arsenal,1.8,2.0,2.0,1.4,Tottenham,60156.0,Emirates Stadium
+61,2023/2024,2023-09-24,Chelsea,1.3,0.0,1.0,1.0,Aston Villa,39700.0,Stamford Bridge
+70,2023/2024,2023-09-30,West Ham,2.1,2.0,0.0,1.1,Sheffield Utd,62459.0,London Stadium
+72,2023/2024,2023-09-30,Tottenham,2.2,2.0,1.0,1.3,Liverpool,62001.0,Tottenham Hotspur Stadium
+84,2023/2024,2023-10-08,West Ham,1.2,2.0,2.0,2.0,Newcastle Utd,62473.0,London Stadium
+87,2023/2024,2023-10-08,Arsenal,0.4,1.0,0.0,0.5,Manchester City,60233.0,Emirates Stadium
+95,2023/2024,2023-10-21,Chelsea,1.3,2.0,2.0,1.0,Arsenal,39723.0,Stamford Bridge
+98,2023/2024,2023-10-23,Tottenham,1.5,2.0,0.0,1.0,Fulham,61286.0,Tottenham Hotspur Stadium
+101,2023/2024,2023-10-28,Chelsea,1.9,0.0,2.0,2.2,Brentford,39575.0,Stamford Bridge
+103,2023/2024,2023-10-28,Arsenal,2.8,5.0,0.0,0.0,Sheffield Utd,60153.0,Emirates Stadium
+105,2023/2024,2023-10-29,West Ham,0.7,0.0,1.0,0.8,Everton,62469.0,London Stadium
+120,2023/2024,2023-11-06,Tottenham,0.9,1.0,4.0,4.1,Chelsea,61726.0,Tottenham Hotspur Stadium
+123,2023/2024,2023-11-11,Arsenal,1.8,3.0,1.0,0.3,Burnley,60232.0,Emirates Stadium
+127,2023/2024,2023-11-12,West Ham,1.8,3.0,2.0,1.7,Nott'ham Forest,62470.0,London Stadium
+131,2023/2024,2023-11-12,Chelsea,2.9,4.0,4.0,2.9,Manchester City,39532.0,Stamford Bridge
+140,2023/2024,2023-11-26,Tottenham,2.3,1.0,2.0,1.7,Aston Villa,61679.0,Tottenham Hotspur Stadium
+145,2023/2024,2023-12-02,Arsenal,2.8,2.0,1.0,0.7,Wolves,60262.0,Emirates Stadium
+151,2023/2024,2023-12-03,Chelsea,2.1,3.0,2.0,1.1,Brighton,39647.0,Stamford Bridge
+152,2023/2024,2023-12-03,West Ham,1.1,1.0,1.0,0.9,Crystal Palace,62414.0,London Stadium
+164,2023/2024,2023-12-07,Tottenham,1.8,1.0,2.0,2.2,West Ham,61171.0,Tottenham Hotspur Stadium
+175,2023/2024,2023-12-10,Tottenham,3.8,4.0,1.0,1.7,Newcastle Utd,61171.0,Tottenham Hotspur Stadium
+179,2023/2024,2023-12-16,Chelsea,3.1,2.0,0.0,0.4,Sheffield Utd,39599.0,Stamford Bridge
+183,2023/2024,2023-12-17,West Ham,1.1,3.0,0.0,0.7,Wolves,62455.0,London Stadium
+184,2023/2024,2023-12-17,Arsenal,2.3,2.0,0.0,0.7,Brighton,60257.0,Emirates Stadium
+189,2023/2024,2023-12-23,West Ham,1.2,2.0,0.0,1.0,Manchester Utd,64472.0,London Stadium
+192,2023/2024,2023-12-23,Tottenham,1.5,2.0,1.0,1.8,Everton,61808.0,Tottenham Hotspur Stadium
+202,2023/2024,2023-12-27,Chelsea,2.6,2.0,1.0,1.1,Crystal Palace,39618.0,Stamford Bridge
+206,2023/2024,2023-12-28,Arsenal,2.7,0.0,2.0,1.4,West Ham,60261.0,Emirates Stadium
+214,2023/2024,2023-12-31,Tottenham,2.3,3.0,1.0,1.7,Bournemouth,61780.0,Tottenham Hotspur Stadium
+217,2023/2024,2024-01-02,West Ham,0.7,0.0,0.0,2.3,Brighton,62462.0,London Stadium
+220,2023/2024,2024-01-13,Chelsea,2.2,1.0,0.0,0.8,Fulham,39643.0,Stamford Bridge
+224,2023/2024,2024-01-20,Arsenal,3.3,5.0,0.0,0.3,Crystal Palace,60284.0,Emirates Stadium
+235,2023/2024,2024-01-31,Tottenham,2.9,3.0,2.0,1.6,Brentford,61210.0,Tottenham Hotspur Stadium
+238,2023/2024,2024-02-01,West Ham,1.4,1.0,1.0,1.2,Bournemouth,62478.0,London Stadium
+248,2023/2024,2024-02-04,Chelsea,1.7,2.0,4.0,2.0,Wolves,39628.0,Stamford Bridge
+249,2023/2024,2024-02-04,Arsenal,3.5,3.0,1.0,0.4,Liverpool,60374.0,Emirates Stadium
+257,2023/2024,2024-02-10,Tottenham,1.6,2.0,1.0,1.2,Brighton,61445.0,Tottenham Hotspur Stadium
+259,2023/2024,2024-02-11,West Ham,0.2,0.0,6.0,3.6,Arsenal,62475.0,London Stadium
+265,2023/2024,2024-02-17,Tottenham,1.6,1.0,2.0,1.8,Wolves,61532.0,Tottenham Hotspur Stadium
+282,2023/2024,2024-02-24,Arsenal,2.8,4.0,1.0,0.2,Newcastle Utd,60298.0,Emirates Stadium
+284,2023/2024,2024-02-26,West Ham,1.7,4.0,2.0,0.9,Brentford,62450.0,London Stadium
+287,2023/2024,2024-03-02,Tottenham,1.9,3.0,1.0,0.3,Crystal Palace,61339.0,Tottenham Hotspur Stadium
+301,2023/2024,2024-03-09,Arsenal,1.3,2.0,1.0,1.0,Brentford,60331.0,Emirates Stadium
+303,2023/2024,2024-03-10,West Ham,2.1,2.0,2.0,0.7,Burnley,62441.0,London Stadium
+306,2023/2024,2024-03-11,Chelsea,1.6,3.0,2.0,0.7,Newcastle Utd,37753.0,Stamford Bridge
+313,2023/2024,2024-03-17,West Ham,2.0,1.0,1.0,0.7,Aston Villa,62461.0,London Stadium
+317,2023/2024,2024-03-30,Tottenham,2.9,2.0,1.0,0.5,Luton Town,61534.0,Tottenham Hotspur Stadium
+320,2023/2024,2024-03-30,Chelsea,4.2,2.0,2.0,1.6,Burnley,39535.0,Stamford Bridge
+330,2023/2024,2024-04-02,West Ham,1.5,1.0,1.0,1.0,Tottenham,62469.0,London Stadium
+331,2023/2024,2024-04-03,Arsenal,0.7,2.0,0.0,0.3,Luton Town,60262.0,Emirates Stadium
+335,2023/2024,2024-04-04,Chelsea,3.0,4.0,3.0,1.5,Manchester Utd,39694.0,Stamford Bridge
+346,2023/2024,2024-04-07,Tottenham,1.5,3.0,1.0,1.5,Nott'ham Forest,61098.0,Tottenham Hotspur Stadium
+355,2023/2024,2024-04-14,West Ham,0.9,0.0,2.0,3.2,Fulham,62459.0,London Stadium
+356,2023/2024,2024-04-14,Arsenal,1.6,0.0,2.0,0.9,Aston Villa,60350.0,Emirates Stadium
+357,2023/2024,2024-04-15,Chelsea,3.1,6.0,0.0,1.5,Everton,39392.0,Stamford Bridge
+367,2023/2024,2024-04-23,Arsenal,3.3,5.0,0.0,1.6,Chelsea,60238.0,Emirates Stadium
+374,2023/2024,2024-04-27,West Ham,0.7,2.0,2.0,1.7,Liverpool,62474.0,London Stadium
+381,2023/2024,2024-04-28,Tottenham,2.3,2.0,3.0,1.0,Arsenal,61554.0,Tottenham Hotspur Stadium
+385,2023/2024,2024-05-02,Chelsea,2.2,2.0,0.0,1.6,Tottenham,39086.0,Stamford Bridge
+388,2023/2024,2024-05-04,Arsenal,3.3,3.0,0.0,0.5,Bournemouth,60348.0,Emirates Stadium
+394,2023/2024,2024-05-05,Chelsea,4.1,5.0,0.0,0.9,West Ham,39295.0,Stamford Bridge
+400,2023/2024,2024-05-11,West Ham,3.2,3.0,1.0,0.3,Luton Town,62475.0,London Stadium
+401,2023/2024,2024-05-11,Tottenham,2.7,2.0,1.0,0.7,Burnley,61148.0,Tottenham Hotspur Stadium
+409,2023/2024,2024-05-14,Tottenham,1.7,0.0,2.0,2.4,Manchester City,61065.0,Tottenham Hotspur Stadium
+416,2023/2024,2024-05-19,Arsenal,2.9,2.0,1.0,0.6,Everton,60312.0,Emirates Stadium
+419,2023/2024,2024-05-19,Chelsea,1.1,2.0,1.0,2.2,Bournemouth,39724.0,Stamford Bridge
+2,2022/2023,2022-08-06,Tottenham,1.5,4.0,1.0,0.5,Southampton,61732.0,Tottenham Hotspur Stadium
+9,2022/2023,2022-08-07,West Ham,0.5,0.0,2.0,2.2,Manchester City,62443.0,London Stadium
+15,2022/2023,2022-08-13,Arsenal,2.7,4.0,2.0,0.5,Leicester City,60033.0,Emirates Stadium
+19,2022/2023,2022-08-14,Chelsea,1.6,2.0,2.0,1.0,Tottenham,39946.0,Stamford Bridge
+22,2022/2023,2022-08-20,Tottenham,1.7,1.0,0.0,0.7,Wolves,61298.0,Tottenham Hotspur Stadium
+29,2022/2023,2022-08-21,West Ham,0.8,0.0,2.0,1.7,Brighton,62449.0,London Stadium
+36,2022/2023,2022-08-27,Chelsea,1.8,2.0,1.0,2.5,Leicester City,39953.0,Stamford Bridge
+39,2022/2023,2022-08-27,Arsenal,2.6,2.0,1.0,0.8,Fulham,60164.0,Emirates Stadium
+50,2022/2023,2022-08-31,Arsenal,2.4,2.0,1.0,0.4,Aston Villa,60012.0,Emirates Stadium
+51,2022/2023,2022-08-31,West Ham,1.2,1.0,1.0,0.6,Tottenham,62450.0,London Stadium
+60,2022/2023,2022-09-03,Tottenham,2.9,2.0,1.0,0.7,Fulham,61641.0,Tottenham Hotspur Stadium
+61,2022/2023,2022-09-03,Chelsea,0.9,2.0,1.0,1.1,West Ham,39923.0,Stamford Bridge
+70,2022/2023,2022-09-17,Tottenham,2.2,6.0,2.0,1.8,Leicester City,61450.0,Tottenham Hotspur Stadium
+74,2022/2023,2022-10-01,Arsenal,2.4,3.0,1.0,1.6,Tottenham,60278.0,Emirates Stadium
+80,2022/2023,2022-10-01,West Ham,0.9,2.0,0.0,0.7,Wolves,62444.0,London Stadium
+88,2022/2023,2022-10-08,Chelsea,1.9,3.0,0.0,1.1,Wolves,39940.0,Stamford Bridge
+90,2022/2023,2022-10-09,West Ham,2.4,3.0,1.0,0.7,Fulham,62407.0,London Stadium
+92,2022/2023,2022-10-09,Arsenal,2.7,3.0,2.0,1.1,Liverpool,60059.0,Emirates Stadium
+100,2022/2023,2022-10-15,Tottenham,2.2,2.0,0.0,0.4,Everton,61812.0,Tottenham Hotspur Stadium
+120,2022/2023,2022-10-22,Chelsea,1.1,1.0,1.0,0.8,Manchester Utd,39503.0,Stamford Bridge
+125,2022/2023,2022-10-23,Tottenham,1.6,1.0,2.0,1.2,Newcastle Utd,61726.0,Tottenham Hotspur Stadium
+126,2022/2023,2022-10-24,West Ham,1.9,2.0,0.0,0.4,Bournemouth,62447.0,London Stadium
+136,2022/2023,2022-10-30,Arsenal,2.3,5.0,0.0,0.4,Nott'ham Forest,60263.0,Emirates Stadium
+144,2022/2023,2022-11-06,Chelsea,0.3,0.0,1.0,2.1,Arsenal,40142.0,Stamford Bridge
+145,2022/2023,2022-11-06,West Ham,0.3,1.0,2.0,1.0,Crystal Palace,62451.0,London Stadium
+148,2022/2023,2022-11-06,Tottenham,1.2,1.0,2.0,1.2,Liverpool,62008.0,Tottenham Hotspur Stadium
+151,2022/2023,2022-11-12,Tottenham,1.8,4.0,3.0,1.1,Leeds United,61667.0,Tottenham Hotspur Stadium
+154,2022/2023,2022-11-12,West Ham,1.4,0.0,2.0,1.8,Leicester City,62459.0,London Stadium
+167,2022/2023,2022-12-26,Arsenal,2.1,3.0,1.0,1.0,West Ham,60125.0,Emirates Stadium
+168,2022/2023,2022-12-27,Chelsea,1.8,2.0,0.0,0.5,Bournemouth,40046.0,Stamford Bridge
+172,2022/2023,2022-12-30,West Ham,1.3,0.0,2.0,1.6,Brentford,62467.0,London Stadium
+180,2022/2023,2023-01-01,Tottenham,0.7,0.0,2.0,1.0,Aston Villa,61651.0,Tottenham Hotspur Stadium
+186,2022/2023,2023-01-03,Arsenal,1.1,0.0,0.0,1.0,Newcastle Utd,60319.0,Emirates Stadium
+192,2022/2023,2023-01-05,Chelsea,0.4,0.0,1.0,2.0,Manchester City,39998.0,Stamford Bridge
+203,2022/2023,2023-01-15,Chelsea,1.5,1.0,0.0,0.7,Crystal Palace,40075.0,Stamford Bridge
+205,2022/2023,2023-01-15,Tottenham,1.6,0.0,2.0,1.8,Arsenal,61870.0,Tottenham Hotspur Stadium
+214,2022/2023,2023-01-21,West Ham,2.2,2.0,0.0,0.5,Everton,62470.0,London Stadium
+218,2022/2023,2023-01-22,Arsenal,3.1,3.0,2.0,0.4,Manchester Utd,60325.0,Emirates Stadium
+221,2022/2023,2023-02-03,Chelsea,1.3,0.0,0.0,0.6,Fulham,40041.0,Stamford Bridge
+230,2022/2023,2023-02-05,Tottenham,1.4,1.0,0.0,1.3,Manchester City,61747.0,Tottenham Hotspur Stadium
+234,2022/2023,2023-02-11,West Ham,1.3,1.0,1.0,1.1,Chelsea,62471.0,London Stadium
+237,2022/2023,2023-02-11,Arsenal,1.6,1.0,1.0,2.0,Brentford,60254.0,Emirates Stadium
+245,2022/2023,2023-02-15,Arsenal,1.6,1.0,3.0,1.8,Manchester City,60276.0,Emirates Stadium
+250,2022/2023,2023-02-18,Chelsea,1.6,0.0,1.0,0.6,Southampton,40152.0,Stamford Bridge
+256,2022/2023,2023-02-19,Tottenham,1.5,2.0,0.0,0.5,West Ham,61476.0,Tottenham Hotspur Stadium
+261,2022/2023,2023-02-25,West Ham,2.7,4.0,0.0,0.4,Nott'ham Forest,62469.0,London Stadium
+265,2022/2023,2023-02-26,Tottenham,0.8,2.0,0.0,0.4,Chelsea,61613.0,Tottenham Hotspur Stadium
+267,2022/2023,2023-03-01,Arsenal,2.4,4.0,0.0,1.2,Everton,60213.0,Emirates Stadium
+271,2022/2023,2023-03-04,Arsenal,2.1,3.0,2.0,1.3,Bournemouth,60222.0,Emirates Stadium
+273,2022/2023,2023-03-04,Chelsea,1.5,1.0,0.0,1.0,Leeds United,39905.0,Stamford Bridge
+285,2022/2023,2023-03-11,Tottenham,2.0,3.0,1.0,1.5,Nott'ham Forest,61460.0,Tottenham Hotspur Stadium
+289,2022/2023,2023-03-12,West Ham,2.1,1.0,1.0,1.5,Aston Villa,62472.0,London Stadium
+301,2022/2023,2023-03-18,Chelsea,2.3,2.0,2.0,1.2,Everton,40025.0,Stamford Bridge
+302,2022/2023,2023-03-19,Arsenal,1.6,4.0,1.0,0.8,Crystal Palace,60247.0,Emirates Stadium
+305,2022/2023,2023-04-01,Arsenal,3.8,4.0,1.0,0.7,Leeds United,60283.0,Emirates Stadium
+310,2022/2023,2023-04-01,Chelsea,2.1,0.0,2.0,0.9,Aston Villa,40082.0,Stamford Bridge
+311,2022/2023,2023-04-02,West Ham,1.4,1.0,0.0,0.3,Southampton,62498.0,London Stadium
+319,2022/2023,2023-04-04,Chelsea,2.2,0.0,0.0,0.3,Liverpool,40093.0,Stamford Bridge
+321,2022/2023,2023-04-05,West Ham,1.0,1.0,5.0,3.3,Newcastle Utd,62481.0,London Stadium
+331,2022/2023,2023-04-08,Tottenham,0.8,2.0,1.0,1.4,Brighton,61405.0,Tottenham Hotspur Stadium
+337,2022/2023,2023-04-15,Chelsea,0.5,1.0,2.0,2.9,Brighton,40126.0,Stamford Bridge
+340,2022/2023,2023-04-15,Tottenham,2.2,2.0,3.0,1.3,Bournemouth,61369.0,Tottenham Hotspur Stadium
+343,2022/2023,2023-04-16,West Ham,1.8,2.0,2.0,2.7,Arsenal,62481.0,London Stadium
+347,2022/2023,2023-04-21,Arsenal,2.5,3.0,3.0,1.3,Southampton,60175.0,Emirates Stadium
+360,2022/2023,2023-04-26,Chelsea,1.3,0.0,2.0,1.1,Brentford,39929.0,Stamford Bridge
+361,2022/2023,2023-04-26,West Ham,0.8,1.0,2.0,1.9,Liverpool,62473.0,London Stadium
+365,2022/2023,2023-04-27,Tottenham,2.5,2.0,2.0,2.0,Manchester Utd,61586.0,Tottenham Hotspur Stadium
+376,2022/2023,2023-05-02,Arsenal,1.7,3.0,1.0,0.8,Chelsea,60144.0,Emirates Stadium
+382,2022/2023,2023-05-06,Tottenham,0.9,1.0,0.0,0.4,Crystal Palace,61093.0,Tottenham Hotspur Stadium
+388,2022/2023,2023-05-07,West Ham,1.3,1.0,0.0,1.2,Manchester Utd,62477.0,London Stadium
+395,2022/2023,2023-05-13,Chelsea,1.2,2.0,2.0,1.3,Nott'ham Forest,40030.0,Stamford Bridge
+401,2022/2023,2023-05-14,Arsenal,0.9,0.0,3.0,1.7,Brighton,60139.0,Emirates Stadium
+406,2022/2023,2023-05-20,Tottenham,1.7,1.0,3.0,1.2,Brentford,61514.0,Tottenham Hotspur Stadium
+412,2022/2023,2023-05-21,West Ham,2.1,3.0,1.0,0.9,Leeds United,62478.0,London Stadium
+421,2022/2023,2023-05-28,Chelsea,2.2,1.0,1.0,1.7,Newcastle Utd,40130.0,Stamford Bridge
+423,2022/2023,2023-05-28,Arsenal,2.8,5.0,0.0,0.5,Wolves,60095.0,Emirates Stadium
+4,2021/2022,2021-08-14,Chelsea,0.7,3.0,0.0,0.2,Crystal Palace,38965.0,Stamford Bridge
+9,2021/2022,2021-08-15,Tottenham,1.0,1.0,0.0,1.8,Manchester City,58262.0,Tottenham Hotspur Stadium
+19,2021/2022,2021-08-22,Arsenal,0.3,0.0,2.0,3.1,Chelsea,58729.0,Emirates Stadium
+20,2021/2022,2021-08-23,West Ham,2.3,4.0,1.0,0.6,Leicester City,59901.0,London Stadium
+24,2021/2022,2021-08-28,West Ham,1.3,2.0,2.0,1.1,Crystal Palace,59751.0,London Stadium
+30,2021/2022,2021-08-29,Tottenham,1.0,1.0,0.0,0.8,Watford,57672.0,Tottenham Hotspur Stadium
+36,2021/2022,2021-09-11,Arsenal,2.7,1.0,0.0,0.7,Norwich City,58000.0,Emirates Stadium
+40,2021/2022,2021-09-11,Chelsea,1.3,3.0,0.0,1.2,Aston Villa,39969.0,Stamford Bridge
+51,2021/2022,2021-09-19,West Ham,1.6,1.0,2.0,2.0,Manchester Utd,60000.0,London Stadium
+53,2021/2022,2021-09-19,Tottenham,0.5,0.0,3.0,2.1,Chelsea,60059.0,Tottenham Hotspur Stadium
+56,2021/2022,2021-09-25,Chelsea,0.2,0.0,1.0,1.7,Manchester City,40036.0,Stamford Bridge
+63,2021/2022,2021-09-26,Arsenal,1.1,3.0,1.0,1.0,Tottenham,59919.0,Emirates Stadium
+69,2021/2022,2021-10-02,Chelsea,3.3,3.0,1.0,1.3,Southampton,40109.0,Stamford Bridge
+72,2021/2022,2021-10-03,Tottenham,1.3,2.0,1.0,1.2,Aston Villa,53076.0,Tottenham Hotspur Stadium
+74,2021/2022,2021-10-03,West Ham,1.5,1.0,2.0,1.2,Brentford,49940.0,London Stadium
+86,2021/2022,2021-10-18,Arsenal,1.7,2.0,2.0,0.7,Crystal Palace,59475.0,Emirates Stadium
+88,2021/2022,2021-10-22,Arsenal,2.7,3.0,1.0,1.4,Aston Villa,59496.0,Emirates Stadium
+89,2021/2022,2021-10-23,Chelsea,3.1,7.0,0.0,0.1,Norwich City,40113.0,Stamford Bridge
+95,2021/2022,2021-10-24,West Ham,1.3,1.0,0.0,0.7,Tottenham,59924.0,London Stadium
+105,2021/2022,2021-10-30,Tottenham,1.0,0.0,3.0,1.5,Manchester Utd,60356.0,Tottenham Hotspur Stadium
+113,2021/2022,2021-11-06,Chelsea,1.8,1.0,1.0,0.7,Burnley,39798.0,Stamford Bridge
+118,2021/2022,2021-11-07,Arsenal,1.6,1.0,0.0,0.5,Watford,59833.0,Emirates Stadium
+119,2021/2022,2021-11-07,West Ham,1.0,3.0,2.0,1.2,Liverpool,59909.0,London Stadium
+130,2021/2022,2021-11-21,Tottenham,2.1,2.0,1.0,1.4,Leeds United,58989.0,Tottenham Hotspur Stadium
+132,2021/2022,2021-11-27,Arsenal,2.5,2.0,0.0,0.3,Newcastle Utd,59886.0,Emirates Stadium
+140,2021/2022,2021-11-28,Chelsea,2.7,1.0,1.0,0.9,Manchester Utd,40041.0,Stamford Bridge
+145,2021/2022,2021-12-01,West Ham,1.3,1.0,1.0,1.3,Brighton,59626.0,London Stadium
+150,2021/2022,2021-12-02,Tottenham,1.9,2.0,0.0,0.3,Brentford,54202.0,Tottenham Hotspur Stadium
+153,2021/2022,2021-12-04,West Ham,1.8,3.0,2.0,1.1,Chelsea,59942.0,London Stadium
+159,2021/2022,2021-12-05,Tottenham,1.6,3.0,0.0,1.2,Norwich City,57088.0,Tottenham Hotspur Stadium
+167,2021/2022,2021-12-11,Arsenal,1.8,3.0,0.0,0.6,Southampton,59653.0,Emirates Stadium
+168,2021/2022,2021-12-11,Chelsea,2.5,3.0,2.0,1.4,Leeds United,39959.0,Stamford Bridge
+178,2021/2022,2021-12-15,Arsenal,2.8,2.0,0.0,0.4,West Ham,59777.0,Emirates Stadium
+179,2021/2022,2021-12-16,Chelsea,2.9,1.0,1.0,0.6,Everton,13933.0,Stamford Bridge
+185,2021/2022,2021-12-19,Tottenham,3.0,2.0,2.0,1.1,Liverpool,45421.0,Tottenham Hotspur Stadium
+187,2021/2022,2021-12-26,West Ham,1.6,2.0,3.0,1.2,Southampton,41027.0,London Stadium
+190,2021/2022,2021-12-26,Tottenham,2.3,3.0,0.0,0.2,Crystal Palace,40539.0,Tottenham Hotspur Stadium
+199,2021/2022,2021-12-29,Chelsea,0.7,1.0,1.0,0.9,Brighton,40080.0,Stamford Bridge
+203,2021/2022,2022-01-01,Arsenal,0.8,1.0,2.0,2.0,Manchester City,59757.0,Emirates Stadium
+209,2021/2022,2022-01-02,Chelsea,1.2,2.0,2.0,1.3,Liverpool,40072.0,Stamford Bridge
+213,2021/2022,2022-01-12,West Ham,2.5,2.0,0.0,0.3,Norwich City,59775.0,London Stadium
+221,2021/2022,2022-01-16,West Ham,2.4,2.0,3.0,2.2,Leeds United,59951.0,London Stadium
+236,2021/2022,2022-01-23,Arsenal,1.2,0.0,0.0,0.4,Burnley,59255.0,Emirates Stadium
+238,2021/2022,2022-01-23,Chelsea,1.2,2.0,0.0,0.5,Tottenham,40020.0,Stamford Bridge
+242,2021/2022,2022-02-08,West Ham,0.8,1.0,0.0,0.3,Watford,59581.0,London Stadium
+245,2021/2022,2022-02-09,Tottenham,1.4,2.0,3.0,2.2,Southampton,54012.0,Tottenham Hotspur Stadium
+259,2021/2022,2022-02-13,Tottenham,1.2,0.0,2.0,1.3,Wolves,56452.0,Tottenham Hotspur Stadium
+264,2021/2022,2022-02-19,West Ham,0.6,1.0,1.0,0.8,Newcastle Utd,59949.0,London Stadium
+266,2021/2022,2022-02-19,Arsenal,1.7,2.0,1.0,0.6,Brentford,59249.0,Emirates Stadium
+281,2021/2022,2022-02-24,Arsenal,3.1,2.0,1.0,1.0,Wolves,59888.0,Emirates Stadium
+290,2021/2022,2022-02-27,West Ham,1.8,1.0,0.0,0.7,Wolves,59946.0,London Stadium
+303,2021/2022,2022-03-07,Tottenham,2.5,5.0,0.0,0.2,Everton,59647.0,Tottenham Hotspur Stadium
+316,2021/2022,2022-03-13,Chelsea,1.1,1.0,0.0,0.3,Newcastle Utd,40026.0,Stamford Bridge
+318,2021/2022,2022-03-13,West Ham,1.2,2.0,1.0,1.1,Aston Villa,59957.0,London Stadium
+321,2021/2022,2022-03-13,Arsenal,2.4,2.0,0.0,0.4,Leicester City,60111.0,Emirates Stadium
+326,2021/2022,2022-03-16,Arsenal,0.5,0.0,2.0,0.8,Liverpool,59968.0,Emirates Stadium
+333,2021/2022,2022-03-20,Tottenham,3.0,3.0,1.0,0.6,West Ham,58685.0,Tottenham Hotspur Stadium
+338,2021/2022,2022-04-02,Chelsea,1.3,1.0,4.0,1.8,Brentford,39061.0,Stamford Bridge
+342,2021/2022,2022-04-03,West Ham,1.2,2.0,1.0,0.7,Everton,59953.0,London Stadium
+343,2021/2022,2022-04-03,Tottenham,3.1,5.0,1.0,0.5,Newcastle Utd,57553.0,Tottenham Hotspur Stadium
+350,2021/2022,2022-04-09,Arsenal,1.9,1.0,2.0,0.6,Brighton,60112.0,Emirates Stadium
+359,2021/2022,2022-04-16,Tottenham,0.5,0.0,1.0,0.6,Brighton,58685.0,Tottenham Hotspur Stadium
+364,2021/2022,2022-04-17,West Ham,2.2,1.0,1.0,1.8,Burnley,59958.0,London Stadium
+370,2021/2022,2022-04-20,Chelsea,0.7,2.0,4.0,2.0,Arsenal,32249.0,Stamford Bridge
+376,2021/2022,2022-04-23,Arsenal,2.3,3.0,1.0,1.8,Manchester Utd,60223.0,Emirates Stadium
+383,2021/2022,2022-04-24,Chelsea,3.0,1.0,0.0,0.5,West Ham,32231.0,Stamford Bridge
+395,2021/2022,2022-05-01,Tottenham,1.2,3.0,1.0,0.5,Leicester City,59482.0,Tottenham Hotspur Stadium
+397,2021/2022,2022-05-01,West Ham,0.5,1.0,2.0,0.9,Arsenal,59959.0,London Stadium
+402,2021/2022,2022-05-07,Chelsea,1.7,2.0,2.0,2.0,Wolves,32190.0,Stamford Bridge
+408,2021/2022,2022-05-08,Arsenal,2.0,2.0,1.0,0.3,Leeds United,60108.0,Emirates Stadium
+420,2021/2022,2022-05-12,Tottenham,2.7,3.0,0.0,0.5,Arsenal,62027.0,Tottenham Hotspur Stadium
+422,2021/2022,2022-05-15,Tottenham,2.2,1.0,0.0,0.7,Burnley,61729.0,Tottenham Hotspur Stadium
+427,2021/2022,2022-05-15,West Ham,1.1,2.0,2.0,2.4,Manchester City,59972.0,London Stadium
+436,2021/2022,2022-05-19,Chelsea,1.6,1.0,1.0,0.1,Leicester City,31478.0,Stamford Bridge
+441,2021/2022,2022-05-22,Arsenal,4.2,5.0,1.0,1.1,Everton,60201.0,Emirates Stadium
+447,2021/2022,2022-05-22,Chelsea,2.2,2.0,1.0,0.6,Watford,32089.0,Stamford Bridge
+3,2020/2021,2020-09-12,West Ham,1.0,0.0,2.0,1.6,Newcastle Utd,,London Stadium
+5,2020/2021,2020-09-13,Tottenham,1.1,0.0,1.0,1.2,Everton,,Tottenham Hotspur Stadium
+12,2020/2021,2020-09-19,Arsenal,1.1,2.0,1.0,2.0,West Ham,,Emirates Stadium
+15,2020/2021,2020-09-20,Chelsea,0.9,0.0,2.0,2.1,Liverpool,,Stamford Bridge
+25,2020/2021,2020-09-27,Tottenham,2.9,1.0,1.0,1.0,Newcastle Utd,,Tottenham Hotspur Stadium
+27,2020/2021,2020-09-27,West Ham,2.4,4.0,0.0,0.5,Wolves,,London Stadium
+31,2020/2021,2020-10-03,Chelsea,2.7,4.0,0.0,0.2,Crystal Palace,,Stamford Bridge
+37,2020/2021,2020-10-04,Arsenal,0.6,2.0,1.0,0.2,Sheffield Utd,,Emirates Stadium
+43,2020/2021,2020-10-17,Chelsea,1.8,3.0,3.0,1.9,Southampton,,Stamford Bridge
+48,2020/2021,2020-10-18,Tottenham,1.7,3.0,3.0,1.9,West Ham,,Tottenham Hotspur Stadium
+54,2020/2021,2020-10-24,West Ham,0.3,1.0,1.0,1.0,Manchester City,,London Stadium
+60,2020/2021,2020-10-25,Arsenal,0.7,0.0,1.0,0.7,Leicester City,,Emirates Stadium
+71,2020/2021,2020-11-01,Tottenham,1.7,2.0,1.0,0.3,Brighton,,Tottenham Hotspur Stadium
+79,2020/2021,2020-11-07,Chelsea,2.2,4.0,1.0,0.4,Sheffield Utd,,Stamford Bridge
+80,2020/2021,2020-11-07,West Ham,1.3,1.0,0.0,1.7,Fulham,,London Stadium
+84,2020/2021,2020-11-08,Arsenal,1.5,0.0,3.0,1.8,Aston Villa,,Emirates Stadium
+88,2020/2021,2020-11-21,Tottenham,0.7,2.0,0.0,1.4,Manchester City,,Tottenham Hotspur Stadium
+103,2020/2021,2020-11-29,Chelsea,0.8,0.0,0.0,0.2,Tottenham,,Stamford Bridge
+104,2020/2021,2020-11-29,Arsenal,1.5,1.0,2.0,1.8,Wolves,,Emirates Stadium
+106,2020/2021,2020-11-30,West Ham,0.4,2.0,1.0,2.5,Aston Villa,,London Stadium
+110,2020/2021,2020-12-05,West Ham,2.0,1.0,3.0,1.7,Manchester Utd,2000.0,London Stadium
+111,2020/2021,2020-12-05,Chelsea,4.1,3.0,1.0,0.8,Leeds United,2000.0,Stamford Bridge
+114,2020/2021,2020-12-06,Tottenham,0.3,2.0,0.0,0.6,Arsenal,2000.0,Tottenham Hotspur Stadium
+127,2020/2021,2020-12-13,Arsenal,1.6,0.0,1.0,1.4,Burnley,2000.0,Emirates Stadium
+131,2020/2021,2020-12-16,Arsenal,0.6,1.0,1.0,1.2,Southampton,,Emirates Stadium
+135,2020/2021,2020-12-16,West Ham,0.4,1.0,1.0,1.1,Crystal Palace,,London Stadium
+145,2020/2021,2020-12-20,Tottenham,0.7,0.0,2.0,1.7,Leicester City,,Tottenham Hotspur Stadium
+149,2020/2021,2020-12-21,Chelsea,2.0,3.0,0.0,0.4,West Ham,,Stamford Bridge
+154,2020/2021,2020-12-26,Arsenal,2.0,3.0,1.0,2.6,Chelsea,,Emirates Stadium
+158,2020/2021,2020-12-27,West Ham,1.3,2.0,2.0,1.1,Brighton,,London Stadium
+163,2020/2021,2020-12-28,Chelsea,1.7,1.0,1.0,0.7,Aston Villa,,Stamford Bridge
+173,2020/2021,2021-01-02,Tottenham,2.6,3.0,0.0,1.1,Leeds United,,Tottenham Hotspur Stadium
+178,2020/2021,2021-01-03,Chelsea,0.8,1.0,3.0,2.7,Manchester City,,Stamford Bridge
+188,2020/2021,2021-01-13,Tottenham,2.4,1.0,1.0,1.1,Fulham,,Tottenham Hotspur Stadium
+190,2020/2021,2021-01-14,Arsenal,0.4,0.0,0.0,0.8,Crystal Palace,,Emirates Stadium
+193,2020/2021,2021-01-16,West Ham,1.7,1.0,0.0,0.5,Burnley,,London Stadium
+200,2020/2021,2021-01-18,Arsenal,2.4,3.0,0.0,0.2,Newcastle Utd,,Emirates Stadium
+202,2020/2021,2021-01-19,West Ham,2.0,2.0,1.0,0.5,West Brom,,London Stadium
+216,2020/2021,2021-01-27,Chelsea,0.7,0.0,0.0,0.5,Wolves,,Stamford Bridge
+221,2020/2021,2021-01-28,Tottenham,0.1,1.0,3.0,2.5,Liverpool,,Tottenham Hotspur Stadium
+227,2020/2021,2021-01-30,Arsenal,0.9,0.0,0.0,1.6,Manchester Utd,,Emirates Stadium
+229,2020/2021,2021-01-31,Chelsea,1.2,2.0,0.0,0.2,Burnley,,Stamford Bridge
+231,2020/2021,2021-01-31,West Ham,0.8,1.0,3.0,2.0,Liverpool,,London Stadium
+243,2020/2021,2021-02-04,Tottenham,0.6,0.0,1.0,1.6,Chelsea,,Tottenham Hotspur Stadium
+250,2020/2021,2021-02-07,Tottenham,1.5,2.0,0.0,0.6,West Brom,,Tottenham Hotspur Stadium
+262,2020/2021,2021-02-14,Arsenal,2.3,4.0,2.0,0.9,Leeds United,,Emirates Stadium
+264,2020/2021,2021-02-15,West Ham,1.9,3.0,0.0,0.7,Sheffield Utd,,London Stadium
+265,2020/2021,2021-02-15,Chelsea,2.2,2.0,0.0,0.6,Newcastle Utd,,Stamford Bridge
+276,2020/2021,2021-02-21,West Ham,1.1,2.0,1.0,1.1,Tottenham,,London Stadium
+278,2020/2021,2021-02-21,Arsenal,0.3,0.0,1.0,1.8,Manchester City,,Emirates Stadium
+290,2020/2021,2021-02-28,Tottenham,2.1,4.0,0.0,0.7,Burnley,,Tottenham Hotspur Stadium
+291,2020/2021,2021-02-28,Chelsea,1.1,0.0,0.0,0.4,Manchester Utd,,Stamford Bridge
+312,2020/2021,2021-03-07,Tottenham,2.7,4.0,1.0,0.5,Crystal Palace,,Tottenham Hotspur Stadium
+313,2020/2021,2021-03-08,Chelsea,2.4,2.0,0.0,0.3,Everton,,Stamford Bridge
+314,2020/2021,2021-03-08,West Ham,1.8,2.0,0.0,1.4,Leeds United,,London Stadium
+325,2020/2021,2021-03-14,Arsenal,1.7,2.0,1.0,0.4,Tottenham,,Emirates Stadium
+331,2020/2021,2021-03-21,West Ham,2.4,3.0,3.0,1.4,Arsenal,,London Stadium
+335,2020/2021,2021-04-03,Chelsea,2.1,2.0,5.0,1.6,West Brom,,Stamford Bridge
+338,2020/2021,2021-04-03,Arsenal,0.1,0.0,3.0,2.4,Liverpool,,Emirates Stadium
+351,2020/2021,2021-04-11,West Ham,0.8,3.0,2.0,0.9,Leicester City,,London Stadium
+352,2020/2021,2021-04-11,Tottenham,0.9,1.0,3.0,2.1,Manchester Utd,,Tottenham Hotspur Stadium
+360,2020/2021,2021-04-18,Arsenal,2.7,1.0,1.0,0.9,Fulham,,Emirates Stadium
+363,2020/2021,2021-04-20,Chelsea,0.7,0.0,0.0,0.5,Brighton,,Stamford Bridge
+365,2020/2021,2021-04-21,Tottenham,1.4,2.0,1.0,0.8,Southampton,,Tottenham Hotspur Stadium
+370,2020/2021,2021-04-23,Arsenal,0.8,0.0,1.0,0.5,Everton,,Emirates Stadium
+372,2020/2021,2021-04-24,West Ham,0.4,0.0,1.0,2.5,Chelsea,,London Stadium
+382,2020/2021,2021-05-01,Chelsea,1.7,2.0,0.0,0.3,Fulham,,Stamford Bridge
+385,2020/2021,2021-05-02,Tottenham,2.2,4.0,0.0,0.5,Sheffield Utd,,Tottenham Hotspur Stadium
+396,2020/2021,2021-05-09,West Ham,1.3,0.0,1.0,1.5,Everton,,London Stadium
+397,2020/2021,2021-05-09,Arsenal,0.9,3.0,1.0,1.8,West Brom,,Emirates Stadium
+404,2020/2021,2021-05-12,Chelsea,1.8,0.0,1.0,0.6,Arsenal,,Stamford Bridge
+415,2020/2021,2021-05-16,Tottenham,3.2,2.0,0.0,0.9,Wolves,,Tottenham Hotspur Stadium
+422,2020/2021,2021-05-18,Chelsea,3.1,2.0,1.0,0.8,Leicester City,8000.0,Stamford Bridge
+424,2020/2021,2021-05-19,Tottenham,0.8,1.0,2.0,1.4,Aston Villa,10000.0,Tottenham Hotspur Stadium
+435,2020/2021,2021-05-23,West Ham,1.3,3.0,0.0,1.5,Southampton,10000.0,London Stadium
+437,2020/2021,2021-05-23,Arsenal,0.8,2.0,0.0,0.2,Brighton,10000.0,Emirates Stadium
+1,2019/2020,2019-08-10,West Ham,1.1,0.0,5.0,3.2,Manchester City,59870.0,London Stadium
+6,2019/2020,2019-08-10,Tottenham,2.4,3.0,1.0,0.7,Aston Villa,60407.0,Tottenham Hotspur Stadium
+11,2019/2020,2019-08-17,Arsenal,0.8,2.0,1.0,1.5,Burnley,60214.0,Emirates Stadium
+19,2019/2020,2019-08-18,Chelsea,1.1,1.0,1.0,0.8,Leicester City,40629.0,Stamford Bridge
+31,2019/2020,2019-08-25,Tottenham,1.1,0.0,1.0,0.8,Newcastle Utd,59245.0,Tottenham Hotspur Stadium
+34,2019/2020,2019-08-31,West Ham,2.0,2.0,0.0,1.4,Norwich City,59950.0,London Stadium
+37,2019/2020,2019-08-31,Chelsea,2.0,2.0,2.0,1.1,Sheffield Utd,40560.0,Stamford Bridge
+42,2019/2020,2019-09-01,Arsenal,2.4,2.0,2.0,2.0,Tottenham,60333.0,Emirates Stadium
+47,2019/2020,2019-09-14,Tottenham,1.0,4.0,0.0,0.6,Crystal Palace,59812.0,Tottenham Hotspur Stadium
+62,2019/2020,2019-09-22,West Ham,0.4,2.0,0.0,0.9,Manchester Utd,59936.0,London Stadium
+63,2019/2020,2019-09-22,Chelsea,1.3,1.0,2.0,0.6,Liverpool,40638.0,Stamford Bridge
+64,2019/2020,2019-09-22,Arsenal,2.4,3.0,2.0,1.5,Aston Villa,60331.0,Emirates Stadium
+67,2019/2020,2019-09-28,Chelsea,3.7,2.0,0.0,0.6,Brighton,40683.0,Stamford Bridge
+68,2019/2020,2019-09-28,Tottenham,1.0,2.0,1.0,1.5,Southampton,59645.0,Tottenham Hotspur Stadium
+82,2019/2020,2019-10-05,West Ham,1.4,1.0,2.0,2.1,Crystal Palace,59912.0,London Stadium
+85,2019/2020,2019-10-06,Arsenal,1.2,1.0,0.0,0.6,Bournemouth,60326.0,Emirates Stadium
+91,2019/2020,2019-10-19,Tottenham,1.0,1.0,1.0,0.7,Watford,58754.0,Tottenham Hotspur Stadium
+93,2019/2020,2019-10-19,Chelsea,2.0,1.0,0.0,0.4,Newcastle Utd,40513.0,Stamford Bridge
+102,2019/2020,2019-10-26,West Ham,2.3,1.0,1.0,1.0,Sheffield Utd,59878.0,London Stadium
+106,2019/2020,2019-10-27,Arsenal,1.3,2.0,2.0,1.6,Crystal Palace,60345.0,Emirates Stadium
+114,2019/2020,2019-11-02,Arsenal,0.9,1.0,1.0,1.8,Wolves,60383.0,Emirates Stadium
+115,2019/2020,2019-11-02,West Ham,1.8,2.0,3.0,1.5,Newcastle Utd,59907.0,London Stadium
+122,2019/2020,2019-11-09,Chelsea,3.6,2.0,0.0,0.2,Crystal Palace,40525.0,Stamford Bridge
+126,2019/2020,2019-11-09,Tottenham,1.8,1.0,1.0,0.9,Sheffield Utd,59781.0,Tottenham Hotspur Stadium
+132,2019/2020,2019-11-23,West Ham,0.7,2.0,3.0,2.1,Tottenham,59930.0,London Stadium
+134,2019/2020,2019-11-23,Arsenal,1.8,2.0,2.0,2.4,Southampton,60295.0,Emirates Stadium
+144,2019/2020,2019-11-30,Tottenham,2.3,3.0,2.0,1.1,Bournemouth,59626.0,Tottenham Hotspur Stadium
+147,2019/2020,2019-11-30,Chelsea,2.3,0.0,1.0,0.9,West Ham,40595.0,Stamford Bridge
+158,2019/2020,2019-12-04,Chelsea,1.8,2.0,1.0,1.0,Aston Villa,40628.0,Stamford Bridge
+163,2019/2020,2019-12-05,Arsenal,0.9,1.0,2.0,1.7,Brighton,60164.0,Emirates Stadium
+166,2019/2020,2019-12-07,Tottenham,2.6,5.0,0.0,0.9,Burnley,58401.0,Tottenham Hotspur Stadium
+174,2019/2020,2019-12-09,West Ham,0.6,1.0,3.0,1.4,Arsenal,59936.0,London Stadium
+180,2019/2020,2019-12-14,Chelsea,2.1,0.0,1.0,1.0,Bournemouth,40243.0,Stamford Bridge
+184,2019/2020,2019-12-15,Arsenal,0.5,0.0,3.0,1.3,Manchester City,60031.0,Emirates Stadium
+195,2019/2020,2019-12-22,Tottenham,0.3,0.0,2.0,1.3,Chelsea,61104.0,Tottenham Hotspur Stadium
+197,2019/2020,2019-12-26,Tottenham,0.8,2.0,1.0,1.0,Brighton,56308.0,Tottenham Hotspur Stadium
+203,2019/2020,2019-12-26,Chelsea,0.7,0.0,2.0,1.1,Southampton,40651.0,Stamford Bridge
+212,2019/2020,2019-12-28,West Ham,1.0,1.0,2.0,2.5,Leicester City,59919.0,London Stadium
+215,2019/2020,2019-12-29,Arsenal,0.5,1.0,2.0,1.4,Chelsea,60309.0,Emirates Stadium
+225,2019/2020,2020-01-01,West Ham,2.4,4.0,0.0,0.6,Bournemouth,59917.0,London Stadium
+227,2019/2020,2020-01-01,Arsenal,1.5,2.0,0.0,0.7,Manchester Utd,60328.0,Emirates Stadium
+232,2019/2020,2020-01-11,Chelsea,2.7,3.0,0.0,0.8,Burnley,40396.0,Stamford Bridge
+237,2019/2020,2020-01-11,Tottenham,1.2,0.0,1.0,1.2,Liverpool,61023.0,Tottenham Hotspur Stadium
+242,2019/2020,2020-01-18,Arsenal,1.4,1.0,1.0,0.8,Sheffield Utd,60310.0,Emirates Stadium
+247,2019/2020,2020-01-18,West Ham,1.3,1.0,1.0,1.7,Everton,59915.0,London Stadium
+257,2019/2020,2020-01-21,Chelsea,2.9,2.0,2.0,0.4,Arsenal,40577.0,Stamford Bridge
+259,2019/2020,2020-01-22,Tottenham,2.1,2.0,1.0,1.5,Norwich City,58182.0,Tottenham Hotspur Stadium
+263,2019/2020,2020-01-29,West Ham,0.7,0.0,2.0,2.8,Liverpool,59959.0,London Stadium
+266,2019/2020,2020-02-01,West Ham,0.8,3.0,3.0,1.9,Brighton,59952.0,London Stadium
+274,2019/2020,2020-02-02,Tottenham,0.3,2.0,0.0,2.4,Manchester City,61022.0,Tottenham Hotspur Stadium
+283,2019/2020,2020-02-16,Arsenal,2.6,4.0,0.0,0.9,Newcastle Utd,60188.0,Emirates Stadium
+284,2019/2020,2020-02-17,Chelsea,0.9,0.0,2.0,0.6,Manchester Utd,40504.0,Stamford Bridge
+287,2019/2020,2020-02-22,Chelsea,1.7,2.0,1.0,0.2,Tottenham,40608.0,Stamford Bridge
+295,2019/2020,2020-02-23,Arsenal,1.3,3.0,2.0,2.7,Everton,60296.0,Emirates Stadium
+300,2019/2020,2020-02-29,West Ham,2.3,3.0,1.0,0.7,Southampton,59962.0,London Stadium
+304,2019/2020,2020-03-01,Tottenham,1.7,2.0,3.0,2.6,Wolves,58064.0,Tottenham Hotspur Stadium
+311,2019/2020,2020-03-07,Arsenal,1.2,1.0,0.0,1.5,West Ham,60335.0,Emirates Stadium
+314,2019/2020,2020-03-08,Chelsea,1.8,4.0,0.0,0.5,Everton,40694.0,Stamford Bridge
+322,2019/2020,2020-06-19,Tottenham,0.4,1.0,1.0,1.7,Manchester Utd,,Tottenham Hotspur Stadium
+325,2019/2020,2020-06-20,West Ham,0.5,0.0,2.0,1.0,Wolves,,London Stadium
+333,2019/2020,2020-06-23,Tottenham,2.3,2.0,0.0,1.2,West Ham,,Tottenham Hotspur Stadium
+341,2019/2020,2020-06-25,Chelsea,3.2,2.0,1.0,0.8,Manchester City,,Stamford Bridge
+349,2019/2020,2020-07-01,Arsenal,1.5,4.0,0.0,0.3,Norwich City,,Emirates Stadium
+350,2019/2020,2020-07-01,West Ham,2.2,3.0,2.0,1.6,Chelsea,,London Stadium
+358,2019/2020,2020-07-04,Chelsea,2.5,3.0,0.0,0.6,Watford,,Stamford Bridge
+363,2019/2020,2020-07-06,Tottenham,0.5,1.0,0.0,0.5,Everton,,Tottenham Hotspur Stadium
+367,2019/2020,2020-07-07,Arsenal,1.1,1.0,1.0,0.9,Leicester City,,Emirates Stadium
+369,2019/2020,2020-07-08,West Ham,1.6,0.0,1.0,0.9,Burnley,,London Stadium
+383,2019/2020,2020-07-12,Tottenham,2.0,2.0,1.0,0.6,Arsenal,,Tottenham Hotspur Stadium
+387,2019/2020,2020-07-14,Chelsea,2.5,1.0,0.0,0.1,Norwich City,,Stamford Bridge
+391,2019/2020,2020-07-15,Arsenal,0.8,2.0,1.0,2.1,Liverpool,,Emirates Stadium
+396,2019/2020,2020-07-17,West Ham,0.9,3.0,1.0,1.5,Watford,,London Stadium
+400,2019/2020,2020-07-19,Tottenham,0.8,3.0,0.0,1.7,Leicester City,,Tottenham Hotspur Stadium
+412,2019/2020,2020-07-26,Arsenal,2.3,3.0,2.0,3.7,Watford,,Emirates Stadium
+415,2019/2020,2020-07-26,Chelsea,1.4,2.0,0.0,0.2,Wolves,,Stamford Bridge
+416,2019/2020,2020-07-26,West Ham,0.9,1.0,1.0,1.0,Aston Villa,,London Stadium
+9,2018/2019,2018-08-12,Arsenal,0.5,0.0,2.0,1.7,Manchester City,59934.0,Emirates Stadium
+12,2018/2019,2018-08-18,West Ham,1.2,1.0,2.0,1.3,Bournemouth,56888.0,London Stadium
+15,2018/2019,2018-08-18,Tottenham,2.9,3.0,1.0,1.6,Fulham,58297.0,Wembley Stadium
+16,2018/2019,2018-08-18,Chelsea,1.6,3.0,2.0,2.4,Arsenal,40491.0,Stamford Bridge
+23,2018/2019,2018-08-25,Arsenal,1.8,3.0,1.0,1.1,West Ham,59830.0,Emirates Stadium
+36,2018/2019,2018-09-01,Chelsea,1.1,2.0,0.0,0.9,Bournemouth,40178.0,Stamford Bridge
+38,2018/2019,2018-09-01,West Ham,1.1,0.0,1.0,1.0,Wolves,56947.0,London Stadium
+44,2018/2019,2018-09-15,Tottenham,1.0,1.0,2.0,2.6,Liverpool,80188.0,Wembley Stadium
+49,2018/2019,2018-09-15,Chelsea,2.6,4.0,1.0,0.7,Cardiff City,40499.0,Stamford Bridge
+63,2018/2019,2018-09-23,West Ham,1.0,0.0,0.0,1.5,Chelsea,56875.0,London Stadium
+64,2018/2019,2018-09-23,Arsenal,0.8,2.0,0.0,0.8,Everton,59964.0,Emirates Stadium
+66,2018/2019,2018-09-29,West Ham,1.4,3.0,1.0,0.7,Manchester Utd,56938.0,London Stadium
+70,2018/2019,2018-09-29,Arsenal,1.4,2.0,0.0,2.8,Watford,60019.0,Emirates Stadium
+73,2018/2019,2018-09-29,Chelsea,1.1,1.0,1.0,1.6,Liverpool,40625.0,Stamford Bridge
+80,2018/2019,2018-10-06,Tottenham,2.0,1.0,0.0,1.2,Cardiff City,43268.0,Tottenham Hotspur Stadium
+88,2018/2019,2018-10-20,Chelsea,1.8,2.0,2.0,0.8,Manchester Utd,40721.0,Stamford Bridge
+91,2018/2019,2018-10-20,West Ham,0.8,0.0,1.0,0.9,Tottenham,56921.0,London Stadium
+97,2018/2019,2018-10-22,Arsenal,2.7,3.0,1.0,0.5,Leicester City,59886.0,Emirates Stadium
+108,2018/2019,2018-10-29,Tottenham,0.4,0.0,1.0,1.6,Manchester City,56854.0,Tottenham Hotspur Stadium
+114,2018/2019,2018-11-03,West Ham,2.4,4.0,2.0,1.1,Burnley,56862.0,London Stadium
+115,2018/2019,2018-11-03,Arsenal,1.4,1.0,1.0,1.3,Liverpool,59993.0,Emirates Stadium
+118,2018/2019,2018-11-04,Chelsea,1.7,3.0,1.0,0.4,Crystal Palace,40407.0,Stamford Bridge
+128,2018/2019,2018-11-11,Chelsea,1.2,0.0,0.0,0.3,Everton,40345.0,Stamford Bridge
+129,2018/2019,2018-11-11,Arsenal,0.9,1.0,1.0,1.9,Wolves,60030.0,Emirates Stadium
+134,2018/2019,2018-11-24,West Ham,0.9,0.0,4.0,2.7,Manchester City,56886.0,London Stadium
+138,2018/2019,2018-11-24,Tottenham,3.1,3.0,1.0,1.0,Chelsea,55465.0,Tottenham Hotspur Stadium
+150,2018/2019,2018-12-02,Chelsea,2.1,2.0,0.0,0.4,Fulham,40551.0,Stamford Bridge
+151,2018/2019,2018-12-02,Arsenal,2.7,4.0,2.0,1.2,Tottenham,59973.0,Emirates Stadium
+154,2018/2019,2018-12-04,West Ham,1.7,3.0,1.0,2.1,Cardiff City,56811.0,London Stadium
+163,2018/2019,2018-12-05,Tottenham,1.6,3.0,1.0,1.7,Southampton,33012.0,Tottenham Hotspur Stadium
+166,2018/2019,2018-12-08,West Ham,1.2,3.0,2.0,0.7,Crystal Palace,56995.0,London Stadium
+170,2018/2019,2018-12-08,Arsenal,1.4,1.0,0.0,0.3,Huddersfield,59893.0,Emirates Stadium
+171,2018/2019,2018-12-08,Chelsea,0.6,2.0,0.0,0.9,Manchester City,40571.0,Stamford Bridge
+178,2018/2019,2018-12-15,Tottenham,1.7,1.0,0.0,0.5,Burnley,41645.0,Tottenham Hotspur Stadium
+188,2018/2019,2018-12-22,Arsenal,1.6,3.0,1.0,1.2,Burnley,59493.0,Emirates Stadium
+191,2018/2019,2018-12-22,West Ham,2.0,0.0,2.0,2.3,Watford,56833.0,London Stadium
+193,2018/2019,2018-12-22,Chelsea,2.4,0.0,1.0,0.5,Leicester City,40558.0,Stamford Bridge
+203,2018/2019,2018-12-26,Tottenham,1.7,5.0,0.0,1.1,Bournemouth,45154.0,Tottenham Hotspur Stadium
+213,2018/2019,2018-12-29,Tottenham,0.3,1.0,3.0,0.9,Wolves,46356.0,Tottenham Hotspur Stadium
+221,2018/2019,2019-01-01,Arsenal,4.5,4.0,1.0,1.4,Fulham,59887.0,Emirates Stadium
+224,2018/2019,2019-01-02,West Ham,0.8,2.0,2.0,0.7,Brighton,59870.0,London Stadium
+226,2018/2019,2019-01-02,Chelsea,0.9,0.0,0.0,0.2,Southampton,40668.0,Stamford Bridge
+231,2018/2019,2019-01-12,West Ham,0.6,1.0,0.0,0.7,Arsenal,59946.0,London Stadium
+237,2018/2019,2019-01-12,Chelsea,1.3,2.0,1.0,0.5,Newcastle Utd,40491.0,Stamford Bridge
+239,2018/2019,2019-01-13,Tottenham,1.8,0.0,1.0,0.8,Manchester Utd,80062.0,Tottenham Hotspur Stadium
+249,2018/2019,2019-01-19,Arsenal,1.5,2.0,0.0,0.9,Chelsea,59979.0,Emirates Stadium
+256,2018/2019,2019-01-29,Arsenal,2.6,2.0,1.0,0.8,Cardiff City,59933.0,Emirates Stadium
+261,2018/2019,2019-01-30,Tottenham,1.7,2.0,1.0,0.5,Watford,29164.0,Tottenham Hotspur Stadium
+264,2018/2019,2019-02-02,Tottenham,2.2,1.0,0.0,0.4,Newcastle Utd,41219.0,Wembley Stadium
+266,2018/2019,2019-02-02,Chelsea,2.6,5.0,0.0,0.3,Huddersfield,40626.0,Stamford Bridge
+273,2018/2019,2019-02-04,West Ham,0.8,1.0,1.0,1.1,Liverpool,59903.0,London Stadium
+284,2018/2019,2019-02-10,Tottenham,1.1,3.0,1.0,3.3,Leicester City,44154.0,Tottenham Hotspur Stadium
+288,2018/2019,2019-02-22,West Ham,2.4,3.0,1.0,1.3,Fulham,59950.0,London Stadium
+294,2018/2019,2019-02-24,Arsenal,2.1,2.0,0.0,0.8,Southampton,59877.0,Emirates Stadium
+301,2018/2019,2019-02-27,Arsenal,2.5,5.0,1.0,0.9,Bournemouth,59618.0,Emirates Stadium
+304,2018/2019,2019-02-27,Chelsea,0.6,2.0,0.0,0.6,Tottenham,40542.0,Stamford Bridge
+308,2018/2019,2019-03-02,Tottenham,1.6,1.0,1.0,2.6,Arsenal,81332.0,Tottenham Hotspur Stadium
+314,2018/2019,2019-03-02,West Ham,2.0,2.0,0.0,1.1,Newcastle Utd,59910.0,London Stadium
+327,2018/2019,2019-03-10,Chelsea,1.1,1.0,1.0,0.5,Wolves,40692.0,Stamford Bridge
+328,2018/2019,2019-03-10,Arsenal,1.7,2.0,0.0,2.3,Manchester Utd,60000.0,Emirates Stadium
+330,2018/2019,2019-03-16,West Ham,1.7,4.0,3.0,1.0,Huddersfield,59931.0,London Stadium
+342,2018/2019,2019-03-30,West Ham,0.1,0.0,2.0,1.8,Everton,59988.0,London Stadium
+345,2018/2019,2019-04-01,Arsenal,0.8,2.0,0.0,0.1,Newcastle Utd,59869.0,Emirates Stadium
+350,2018/2019,2019-04-03,Chelsea,2.7,3.0,0.0,0.4,Brighton,38593.0,Stamford Bridge
+352,2018/2019,2019-04-03,Tottenham,2.1,2.0,0.0,0.3,Crystal Palace,59215.0,Tottenham Hotspur Stadium
+360,2018/2019,2019-04-08,Chelsea,1.9,2.0,0.0,0.6,West Ham,40537.0,Stamford Bridge
+363,2018/2019,2019-04-13,Tottenham,2.5,4.0,0.0,0.8,Huddersfield,58308.0,Tottenham Hotspur Stadium
+376,2018/2019,2019-04-20,West Ham,1.2,2.0,2.0,0.9,Leicester City,59960.0,London Stadium
+382,2018/2019,2019-04-21,Arsenal,1.2,2.0,3.0,1.6,Crystal Palace,59929.0,Emirates Stadium
+384,2018/2019,2019-04-22,Chelsea,1.3,2.0,2.0,0.7,Burnley,40642.0,Stamford Bridge
+388,2018/2019,2019-04-23,Tottenham,1.3,1.0,0.0,0.3,Brighton,56251.0,Tottenham Hotspur Stadium
+394,2018/2019,2019-04-27,Tottenham,1.6,0.0,1.0,1.1,West Ham,60043.0,Tottenham Hotspur Stadium
+407,2018/2019,2019-05-04,West Ham,1.9,3.0,0.0,0.5,Southampton,59961.0,London Stadium
+411,2018/2019,2019-05-05,Chelsea,2.3,3.0,0.0,1.7,Watford,40560.0,Stamford Bridge
+412,2018/2019,2019-05-05,Arsenal,2.4,1.0,1.0,1.9,Brighton,59965.0,Emirates Stadium
+420,2018/2019,2019-05-12,Tottenham,0.6,2.0,2.0,2.0,Everton,60124.0,Tottenham Hotspur Stadium
+0,2017/2018,2017-08-11,Arsenal,2.5,4.0,3.0,1.5,Leicester City,59387.0,Emirates Stadium
+4,2017/2018,2017-08-12,Chelsea,1.5,2.0,3.0,0.6,Burnley,41616.0,Stamford Bridge
+19,2017/2018,2017-08-20,Tottenham,0.7,1.0,2.0,0.7,Chelsea,73587.0,Wembley Stadium
+28,2017/2018,2017-08-27,Chelsea,1.0,2.0,0.0,0.4,Everton,41382.0,Stamford Bridge
+30,2017/2018,2017-08-27,Tottenham,2.3,1.0,1.0,0.9,Burnley,67862.0,Wembley Stadium
+35,2017/2018,2017-09-09,Arsenal,2.2,3.0,0.0,0.6,Bournemouth,59262.0,Emirates Stadium
+42,2017/2018,2017-09-11,West Ham,1.7,2.0,0.0,0.4,Huddersfield,56977.0,London Stadium
+51,2017/2018,2017-09-16,Tottenham,1.1,0.0,0.0,0.2,Swansea City,65366.0,Wembley Stadium
+52,2017/2018,2017-09-17,Chelsea,0.8,0.0,0.0,1.4,Arsenal,41478.0,Stamford Bridge
+55,2017/2018,2017-09-23,West Ham,0.6,2.0,3.0,1.2,Tottenham,56988.0,London Stadium
+64,2017/2018,2017-09-25,Arsenal,2.2,2.0,0.0,0.9,West Brom,59134.0,Emirates Stadium
+68,2017/2018,2017-09-30,West Ham,0.7,1.0,0.0,0.2,Swansea City,56922.0,London Stadium
+72,2017/2018,2017-09-30,Chelsea,0.5,0.0,1.0,0.9,Manchester City,41530.0,Stamford Bridge
+73,2017/2018,2017-10-01,Arsenal,2.4,2.0,0.0,0.4,Brighton,59378.0,Emirates Stadium
+78,2017/2018,2017-10-14,Tottenham,1.8,1.0,0.0,0.2,Bournemouth,73502.0,Wembley Stadium
+88,2017/2018,2017-10-20,West Ham,0.7,0.0,3.0,1.4,Brighton,56977.0,London Stadium
+89,2017/2018,2017-10-21,Chelsea,1.9,4.0,2.0,1.9,Watford,41467.0,Stamford Bridge
+97,2017/2018,2017-10-22,Tottenham,2.0,4.0,1.0,0.6,Liverpool,80827.0,Wembley Stadium
+100,2017/2018,2017-10-28,Arsenal,2.0,2.0,1.0,0.9,Swansea City,59493.0,Emirates Stadium
+115,2017/2018,2017-11-04,West Ham,1.2,1.0,4.0,2.7,Liverpool,56961.0,London Stadium
+116,2017/2018,2017-11-05,Tottenham,0.9,1.0,0.0,0.8,Crystal Palace,65270.0,Wembley Stadium
+119,2017/2018,2017-11-05,Chelsea,1.6,1.0,0.0,0.7,Manchester Utd,41615.0,Stamford Bridge
+121,2017/2018,2017-11-18,Arsenal,2.1,2.0,0.0,0.7,Tottenham,59530.0,Emirates Stadium
+132,2017/2018,2017-11-24,West Ham,0.9,1.0,1.0,0.4,Leicester City,56897.0,London Stadium
+133,2017/2018,2017-11-25,Tottenham,1.8,1.0,1.0,0.7,West Brom,65905.0,Wembley Stadium
+147,2017/2018,2017-11-29,Chelsea,1.5,1.0,0.0,0.1,Swansea City,41365.0,Stamford Bridge
+149,2017/2018,2017-11-29,Arsenal,4.0,5.0,0.0,0.5,Huddersfield,59285.0,Emirates Stadium
+154,2017/2018,2017-12-02,Chelsea,3.2,3.0,1.0,0.6,Newcastle Utd,41538.0,Stamford Bridge
+161,2017/2018,2017-12-02,Arsenal,4.7,1.0,3.0,1.8,Manchester Utd,59547.0,Emirates Stadium
+165,2017/2018,2017-12-09,West Ham,0.3,1.0,0.0,1.2,Chelsea,56953.0,London Stadium
+168,2017/2018,2017-12-09,Tottenham,3.6,5.0,1.0,0.5,Stoke City,62202.0,Wembley Stadium
+183,2017/2018,2017-12-13,West Ham,0.4,0.0,0.0,1.0,Arsenal,56921.0,London Stadium
+184,2017/2018,2017-12-13,Tottenham,1.5,2.0,0.0,0.4,Brighton,46438.0,Wembley Stadium
+189,2017/2018,2017-12-16,Arsenal,1.8,1.0,0.0,0.3,Newcastle Utd,59379.0,Emirates Stadium
+191,2017/2018,2017-12-16,Chelsea,1.4,1.0,0.0,0.5,Southampton,41562.0,Stamford Bridge
+198,2017/2018,2017-12-22,Arsenal,1.2,3.0,3.0,2.0,Liverpool,59409.0,Emirates Stadium
+205,2017/2018,2017-12-23,West Ham,2.1,2.0,3.0,1.7,Newcastle Utd,56955.0,London Stadium
+209,2017/2018,2017-12-26,Tottenham,3.0,5.0,2.0,0.8,Southampton,55412.0,Wembley Stadium
+215,2017/2018,2017-12-26,Chelsea,2.1,2.0,0.0,0.5,Brighton,41568.0,Stamford Bridge
+221,2017/2018,2017-12-30,Chelsea,2.6,5.0,0.0,0.2,Stoke City,41433.0,Stamford Bridge
+235,2017/2018,2018-01-02,West Ham,1.3,2.0,1.0,1.0,West Brom,56888.0,London Stadium
+239,2017/2018,2018-01-03,Arsenal,1.2,2.0,2.0,3.0,Chelsea,59379.0,Emirates Stadium
+241,2017/2018,2018-01-04,Tottenham,1.8,1.0,1.0,0.5,West Ham,50034.0,Wembley Stadium
+245,2017/2018,2018-01-13,Chelsea,0.6,0.0,0.0,1.2,Leicester City,41552.0,Stamford Bridge
+249,2017/2018,2018-01-13,Tottenham,3.8,4.0,0.0,0.3,Everton,76251.0,Wembley Stadium
+258,2017/2018,2018-01-20,Arsenal,2.9,4.0,1.0,0.6,Crystal Palace,59386.0,Emirates Stadium
+259,2017/2018,2018-01-20,West Ham,0.8,1.0,1.0,0.5,Bournemouth,56948.0,London Stadium
+265,2017/2018,2018-01-30,West Ham,1.1,1.0,1.0,0.9,Crystal Palace,56911.0,London Stadium
+269,2017/2018,2018-01-31,Chelsea,1.2,0.0,3.0,1.1,Bournemouth,41464.0,Stamford Bridge
+274,2017/2018,2018-01-31,Tottenham,1.5,2.0,0.0,1.0,Manchester Utd,81978.0,Wembley Stadium
+282,2017/2018,2018-02-03,Arsenal,2.6,5.0,1.0,1.2,Everton,59306.0,Emirates Stadium
+287,2017/2018,2018-02-10,Tottenham,2.6,1.0,0.0,0.6,Arsenal,83222.0,Wembley Stadium
+291,2017/2018,2018-02-10,West Ham,1.5,2.0,0.0,0.6,Watford,56197.0,London Stadium
+296,2017/2018,2018-02-12,Chelsea,1.9,3.0,0.0,0.7,West Brom,41071.0,Stamford Bridge
+307,2017/2018,2018-03-01,Arsenal,1.3,0.0,3.0,1.5,Manchester City,58420.0,Emirates Stadium
+314,2017/2018,2018-03-03,Tottenham,1.6,2.0,0.0,0.1,Huddersfield,68311.0,Wembley Stadium
+321,2017/2018,2018-03-10,West Ham,0.8,0.0,3.0,1.4,Burnley,56904.0,London Stadium
+326,2017/2018,2018-03-10,Chelsea,3.1,2.0,1.0,1.1,Crystal Palace,40800.0,Stamford Bridge
+327,2017/2018,2018-03-11,Arsenal,2.2,3.0,0.0,1.4,Watford,59131.0,Emirates Stadium
+340,2017/2018,2018-03-31,West Ham,1.4,3.0,0.0,0.5,Southampton,56882.0,London Stadium
+344,2017/2018,2018-04-01,Arsenal,3.3,3.0,0.0,0.4,Stoke City,59371.0,Emirates Stadium
+345,2017/2018,2018-04-01,Chelsea,1.0,1.0,3.0,1.4,Tottenham,41364.0,Stamford Bridge
+355,2017/2018,2018-04-08,Arsenal,1.6,3.0,2.0,2.0,Southampton,59374.0,Emirates Stadium
+356,2017/2018,2018-04-08,Chelsea,1.7,1.0,1.0,0.3,West Ham,41324.0,Stamford Bridge
+364,2017/2018,2018-04-14,Tottenham,0.4,1.0,3.0,2.9,Manchester City,80811.0,Wembley Stadium
+367,2017/2018,2018-04-16,West Ham,0.8,1.0,1.0,1.7,Stoke City,56795.0,London Stadium
+377,2017/2018,2018-04-22,Arsenal,1.8,4.0,1.0,0.8,West Ham,59422.0,Emirates Stadium
+389,2017/2018,2018-04-29,West Ham,0.2,1.0,4.0,2.4,Manchester City,56904.0,London Stadium
+391,2017/2018,2018-04-30,Tottenham,1.4,2.0,0.0,1.3,Watford,52675.0,Wembley Stadium
+401,2017/2018,2018-05-06,Chelsea,0.6,1.0,0.0,0.5,Liverpool,41314.0,Stamford Bridge
+402,2017/2018,2018-05-06,Arsenal,2.6,5.0,0.0,0.3,Burnley,59540.0,Emirates Stadium
+407,2017/2018,2018-05-09,Chelsea,1.9,1.0,1.0,0.7,Huddersfield,38910.0,Stamford Bridge
+409,2017/2018,2018-05-09,Tottenham,0.8,1.0,0.0,1.0,Newcastle Utd,54923.0,Wembley Stadium
+411,2017/2018,2018-05-10,West Ham,0.6,0.0,0.0,0.8,Manchester Utd,56902.0,London Stadium
+417,2017/2018,2018-05-13,West Ham,1.1,3.0,1.0,1.6,Everton,56926.0,London Stadium
+422,2017/2018,2018-05-13,Tottenham,1.8,5.0,4.0,1.4,Leicester City,77841.0,Wembley Stadium
+8,2016/2017,2016-08-14,Arsenal,,3.0,4.0,,Liverpool,60033.0,Emirates Stadium
+9,2016/2017,2016-08-15,Chelsea,,2.0,1.0,,West Ham,41521.0,Stamford Bridge
+15,2016/2017,2016-08-20,Tottenham,,1.0,0.0,,Crystal Palace,31447.0,White Hart Lane
+20,2016/2017,2016-08-21,West Ham,,1.0,0.0,,Bournemouth,56977.0,London Stadium
+22,2016/2017,2016-08-27,Tottenham,,1.0,1.0,,Liverpool,31211.0,White Hart Lane
+25,2016/2017,2016-08-27,Chelsea,,3.0,0.0,,Burnley,41607.0,Stamford Bridge
+35,2016/2017,2016-09-10,West Ham,,2.0,4.0,,Watford,56974.0,London Stadium
+36,2016/2017,2016-09-10,Arsenal,,2.0,1.0,,Southampton,59962.0,Emirates Stadium
+44,2016/2017,2016-09-16,Chelsea,,1.0,2.0,,Liverpool,41514.0,Stamford Bridge
+53,2016/2017,2016-09-18,Tottenham,,1.0,0.0,,Sunderland,31251.0,White Hart Lane
+62,2016/2017,2016-09-24,Arsenal,,3.0,0.0,,Chelsea,60028.0,Emirates Stadium
+63,2016/2017,2016-09-25,West Ham,,0.0,3.0,,Southampton,56864.0,London Stadium
+68,2016/2017,2016-10-01,West Ham,,1.0,1.0,,Middlesbrough,56945.0,London Stadium
+73,2016/2017,2016-10-02,Tottenham,,2.0,0.0,,Manchester City,31793.0,White Hart Lane
+77,2016/2017,2016-10-15,Chelsea,,3.0,0.0,,Leicester City,41547.0,Stamford Bridge
+82,2016/2017,2016-10-15,Arsenal,,3.0,2.0,,Swansea City,60007.0,Emirates Stadium
+91,2016/2017,2016-10-22,Arsenal,,0.0,0.0,,Middlesbrough,59982.0,Emirates Stadium
+92,2016/2017,2016-10-22,West Ham,,1.0,0.0,,Sunderland,56985.0,London Stadium
+97,2016/2017,2016-10-23,Chelsea,,4.0,0.0,,Manchester Utd,41424.0,Stamford Bridge
+104,2016/2017,2016-10-29,Tottenham,,1.0,1.0,,Leicester City,31868.0,White Hart Lane
+111,2016/2017,2016-11-05,West Ham,,1.0,1.0,,Stoke City,56970.0,London Stadium
+114,2016/2017,2016-11-05,Chelsea,,5.0,0.0,,Everton,41429.0,Stamford Bridge
+115,2016/2017,2016-11-06,Arsenal,,1.0,1.0,,Tottenham,60039.0,Emirates Stadium
+128,2016/2017,2016-11-19,Tottenham,,3.0,2.0,,West Ham,31212.0,White Hart Lane
+137,2016/2017,2016-11-26,Chelsea,,2.0,1.0,,Tottenham,41513.0,Stamford Bridge
+139,2016/2017,2016-11-27,Arsenal,,3.0,1.0,,Bournemouth,59978.0,Emirates Stadium
+148,2016/2017,2016-12-03,Tottenham,,5.0,0.0,,Swansea City,31663.0,White Hart Lane
+149,2016/2017,2016-12-03,West Ham,,1.0,5.0,,Arsenal,56980.0,London Stadium
+158,2016/2017,2016-12-10,Arsenal,,3.0,1.0,,Stoke City,59964.0,Emirates Stadium
+160,2016/2017,2016-12-11,Chelsea,,1.0,0.0,,West Brom,41622.0,Stamford Bridge
+169,2016/2017,2016-12-14,West Ham,,1.0,0.0,,Burnley,56990.0,London Stadium
+172,2016/2017,2016-12-14,Tottenham,,3.0,0.0,,Hull City,31347.0,White Hart Lane
+179,2016/2017,2016-12-17,West Ham,,1.0,0.0,,Hull City,56952.0,London Stadium
+184,2016/2017,2016-12-18,Tottenham,,2.0,1.0,,Burnley,31467.0,White Hart Lane
+188,2016/2017,2016-12-26,Chelsea,,3.0,0.0,,Bournemouth,41384.0,Stamford Bridge
+189,2016/2017,2016-12-26,Arsenal,,1.0,0.0,,West Brom,59925.0,Emirates Stadium
+199,2016/2017,2016-12-31,Chelsea,,4.0,2.0,,Stoke City,41601.0,Stamford Bridge
+207,2016/2017,2017-01-01,Arsenal,,2.0,0.0,,Crystal Palace,59975.0,Emirates Stadium
+214,2016/2017,2017-01-02,West Ham,,0.0,2.0,,Manchester Utd,56996.0,London Stadium
+218,2016/2017,2017-01-04,Tottenham,,2.0,0.0,,Chelsea,31491.0,White Hart Lane
+220,2016/2017,2017-01-14,Tottenham,,4.0,0.0,,West Brom,31613.0,White Hart Lane
+226,2016/2017,2017-01-14,West Ham,,3.0,0.0,,Crystal Palace,56984.0,London Stadium
+239,2016/2017,2017-01-22,Arsenal,,2.0,1.0,,Burnley,59955.0,Emirates Stadium
+240,2016/2017,2017-01-22,Chelsea,,2.0,0.0,,Hull City,41605.0,Stamford Bridge
+246,2016/2017,2017-01-31,Arsenal,,1.0,2.0,,Watford,60035.0,Emirates Stadium
+249,2016/2017,2017-02-01,West Ham,,0.0,4.0,,Manchester City,56980.0,London Stadium
+253,2016/2017,2017-02-04,Chelsea,,3.0,1.0,,Arsenal,41490.0,Stamford Bridge
+260,2016/2017,2017-02-04,Tottenham,,1.0,0.0,,Middlesbrough,31949.0,White Hart Lane
+264,2016/2017,2017-02-11,Arsenal,,2.0,0.0,,Hull City,59962.0,Emirates Stadium
+269,2016/2017,2017-02-11,West Ham,,2.0,2.0,,West Brom,56983.0,London Stadium
+275,2016/2017,2017-02-25,Chelsea,,3.0,1.0,,Swansea City,41612.0,Stamford Bridge
+281,2016/2017,2017-02-26,Tottenham,,4.0,0.0,,Stoke City,31864.0,White Hart Lane
+291,2016/2017,2017-03-05,Tottenham,,3.0,2.0,,Everton,31962.0,White Hart Lane
+293,2016/2017,2017-03-06,West Ham,,1.0,2.0,,Chelsea,56984.0,London Stadium
+304,2016/2017,2017-03-18,West Ham,,2.0,3.0,,Leicester City,56979.0,London Stadium
+309,2016/2017,2017-03-19,Tottenham,,2.0,1.0,,Southampton,31697.0,White Hart Lane
+318,2016/2017,2017-04-01,Chelsea,,1.0,2.0,,Crystal Palace,41489.0,Stamford Bridge
+321,2016/2017,2017-04-02,Arsenal,,2.0,2.0,,Manchester City,60001.0,Emirates Stadium
+328,2016/2017,2017-04-05,Arsenal,,3.0,0.0,,West Ham,59961.0,Emirates Stadium
+332,2016/2017,2017-04-05,Chelsea,,2.0,1.0,,Manchester City,41528.0,Stamford Bridge
+334,2016/2017,2017-04-08,Tottenham,,4.0,0.0,,Watford,31706.0,White Hart Lane
+339,2016/2017,2017-04-08,West Ham,,1.0,0.0,,Swansea City,56973.0,London Stadium
+345,2016/2017,2017-04-15,Tottenham,,4.0,0.0,,Bournemouth,31943.0,White Hart Lane
+359,2016/2017,2017-04-22,West Ham,,0.0,0.0,,Everton,56971.0,London Stadium
+362,2016/2017,2017-04-25,Chelsea,,4.0,2.0,,Southampton,41168.0,Stamford Bridge
+365,2016/2017,2017-04-26,Arsenal,,1.0,0.0,,Leicester City,59829.0,Emirates Stadium
+378,2016/2017,2017-04-30,Tottenham,,2.0,0.0,,Arsenal,31811.0,White Hart Lane
+381,2016/2017,2017-05-05,West Ham,,1.0,0.0,,Tottenham,56992.0,London Stadium
+389,2016/2017,2017-05-07,Arsenal,,2.0,0.0,,Manchester Utd,60055.0,Emirates Stadium
+390,2016/2017,2017-05-08,Chelsea,,3.0,0.0,,Middlesbrough,41500.0,Stamford Bridge
+402,2016/2017,2017-05-14,West Ham,,0.0,4.0,,Liverpool,56985.0,London Stadium
+403,2016/2017,2017-05-14,Tottenham,,2.0,1.0,,Manchester Utd,31848.0,White Hart Lane
+405,2016/2017,2017-05-15,Chelsea,,4.0,3.0,,Watford,41473.0,Stamford Bridge
+407,2016/2017,2017-05-16,Arsenal,,2.0,0.0,,Sunderland,59510.0,Emirates Stadium
+415,2016/2017,2017-05-21,Chelsea,,5.0,1.0,,Sunderland,41618.0,Stamford Bridge
+416,2016/2017,2017-05-21,Arsenal,,3.0,1.0,,Everton,59976.0,Emirates Stadium
+5,2015/2016,2015-08-08,Chelsea,,2.0,2.0,,Swansea City,41232.0,Stamford Bridge
+7,2015/2016,2015-08-09,Arsenal,,0.0,2.0,,West Ham,59996.0,Emirates Stadium
+15,2015/2016,2015-08-15,West Ham,,1.0,2.0,,Leicester City,34857.0,Boleyn Ground
+17,2015/2016,2015-08-15,Tottenham,,2.0,2.0,,Stoke City,36004.0,White Hart Lane
+26,2015/2016,2015-08-22,West Ham,,3.0,4.0,,Bournemouth,34977.0,Boleyn Ground
+31,2015/2016,2015-08-24,Arsenal,,0.0,0.0,,Liverpool,60080.0,Emirates Stadium
+34,2015/2016,2015-08-29,Chelsea,,1.0,2.0,,Crystal Palace,41581.0,Stamford Bridge
+40,2015/2016,2015-08-29,Tottenham,,0.0,0.0,,Everton,35865.0,White Hart Lane
+46,2015/2016,2015-09-12,Arsenal,,2.0,0.0,,Stoke City,59963.0,Emirates Stadium
+53,2015/2016,2015-09-14,West Ham,,2.0,0.0,,Newcastle Utd,34907.0,Boleyn Ground
+55,2015/2016,2015-09-19,Chelsea,,2.0,0.0,,Arsenal,41584.0,Stamford Bridge
+62,2015/2016,2015-09-20,Tottenham,,1.0,0.0,,Crystal Palace,35723.0,White Hart Lane
+66,2015/2016,2015-09-26,Tottenham,,4.0,1.0,,Manchester City,35867.0,White Hart Lane
+72,2015/2016,2015-09-26,West Ham,,2.0,2.0,,Norwich City,34857.0,Boleyn Ground
+83,2015/2016,2015-10-03,Chelsea,,1.0,3.0,,Southampton,41642.0,Stamford Bridge
+85,2015/2016,2015-10-04,Arsenal,,3.0,0.0,,Manchester Utd,60084.0,Emirates Stadium
+88,2015/2016,2015-10-17,Tottenham,,0.0,0.0,,Liverpool,35926.0,White Hart Lane
+91,2015/2016,2015-10-17,Chelsea,,2.0,0.0,,Aston Villa,41596.0,Stamford Bridge
+100,2015/2016,2015-10-24,West Ham,,2.0,1.0,,Chelsea,34977.0,Boleyn Ground
+104,2015/2016,2015-10-24,Arsenal,,2.0,1.0,,Everton,59985.0,Emirates Stadium
+110,2015/2016,2015-10-31,Chelsea,,1.0,3.0,,Liverpool,41577.0,Stamford Bridge
+119,2015/2016,2015-11-02,Tottenham,,3.0,1.0,,Aston Villa,34882.0,White Hart Lane
+122,2015/2016,2015-11-07,West Ham,,1.0,1.0,,Everton,34977.0,Boleyn Ground
+130,2015/2016,2015-11-08,Arsenal,,1.0,1.0,,Tottenham,60060.0,Emirates Stadium
+137,2015/2016,2015-11-21,Chelsea,,1.0,0.0,,Norwich City,41582.0,Stamford Bridge
+140,2015/2016,2015-11-22,Tottenham,,4.0,1.0,,West Ham,35968.0,White Hart Lane
+149,2015/2016,2015-11-29,Tottenham,,0.0,0.0,,Chelsea,35639.0,White Hart Lane
+150,2015/2016,2015-11-29,West Ham,,1.0,1.0,,West Brom,34914.0,Boleyn Ground
+156,2015/2016,2015-12-05,Arsenal,,3.0,1.0,,Sunderland,59937.0,Emirates Stadium
+161,2015/2016,2015-12-05,Chelsea,,0.0,1.0,,Bournemouth,41631.0,Stamford Bridge
+166,2015/2016,2015-12-12,West Ham,,0.0,0.0,,Stoke City,34857.0,Boleyn Ground
+173,2015/2016,2015-12-13,Tottenham,,1.0,2.0,,Newcastle Utd,35768.0,White Hart Lane
+180,2015/2016,2015-12-19,Chelsea,,3.0,1.0,,Sunderland,41562.0,Stamford Bridge
+185,2015/2016,2015-12-21,Arsenal,,2.0,1.0,,Manchester City,60053.0,Emirates Stadium
+189,2015/2016,2015-12-26,Tottenham,,3.0,0.0,,Norwich City,35198.0,White Hart Lane
+193,2015/2016,2015-12-26,Chelsea,,2.0,2.0,,Watford,41620.0,Stamford Bridge
+203,2015/2016,2015-12-28,West Ham,,2.0,1.0,,Southampton,34977.0,Boleyn Ground
+204,2015/2016,2015-12-28,Arsenal,,2.0,0.0,,Bournemouth,59983.0,Emirates Stadium
+209,2015/2016,2016-01-02,West Ham,,2.0,0.0,,Liverpool,34977.0,Boleyn Ground
+212,2015/2016,2016-01-02,Arsenal,,1.0,0.0,,Newcastle Utd,59257.0,Emirates Stadium
+226,2015/2016,2016-01-13,Chelsea,,2.0,2.0,,West Brom,40945.0,Stamford Bridge
+228,2015/2016,2016-01-13,Tottenham,,0.0,1.0,,Leicester City,35850.0,White Hart Lane
+231,2015/2016,2016-01-16,Tottenham,,4.0,1.0,,Sunderland,35854.0,White Hart Lane
+234,2015/2016,2016-01-16,Chelsea,,3.0,3.0,,Everton,41633.0,Stamford Bridge
+249,2015/2016,2016-01-23,West Ham,,2.0,2.0,,Manchester City,34977.0,Boleyn Ground
+251,2015/2016,2016-01-24,Arsenal,,0.0,1.0,,Chelsea,60072.0,Emirates Stadium
+254,2015/2016,2016-02-02,West Ham,,2.0,0.0,,Aston Villa,34914.0,Boleyn Ground
+256,2015/2016,2016-02-02,Arsenal,,0.0,0.0,,Southampton,60044.0,Emirates Stadium
+268,2015/2016,2016-02-06,Tottenham,,1.0,0.0,,Watford,35997.0,White Hart Lane
+273,2015/2016,2016-02-07,Chelsea,,1.0,1.0,,Manchester Utd,41434.0,Stamford Bridge
+281,2015/2016,2016-02-13,Chelsea,,5.0,1.0,,Newcastle Utd,41622.0,Stamford Bridge
+282,2015/2016,2016-02-14,Arsenal,,2.0,1.0,,Leicester City,60009.0,Emirates Stadium
+286,2015/2016,2016-02-27,West Ham,,1.0,0.0,,Sunderland,34946.0,Boleyn Ground
+293,2015/2016,2016-02-28,Tottenham,,2.0,1.0,,Swansea City,35922.0,White Hart Lane
+301,2015/2016,2016-03-02,West Ham,,1.0,0.0,,Tottenham,34977.0,Boleyn Ground
+302,2015/2016,2016-03-02,Arsenal,,1.0,2.0,,Swansea City,59905.0,Emirates Stadium
+306,2015/2016,2016-03-05,Tottenham,,2.0,2.0,,Arsenal,35762.0,White Hart Lane
+312,2015/2016,2016-03-05,Chelsea,,1.0,1.0,,Stoke City,41381.0,Stamford Bridge
+325,2015/2016,2016-03-19,Chelsea,,2.0,2.0,,West Ham,41623.0,Stamford Bridge
+331,2015/2016,2016-03-20,Tottenham,,3.0,0.0,,Bournemouth,36084.0,White Hart Lane
+335,2015/2016,2016-04-02,Arsenal,,4.0,0.0,,Watford,59981.0,Emirates Stadium
+338,2015/2016,2016-04-02,West Ham,,2.0,2.0,,Crystal Palace,34857.0,Boleyn Ground
+345,2015/2016,2016-04-09,West Ham,,3.0,3.0,,Arsenal,34977.0,Boleyn Ground
+353,2015/2016,2016-04-10,Tottenham,,3.0,0.0,,Manchester Utd,35761.0,White Hart Lane
+363,2015/2016,2016-04-16,Chelsea,,0.0,3.0,,Manchester City,41212.0,Stamford Bridge
+366,2015/2016,2016-04-17,Arsenal,,1.0,1.0,,Crystal Palace,59961.0,Emirates Stadium
+371,2015/2016,2016-04-20,West Ham,,3.0,1.0,,Watford,34857.0,Boleyn Ground
+376,2015/2016,2016-04-21,Arsenal,,2.0,0.0,,West Brom,59568.0,Emirates Stadium
+384,2015/2016,2016-04-25,Tottenham,,1.0,1.0,,West Brom,35923.0,White Hart Lane
+391,2015/2016,2016-04-30,Arsenal,,1.0,0.0,,Norwich City,59989.0,Emirates Stadium
+395,2015/2016,2016-05-02,Chelsea,,2.0,2.0,,Tottenham,41545.0,Stamford Bridge
+401,2015/2016,2016-05-07,West Ham,,1.0,4.0,,Swansea City,34907.0,Boleyn Ground
+404,2015/2016,2016-05-08,Tottenham,,1.0,2.0,,Southampton,35748.0,White Hart Lane
+408,2015/2016,2016-05-10,West Ham,,3.0,2.0,,Manchester Utd,34602.0,Boleyn Ground
+421,2015/2016,2016-05-15,Chelsea,,1.0,1.0,,Leicester City,41494.0,Stamford Bridge
+423,2015/2016,2016-05-15,Arsenal,,4.0,0.0,,Aston Villa,60007.0,Emirates Stadium
+4,2014/2015,2014-08-16,West Ham,,0.0,1.0,,Tottenham,34977.0,Boleyn Ground
+6,2014/2015,2014-08-16,Arsenal,,2.0,1.0,,Crystal Palace,59962.0,Emirates Stadium
+14,2014/2015,2014-08-23,Chelsea,,2.0,0.0,,Leicester City,41604.0,Stamford Bridge
+17,2014/2015,2014-08-24,Tottenham,,4.0,0.0,,QPR,36109.0,White Hart Lane
+25,2014/2015,2014-08-30,West Ham,,1.0,3.0,,Southampton,34907.0,Boleyn Ground
+29,2014/2015,2014-08-31,Tottenham,,0.0,3.0,,Liverpool,36130.0,White Hart Lane
+33,2014/2015,2014-09-13,Arsenal,,2.0,2.0,,Manchester City,60003.0,Emirates Stadium
+39,2014/2015,2014-09-13,Chelsea,,4.0,2.0,,Swansea City,41400.0,Stamford Bridge
+49,2014/2015,2014-09-20,West Ham,,3.0,1.0,,Liverpool,34977.0,Boleyn Ground
+50,2014/2015,2014-09-21,Tottenham,,0.0,1.0,,West Brom,35861.0,White Hart Lane
+60,2014/2015,2014-09-27,Chelsea,,3.0,0.0,,Aston Villa,41616.0,Stamford Bridge
+62,2014/2015,2014-09-27,Arsenal,,1.0,1.0,,Tottenham,59900.0,Emirates Stadium
+73,2014/2015,2014-10-05,Chelsea,,2.0,0.0,,Arsenal,41607.0,Stamford Bridge
+74,2014/2015,2014-10-05,Tottenham,,1.0,0.0,,Southampton,35564.0,White Hart Lane
+75,2014/2015,2014-10-05,West Ham,,2.0,0.0,,QPR,34907.0,Boleyn Ground
+80,2014/2015,2014-10-18,Arsenal,,2.0,2.0,,Hull City,60004.0,Emirates Stadium
+88,2014/2015,2014-10-25,West Ham,,2.0,1.0,,Manchester City,34977.0,Boleyn Ground
+94,2014/2015,2014-10-26,Tottenham,,1.0,2.0,,Newcastle Utd,35650.0,White Hart Lane
+104,2014/2015,2014-11-01,Arsenal,,3.0,0.0,,Burnley,60012.0,Emirates Stadium
+105,2014/2015,2014-11-01,Chelsea,,2.0,1.0,,QPR,41486.0,Stamford Bridge
+111,2014/2015,2014-11-08,West Ham,,0.0,0.0,,Aston Villa,34857.0,Boleyn Ground
+118,2014/2015,2014-11-09,Tottenham,,1.0,2.0,,Stoke City,35699.0,White Hart Lane
+122,2014/2015,2014-11-22,Chelsea,,2.0,0.0,,West Brom,41600.0,Stamford Bridge
+127,2014/2015,2014-11-22,Arsenal,,1.0,2.0,,Manchester Utd,60074.0,Emirates Stadium
+137,2014/2015,2014-11-29,West Ham,,1.0,0.0,,Newcastle Utd,34977.0,Boleyn Ground
+141,2014/2015,2014-11-30,Tottenham,,2.0,1.0,,Everton,35901.0,White Hart Lane
+151,2014/2015,2014-12-03,Chelsea,,3.0,0.0,,Tottenham,41518.0,Stamford Bridge
+152,2014/2015,2014-12-03,Arsenal,,1.0,0.0,,Southampton,60025.0,Emirates Stadium
+156,2014/2015,2014-12-06,Tottenham,,0.0,0.0,,Crystal Palace,35860.0,White Hart Lane
+161,2014/2015,2014-12-07,West Ham,,3.0,1.0,,Swansea City,34125.0,Boleyn Ground
+166,2014/2015,2014-12-13,Chelsea,,2.0,0.0,,Hull City,41626.0,Stamford Bridge
+171,2014/2015,2014-12-13,Arsenal,,4.0,1.0,,Newcastle Utd,59949.0,Emirates Stadium
+179,2014/2015,2014-12-20,Tottenham,,2.0,1.0,,Burnley,35681.0,White Hart Lane
+180,2014/2015,2014-12-20,West Ham,,2.0,0.0,,Leicester City,34977.0,Boleyn Ground
+187,2014/2015,2014-12-26,Chelsea,,2.0,0.0,,West Ham,41589.0,Stamford Bridge
+196,2014/2015,2014-12-26,Arsenal,,2.0,1.0,,QPR,59947.0,Emirates Stadium
+198,2014/2015,2014-12-28,Tottenham,,0.0,0.0,,Manchester Utd,35711.0,White Hart Lane
+203,2014/2015,2014-12-28,West Ham,,1.0,2.0,,Arsenal,34977.0,Boleyn Ground
+210,2014/2015,2015-01-01,West Ham,,1.0,1.0,,West Brom,34914.0,Boleyn Ground
+218,2014/2015,2015-01-01,Tottenham,,5.0,3.0,,Chelsea,35903.0,White Hart Lane
+225,2014/2015,2015-01-10,Chelsea,,2.0,0.0,,Newcastle Utd,41612.0,Stamford Bridge
+228,2014/2015,2015-01-11,Arsenal,,3.0,0.0,,Stoke City,59956.0,Emirates Stadium
+233,2014/2015,2015-01-17,Tottenham,,2.0,1.0,,Sunderland,35973.0,White Hart Lane
+238,2014/2015,2015-01-18,West Ham,,3.0,0.0,,Hull City,34914.0,Boleyn Ground
+249,2014/2015,2015-01-31,Chelsea,,1.0,1.0,,Manchester City,41620.0,Stamford Bridge
+250,2014/2015,2015-02-01,Arsenal,,5.0,0.0,,Aston Villa,59958.0,Emirates Stadium
+253,2014/2015,2015-02-07,Tottenham,,2.0,1.0,,Arsenal,35659.0,White Hart Lane
+262,2014/2015,2015-02-08,West Ham,,1.0,1.0,,Manchester Utd,34499.0,Boleyn Ground
+265,2014/2015,2015-02-10,Arsenal,,2.0,1.0,,Leicester City,60032.0,Emirates Stadium
+269,2014/2015,2015-02-11,Chelsea,,1.0,0.0,,Everton,41592.0,Stamford Bridge
+278,2014/2015,2015-02-21,Chelsea,,1.0,1.0,,Burnley,41629.0,Stamford Bridge
+282,2014/2015,2015-02-22,Tottenham,,2.0,2.0,,West Ham,35837.0,White Hart Lane
+286,2014/2015,2015-02-28,West Ham,,1.0,3.0,,Crystal Palace,34857.0,Boleyn Ground
+293,2014/2015,2015-03-01,Arsenal,,2.0,0.0,,Everton,59925.0,Emirates Stadium
+301,2014/2015,2015-03-04,Tottenham,,3.0,2.0,,Swansea City,34008.0,White Hart Lane
+302,2014/2015,2015-03-04,West Ham,,0.0,1.0,,Chelsea,34927.0,Boleyn Ground
+310,2014/2015,2015-03-14,Arsenal,,3.0,0.0,,West Ham,60002.0,Emirates Stadium
+314,2014/2015,2015-03-15,Chelsea,,1.0,1.0,,Southampton,41624.0,Stamford Bridge
+323,2014/2015,2015-03-21,Tottenham,,4.0,3.0,,Leicester City,35950.0,White Hart Lane
+325,2014/2015,2015-03-21,West Ham,,1.0,0.0,,Sunderland,34914.0,Boleyn Ground
+330,2014/2015,2015-04-04,Arsenal,,4.0,1.0,,Liverpool,60081.0,Emirates Stadium
+336,2014/2015,2015-04-04,Chelsea,,2.0,1.0,,Stoke City,41098.0,Stamford Bridge
+345,2014/2015,2015-04-11,Tottenham,,0.0,1.0,,Aston Villa,35687.0,White Hart Lane
+346,2014/2015,2015-04-11,West Ham,,1.0,1.0,,Stoke City,34946.0,Boleyn Ground
+358,2014/2015,2015-04-18,Chelsea,,1.0,0.0,,Manchester Utd,41422.0,Stamford Bridge
+371,2014/2015,2015-04-26,Arsenal,,0.0,0.0,,Chelsea,60066.0,Emirates Stadium
+382,2014/2015,2015-05-02,West Ham,,1.0,0.0,,Burnley,34946.0,Boleyn Ground
+384,2014/2015,2015-05-03,Chelsea,,1.0,0.0,,Crystal Palace,41566.0,Stamford Bridge
+385,2014/2015,2015-05-03,Tottenham,,0.0,1.0,,Manchester City,35784.0,White Hart Lane
+396,2014/2015,2015-05-10,Chelsea,,1.0,1.0,,Liverpool,41547.0,Stamford Bridge
+397,2014/2015,2015-05-11,Arsenal,,0.0,1.0,,Swansea City,59989.0,Emirates Stadium
+401,2014/2015,2015-05-16,West Ham,,1.0,2.0,,Everton,34977.0,Boleyn Ground
+404,2014/2015,2015-05-16,Tottenham,,2.0,0.0,,Hull City,35857.0,White Hart Lane
+410,2014/2015,2015-05-20,Arsenal,,0.0,0.0,,Sunderland,59987.0,Emirates Stadium
+416,2014/2015,2015-05-24,Arsenal,,4.0,1.0,,West Brom,59971.0,Emirates Stadium
+417,2014/2015,2015-05-24,Chelsea,,3.0,1.0,,Sunderland,41620.0,Stamford Bridge
+3,2013/2014,2013-08-17,West Ham,,2.0,0.0,,Cardiff City,34977.0,Boleyn Ground
+6,2013/2014,2013-08-17,Arsenal,,1.0,3.0,,Aston Villa,60003.0,Emirates Stadium
+8,2013/2014,2013-08-18,Chelsea,,2.0,0.0,,Hull City,41374.0,Stamford Bridge
+11,2013/2014,2013-08-21,Chelsea,,2.0,1.0,,Aston Villa,41527.0,Stamford Bridge
+20,2013/2014,2013-08-25,Tottenham,,1.0,0.0,,Swansea City,36005.0,White Hart Lane
+24,2013/2014,2013-08-31,West Ham,,0.0,1.0,,Stoke City,34946.0,Boleyn Ground
+30,2013/2014,2013-09-01,Arsenal,,1.0,0.0,,Tottenham,60071.0,Emirates Stadium
+40,2013/2014,2013-09-14,Tottenham,,2.0,0.0,,Norwich City,35952.0,White Hart Lane
+47,2013/2014,2013-09-21,West Ham,,2.0,3.0,,Everton,34952.0,Boleyn Ground
+50,2013/2014,2013-09-21,Chelsea,,2.0,0.0,,Fulham,41608.0,Stamford Bridge
+52,2013/2014,2013-09-22,Arsenal,,3.0,1.0,,Stoke City,60002.0,Emirates Stadium
+58,2013/2014,2013-09-28,Tottenham,,1.0,1.0,,Chelsea,35857.0,White Hart Lane
+74,2013/2014,2013-10-06,Tottenham,,0.0,3.0,,West Ham,35977.0,White Hart Lane
+78,2013/2014,2013-10-19,Chelsea,,4.0,1.0,,Cardiff City,41475.0,Stamford Bridge
+79,2013/2014,2013-10-19,Arsenal,,4.0,1.0,,Norwich City,60009.0,Emirates Stadium
+80,2013/2014,2013-10-19,West Ham,,1.0,3.0,,Manchester City,34507.0,Boleyn Ground
+95,2013/2014,2013-10-27,Tottenham,,1.0,0.0,,Hull City,36080.0,White Hart Lane
+98,2013/2014,2013-10-27,Chelsea,,2.0,1.0,,Manchester City,41495.0,Stamford Bridge
+101,2013/2014,2013-11-02,West Ham,,0.0,0.0,,Aston Villa,34977.0,Boleyn Ground
+102,2013/2014,2013-11-02,Arsenal,,2.0,0.0,,Liverpool,60042.0,Emirates Stadium
+113,2013/2014,2013-11-09,Chelsea,,2.0,2.0,,West Brom,41623.0,Stamford Bridge
+117,2013/2014,2013-11-10,Tottenham,,0.0,1.0,,Newcastle Utd,36042.0,White Hart Lane
+126,2013/2014,2013-11-23,West Ham,,0.0,3.0,,Chelsea,34977.0,Boleyn Ground
+127,2013/2014,2013-11-23,Arsenal,,2.0,0.0,,Southampton,60007.0,Emirates Stadium
+135,2013/2014,2013-11-30,West Ham,,3.0,0.0,,Fulham,34946.0,Boleyn Ground
+140,2013/2014,2013-12-01,Tottenham,,2.0,2.0,,Manchester Utd,35884.0,White Hart Lane
+142,2013/2014,2013-12-01,Chelsea,,3.0,1.0,,Southampton,41568.0,Stamford Bridge
+151,2013/2014,2013-12-04,Arsenal,,2.0,0.0,,Hull City,60017.0,Emirates Stadium
+163,2013/2014,2013-12-08,Arsenal,,1.0,1.0,,Everton,60001.0,Emirates Stadium
+167,2013/2014,2013-12-14,West Ham,,0.0,0.0,,Sunderland,31843.0,Boleyn Ground
+170,2013/2014,2013-12-14,Chelsea,,2.0,1.0,,Crystal Palace,41608.0,Stamford Bridge
+173,2013/2014,2013-12-15,Tottenham,,0.0,5.0,,Liverpool,36069.0,White Hart Lane
+186,2013/2014,2013-12-23,Arsenal,,0.0,0.0,,Chelsea,60039.0,Emirates Stadium
+188,2013/2014,2013-12-26,West Ham,,1.0,3.0,,Arsenal,34977.0,Boleyn Ground
+191,2013/2014,2013-12-26,Chelsea,,1.0,0.0,,Swansea City,41111.0,Stamford Bridge
+194,2013/2014,2013-12-26,Tottenham,,1.0,1.0,,West Brom,35545.0,White Hart Lane
+199,2013/2014,2013-12-28,West Ham,,3.0,3.0,,West Brom,34946.0,Boleyn Ground
+205,2013/2014,2013-12-29,Tottenham,,3.0,0.0,,Stoke City,36072.0,White Hart Lane
+208,2013/2014,2013-12-29,Chelsea,,2.0,1.0,,Liverpool,41614.0,Stamford Bridge
+212,2013/2014,2014-01-01,Arsenal,,2.0,0.0,,Cardiff City,60004.0,Emirates Stadium
+224,2013/2014,2014-01-11,Tottenham,,2.0,0.0,,Crystal Palace,36102.0,White Hart Lane
+237,2013/2014,2014-01-18,West Ham,,1.0,3.0,,Newcastle Utd,33343.0,Boleyn Ground
+238,2013/2014,2014-01-18,Arsenal,,2.0,0.0,,Fulham,60000.0,Emirates Stadium
+239,2013/2014,2014-01-19,Chelsea,,3.0,1.0,,Manchester Utd,41615.0,Stamford Bridge
+249,2013/2014,2014-01-29,Chelsea,,0.0,0.0,,West Ham,41376.0,Stamford Bridge
+250,2013/2014,2014-01-29,Tottenham,,1.0,5.0,,Manchester City,36071.0,White Hart Lane
+257,2013/2014,2014-02-01,West Ham,,2.0,0.0,,Swansea City,31848.0,Boleyn Ground
+262,2013/2014,2014-02-02,Arsenal,,2.0,0.0,,Crystal Palace,60005.0,Emirates Stadium
+268,2013/2014,2014-02-08,Chelsea,,3.0,0.0,,Newcastle Utd,41387.0,Stamford Bridge
+274,2013/2014,2014-02-09,Tottenham,,1.0,0.0,,Everton,35944.0,White Hart Lane
+279,2013/2014,2014-02-11,West Ham,,2.0,0.0,,Norwich City,35153.0,Boleyn Ground
+281,2013/2014,2014-02-12,Arsenal,,0.0,0.0,,Manchester Utd,60021.0,Emirates Stadium
+285,2013/2014,2014-02-22,Arsenal,,4.0,1.0,,Sunderland,60012.0,Emirates Stadium
+286,2013/2014,2014-02-22,West Ham,,3.0,1.0,,Southampton,33148.0,Boleyn Ground
+291,2013/2014,2014-02-22,Chelsea,,1.0,0.0,,Everton,41580.0,Stamford Bridge
+303,2013/2014,2014-03-02,Tottenham,,1.0,0.0,,Cardiff City,35512.0,White Hart Lane
+305,2013/2014,2014-03-08,Chelsea,,4.0,0.0,,Tottenham,41598.0,Stamford Bridge
+319,2013/2014,2014-03-16,Tottenham,,0.0,1.0,,Arsenal,35711.0,White Hart Lane
+326,2013/2014,2014-03-22,West Ham,,0.0,2.0,,Manchester Utd,34237.0,Boleyn Ground
+327,2013/2014,2014-03-22,Chelsea,,6.0,0.0,,Arsenal,41614.0,Stamford Bridge
+330,2013/2014,2014-03-23,Tottenham,,3.0,2.0,,Southampton,35460.0,White Hart Lane
+335,2013/2014,2014-03-25,Arsenal,,2.0,2.0,,Swansea City,59937.0,Emirates Stadium
+337,2013/2014,2014-03-26,West Ham,,2.0,1.0,,Hull City,31033.0,Boleyn Ground
+342,2013/2014,2014-03-29,Arsenal,,1.0,1.0,,Manchester City,60060.0,Emirates Stadium
+354,2013/2014,2014-04-05,Chelsea,,3.0,0.0,,Stoke City,41168.0,Stamford Bridge
+359,2013/2014,2014-04-06,West Ham,,1.0,2.0,,Liverpool,34977.0,Boleyn Ground
+360,2013/2014,2014-04-07,Tottenham,,5.0,1.0,,Sunderland,34410.0,White Hart Lane
+370,2013/2014,2014-04-15,Arsenal,,3.0,1.0,,West Ham,59977.0,Emirates Stadium
+377,2013/2014,2014-04-19,Tottenham,,3.0,1.0,,Fulham,35841.0,White Hart Lane
+378,2013/2014,2014-04-19,Chelsea,,1.0,2.0,,Sunderland,41210.0,Stamford Bridge
+380,2013/2014,2014-04-19,West Ham,,0.0,1.0,,Crystal Palace,34977.0,Boleyn Ground
+395,2013/2014,2014-04-28,Arsenal,,3.0,0.0,,Newcastle Utd,60023.0,Emirates Stadium
+403,2013/2014,2014-05-03,West Ham,,2.0,0.0,,Tottenham,34977.0,Boleyn Ground
+404,2013/2014,2014-05-04,Chelsea,,0.0,0.0,,Norwich City,41602.0,Stamford Bridge
+405,2013/2014,2014-05-04,Arsenal,,1.0,0.0,,West Brom,60021.0,Emirates Stadium
+421,2013/2014,2014-05-11,Tottenham,,3.0,0.0,,Aston Villa,35826.0,White Hart Lane
+0,2012/2013,2012-08-18,Arsenal,,0.0,0.0,,Sunderland,60078.0,Emirates Stadium
+2,2012/2013,2012-08-18,West Ham,,1.0,0.0,,Aston Villa,34172.0,Boleyn Ground
+11,2012/2013,2012-08-22,Chelsea,,4.0,2.0,,Reading,41733.0,Stamford Bridge
+16,2012/2013,2012-08-25,Chelsea,,2.0,0.0,,Newcastle Utd,41718.0,Stamford Bridge
+19,2012/2013,2012-08-25,Tottenham,,1.0,1.0,,West Brom,36166.0,White Hart Lane
+27,2012/2013,2012-09-01,West Ham,,3.0,0.0,,Fulham,33458.0,Boleyn Ground
+28,2012/2013,2012-09-01,Tottenham,,1.0,1.0,,Norwich City,36142.0,White Hart Lane
+38,2012/2013,2012-09-15,Arsenal,,6.0,1.0,,Southampton,60097.0,Emirates Stadium
+44,2012/2013,2012-09-22,Chelsea,,1.0,0.0,,Stoke City,41112.0,Stamford Bridge
+46,2012/2013,2012-09-22,West Ham,,1.0,1.0,,Sunderland,33052.0,Boleyn Ground
+52,2012/2013,2012-09-23,Tottenham,,2.0,1.0,,QPR,36052.0,White Hart Lane
+55,2012/2013,2012-09-29,Arsenal,,1.0,2.0,,Chelsea,60101.0,Emirates Stadium
+67,2012/2013,2012-10-06,Chelsea,,4.0,1.0,,Norwich City,41784.0,Stamford Bridge
+69,2012/2013,2012-10-06,West Ham,,1.0,3.0,,Arsenal,34974.0,Boleyn Ground
+74,2012/2013,2012-10-07,Tottenham,,2.0,0.0,,Aston Villa,35802.0,White Hart Lane
+82,2012/2013,2012-10-20,West Ham,,4.0,1.0,,Southampton,34925.0,Boleyn Ground
+84,2012/2013,2012-10-20,Tottenham,,2.0,4.0,,Chelsea,36060.0,White Hart Lane
+91,2012/2013,2012-10-27,Arsenal,,1.0,0.0,,QPR,60103.0,Emirates Stadium
+95,2012/2013,2012-10-28,Chelsea,,2.0,3.0,,Manchester Utd,41644.0,Stamford Bridge
+101,2012/2013,2012-11-03,Tottenham,,0.0,1.0,,Wigan Athletic,35534.0,White Hart Lane
+104,2012/2013,2012-11-03,West Ham,,0.0,0.0,,Manchester City,35005.0,Boleyn Ground
+111,2012/2013,2012-11-10,Arsenal,,3.0,3.0,,Fulham,60093.0,Emirates Stadium
+118,2012/2013,2012-11-11,Chelsea,,1.0,1.0,,Liverpool,41627.0,Stamford Bridge
+128,2012/2013,2012-11-17,Arsenal,,5.0,2.0,,Tottenham,60111.0,Emirates Stadium
+130,2012/2013,2012-11-19,West Ham,,1.0,1.0,,Stoke City,35005.0,Boleyn Ground
+138,2012/2013,2012-11-25,Chelsea,,0.0,0.0,,Manchester City,41792.0,Stamford Bridge
+141,2012/2013,2012-11-25,Tottenham,,3.0,1.0,,West Ham,36043.0,White Hart Lane
+149,2012/2013,2012-11-28,Tottenham,,2.0,1.0,,Liverpool,36162.0,White Hart Lane
+152,2012/2013,2012-11-28,Chelsea,,0.0,0.0,,Fulham,41707.0,Stamford Bridge
+157,2012/2013,2012-12-01,Arsenal,,0.0,2.0,,Swansea City,60098.0,Emirates Stadium
+160,2012/2013,2012-12-01,West Ham,,3.0,1.0,,Chelsea,35005.0,Boleyn Ground
+165,2012/2013,2012-12-08,Arsenal,,2.0,0.0,,West Brom,60083.0,Emirates Stadium
+173,2012/2013,2012-12-09,West Ham,,2.0,3.0,,Liverpool,35005.0,Boleyn Ground
+184,2012/2013,2012-12-16,Tottenham,,1.0,0.0,,Swansea City,35783.0,White Hart Lane
+192,2012/2013,2012-12-22,West Ham,,1.0,2.0,,Everton,35005.0,Boleyn Ground
+195,2012/2013,2012-12-22,Tottenham,,0.0,0.0,,Stoke City,35702.0,White Hart Lane
+197,2012/2013,2012-12-23,Chelsea,,8.0,0.0,,Aston Villa,41363.0,Stamford Bridge
+212,2012/2013,2012-12-29,Arsenal,,7.0,3.0,,Newcastle Utd,60087.0,Emirates Stadium
+220,2012/2013,2013-01-01,West Ham,,2.0,1.0,,Norwich City,35005.0,Boleyn Ground
+221,2012/2013,2013-01-01,Tottenham,,3.0,1.0,,Reading,36180.0,White Hart Lane
+229,2012/2013,2013-01-02,Chelsea,,0.0,1.0,,QPR,41634.0,Stamford Bridge
+239,2012/2013,2013-01-13,Arsenal,,0.0,2.0,,Manchester City,60107.0,Emirates Stadium
+242,2012/2013,2013-01-16,Chelsea,,2.0,2.0,,Southampton,38484.0,Stamford Bridge
+248,2012/2013,2013-01-19,West Ham,,1.0,1.0,,QPR,34962.0,Boleyn Ground
+251,2012/2013,2013-01-20,Tottenham,,1.0,1.0,,Manchester Utd,35956.0,White Hart Lane
+252,2012/2013,2013-01-20,Chelsea,,2.0,1.0,,Arsenal,41784.0,Stamford Bridge
+255,2012/2013,2013-01-23,Arsenal,,5.0,1.0,,West Ham,60081.0,Emirates Stadium
+263,2012/2013,2013-01-30,Arsenal,,2.0,2.0,,Liverpool,60089.0,Emirates Stadium
+268,2012/2013,2013-02-02,West Ham,,1.0,0.0,,Swansea City,34962.0,Boleyn Ground
+274,2012/2013,2013-02-02,Arsenal,,1.0,0.0,,Stoke City,59872.0,Emirates Stadium
+279,2012/2013,2013-02-09,Tottenham,,2.0,1.0,,Newcastle Utd,36244.0,White Hart Lane
+283,2012/2013,2013-02-09,Chelsea,,4.0,1.0,,Wigan Athletic,41562.0,Stamford Bridge
+294,2012/2013,2013-02-23,Arsenal,,2.0,1.0,,Aston Villa,60079.0,Emirates Stadium
+299,2012/2013,2013-02-25,West Ham,,2.0,3.0,,Tottenham,35005.0,Boleyn Ground
+303,2012/2013,2013-03-02,Chelsea,,1.0,0.0,,West Brom,41548.0,Stamford Bridge
+309,2012/2013,2013-03-03,Tottenham,,2.0,1.0,,Arsenal,36170.0,White Hart Lane
+326,2012/2013,2013-03-17,Tottenham,,0.0,1.0,,Fulham,36004.0,White Hart Lane
+328,2012/2013,2013-03-17,Chelsea,,2.0,0.0,,West Ham,41639.0,Stamford Bridge
+332,2012/2013,2013-03-30,West Ham,,3.0,1.0,,West Brom,34966.0,Boleyn Ground
+333,2012/2013,2013-03-30,Arsenal,,4.0,1.0,,Reading,60082.0,Emirates Stadium
+348,2012/2013,2013-04-07,Chelsea,,2.0,1.0,,Sunderland,41500.0,Stamford Bridge
+349,2012/2013,2013-04-07,Tottenham,,2.0,2.0,,Everton,36192.0,White Hart Lane
+355,2012/2013,2013-04-13,Arsenal,,3.0,1.0,,Norwich City,60095.0,Emirates Stadium
+360,2012/2013,2013-04-16,Arsenal,,0.0,0.0,,Everton,60071.0,Emirates Stadium
+362,2012/2013,2013-04-17,West Ham,,2.0,2.0,,Manchester Utd,34692.0,Boleyn Ground
+371,2012/2013,2013-04-20,West Ham,,2.0,0.0,,Wigan Athletic,34544.0,Boleyn Ground
+372,2012/2013,2013-04-21,Tottenham,,3.0,1.0,,Manchester City,36121.0,White Hart Lane
+383,2012/2013,2013-04-28,Chelsea,,2.0,0.0,,Swansea City,41780.0,Stamford Bridge
+384,2012/2013,2013-04-28,Arsenal,,1.0,1.0,,Manchester Utd,60112.0,Emirates Stadium
+391,2012/2013,2013-05-04,Tottenham,,1.0,0.0,,Southampton,36190.0,White Hart Lane
+393,2012/2013,2013-05-04,West Ham,,0.0,0.0,,Newcastle Utd,34962.0,Boleyn Ground
+400,2012/2013,2013-05-08,Chelsea,,2.0,2.0,,Tottenham,41581.0,Stamford Bridge
+410,2012/2013,2013-05-14,Arsenal,,4.0,1.0,,Wigan Athletic,60068.0,Emirates Stadium
+415,2012/2013,2013-05-19,Chelsea,,2.0,1.0,,Everton,41794.0,Stamford Bridge
+420,2012/2013,2013-05-19,West Ham,,4.0,2.0,,Reading,34973.0,Boleyn Ground
+421,2012/2013,2013-05-19,Tottenham,,1.0,0.0,,Sunderland,36063.0,White Hart Lane
+11,2011/2012,2011-08-20,Arsenal,,0.0,2.0,,Liverpool,60090.0,Emirates Stadium
+12,2011/2012,2011-08-20,Chelsea,,2.0,1.0,,West Brom,41091.0,Stamford Bridge
+22,2011/2012,2011-08-27,Chelsea,,3.0,1.0,,Norwich City,41765.0,Stamford Bridge
+28,2011/2012,2011-08-28,Tottenham,,1.0,5.0,,Manchester City,36150.0,White Hart Lane
+33,2011/2012,2011-09-10,Arsenal,,1.0,0.0,,Swansea City,60087.0,Emirates Stadium
+51,2011/2012,2011-09-18,Tottenham,,4.0,0.0,,Liverpool,36129.0,White Hart Lane
+57,2011/2012,2011-09-24,Chelsea,,4.0,1.0,,Swansea City,41800.0,Stamford Bridge
+60,2011/2012,2011-09-24,Arsenal,,3.0,0.0,,Bolton,59727.0,Emirates Stadium
+72,2011/2012,2011-10-02,Tottenham,,2.0,1.0,,Arsenal,36274.0,White Hart Lane
+79,2011/2012,2011-10-15,Chelsea,,3.0,1.0,,Everton,41789.0,Stamford Bridge
+84,2011/2012,2011-10-16,Arsenal,,2.0,1.0,,Sunderland,60078.0,Emirates Stadium
+95,2011/2012,2011-10-23,Arsenal,,3.0,1.0,,Stoke City,59671.0,Emirates Stadium
+100,2011/2012,2011-10-29,Chelsea,,3.0,5.0,,Arsenal,41801.0,Stamford Bridge
+106,2011/2012,2011-10-30,Tottenham,,3.0,1.0,,QPR,36147.0,White Hart Lane
+115,2011/2012,2011-11-05,Arsenal,,3.0,0.0,,West Brom,60091.0,Emirates Stadium
+128,2011/2012,2011-11-20,Chelsea,,1.0,2.0,,Liverpool,41820.0,Stamford Bridge
+129,2011/2012,2011-11-21,Tottenham,,2.0,0.0,,Aston Villa,35818.0,White Hart Lane
+136,2011/2012,2011-11-26,Arsenal,,1.0,1.0,,Fulham,60043.0,Emirates Stadium
+138,2011/2012,2011-11-26,Chelsea,,3.0,0.0,,Wolves,41648.0,Stamford Bridge
+142,2011/2012,2011-12-03,Tottenham,,3.0,0.0,,Bolton,35896.0,White Hart Lane
+159,2011/2012,2011-12-10,Arsenal,,1.0,0.0,,Everton,60062.0,Emirates Stadium
+162,2011/2012,2011-12-12,Chelsea,,2.0,1.0,,Manchester City,41730.0,Stamford Bridge
+171,2011/2012,2011-12-18,Tottenham,,1.0,0.0,,Sunderland,36021.0,White Hart Lane
+184,2011/2012,2011-12-22,Tottenham,,1.0,1.0,,Chelsea,36141.0,White Hart Lane
+191,2011/2012,2011-12-26,Chelsea,,1.0,1.0,,Fulham,41548.0,Stamford Bridge
+193,2011/2012,2011-12-27,Arsenal,,1.0,1.0,,Wolves,59686.0,Emirates Stadium
+198,2011/2012,2011-12-31,Arsenal,,1.0,0.0,,QPR,60067.0,Emirates Stadium
+201,2011/2012,2011-12-31,Chelsea,,1.0,3.0,,Aston Villa,41332.0,Stamford Bridge
+213,2011/2012,2012-01-03,Tottenham,,1.0,0.0,,West Brom,36062.0,White Hart Lane
+219,2011/2012,2012-01-11,Tottenham,,2.0,0.0,,Everton,36132.0,White Hart Lane
+221,2011/2012,2012-01-14,Chelsea,,1.0,0.0,,Sunderland,41696.0,Stamford Bridge
+222,2011/2012,2012-01-14,Tottenham,,1.0,1.0,,Wolves,36194.0,White Hart Lane
+240,2011/2012,2012-01-22,Arsenal,,1.0,2.0,,Manchester Utd,60093.0,Emirates Stadium
+246,2011/2012,2012-01-31,Tottenham,,3.0,1.0,,Wigan Athletic,35801.0,White Hart Lane
+255,2011/2012,2012-02-04,Arsenal,,7.0,1.0,,Blackburn,59643.0,Emirates Stadium
+262,2011/2012,2012-02-05,Chelsea,,3.0,3.0,,Manchester Utd,41668.0,Stamford Bridge
+272,2011/2012,2012-02-11,Tottenham,,5.0,0.0,,Newcastle Utd,36176.0,White Hart Lane
+278,2011/2012,2012-02-25,Chelsea,,3.0,0.0,,Bolton,40999.0,Stamford Bridge
+283,2011/2012,2012-02-26,Arsenal,,5.0,2.0,,Tottenham,60106.0,Emirates Stadium
+295,2011/2012,2012-03-04,Tottenham,,1.0,3.0,,Manchester Utd,36034.0,White Hart Lane
+301,2011/2012,2012-03-10,Chelsea,,1.0,0.0,,Stoke City,40945.0,Stamford Bridge
+306,2011/2012,2012-03-12,Arsenal,,2.0,1.0,,Newcastle Utd,60095.0,Emirates Stadium
+317,2011/2012,2012-03-21,Tottenham,,1.0,1.0,,Stoke City,35172.0,White Hart Lane
+321,2011/2012,2012-03-24,Chelsea,,0.0,0.0,,Tottenham,41830.0,Stamford Bridge
+322,2011/2012,2012-03-24,Arsenal,,3.0,0.0,,Aston Villa,60108.0,Emirates Stadium
+339,2011/2012,2012-04-01,Tottenham,,3.0,1.0,,Swansea City,36174.0,White Hart Lane
+349,2011/2012,2012-04-07,Chelsea,,2.0,1.0,,Wigan Athletic,40651.0,Stamford Bridge
+350,2011/2012,2012-04-08,Arsenal,,1.0,0.0,,Manchester City,60096.0,Emirates Stadium
+353,2011/2012,2012-04-09,Tottenham,,1.0,2.0,,Norwich City,36126.0,White Hart Lane
+369,2011/2012,2012-04-16,Arsenal,,1.0,2.0,,Wigan Athletic,60060.0,Emirates Stadium
+375,2011/2012,2012-04-21,Arsenal,,0.0,0.0,,Chelsea,60111.0,Emirates Stadium
+391,2011/2012,2012-04-29,Chelsea,,6.0,1.0,,QPR,41675.0,Stamford Bridge
+392,2011/2012,2012-04-29,Tottenham,,2.0,0.0,,Blackburn,35798.0,White Hart Lane
+398,2011/2012,2012-05-02,Chelsea,,0.0,2.0,,Newcastle Utd,41559.0,Stamford Bridge
+400,2011/2012,2012-05-05,Arsenal,,3.0,3.0,,Norwich City,60092.0,Emirates Stadium
+413,2011/2012,2012-05-13,Tottenham,,2.0,0.0,,Fulham,36256.0,White Hart Lane
+415,2011/2012,2012-05-13,Chelsea,,2.0,1.0,,Blackburn,40742.0,Stamford Bridge
