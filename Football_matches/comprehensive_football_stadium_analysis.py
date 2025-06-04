@@ -602,7 +602,8 @@ def create_comprehensive_visualizations(results, stadiums):
     ax9.set_title('Stadium Information', fontweight='bold')
     
     plt.tight_layout()
-    plt.savefig('comprehensive_football_stadium_analysis.png', dpi=300, bbox_inches='tight')
+    plt.savefig('Football_matches/comprehensive_football_stadium_analysis.png', dpi=300, bbox_inches='tight')
+    print(f"Visualization saved to: Football_matches/comprehensive_football_stadium_analysis.png")
     plt.show()
 
 def generate_enhanced_comprehensive_report(results, detailed_results, stadiums):
