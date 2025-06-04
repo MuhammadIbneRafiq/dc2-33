@@ -21,7 +21,6 @@ def advanced_econometric_analysis():
     print("Loading multiple months of data for panel analysis...")
     
     # Load multiple months of data
-    data_files = []
     months = ['2024-06', '2024-05', '2024-04', '2024-03', '2024-02', '2024-01']
     
     all_data = []
