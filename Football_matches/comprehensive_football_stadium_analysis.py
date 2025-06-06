@@ -4,11 +4,13 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import os
 import warnings
+from scipy import stats
+from math import radians, cos, sin, asin, sqrt
 warnings.filterwarnings('ignore')
 
 def load_spatial_monthly_data(months_to_load=12*12):  # Last 8 years for comprehensive analysis
     
-    data_dir = "./data/cleaned_spatial_monthly_data/cleaned_spatial_monthly_burglary_data"
+    data_dir = "../data/cleaned_spatial_monthly_data/cleaned_spatial_monthly_burglary_data"
     spatial_files = []
     for file in os.listdir(data_dir):
         if file.endswith('_burglary_cleaned_spatial.csv'):
@@ -86,9 +88,7 @@ def define_london_stadiums():
         }
     }
     
-def calculate_distance(lat1, lon1, lat2, lon2):
-    from math import radians, cos, sin, asin, sqrt
-    
+def calculate_distance(lat1, lon1, lat2, lon2):    
     # Convert decimal degrees to radians
     lat1, lon1, lat2, lon2 = map(radians, [lat1, lon1, lat2, lon2])
     
@@ -146,7 +146,7 @@ def load_premier_league_data():
     print("Loading Premier League match data...")
     
     try:
-        matches = pd.read_csv('Football_matches/prem_matches_cleaned.csv')
+        matches = pd.read_csv('prem_matches_cleaned.csv')
         matches['Date'] = pd.to_datetime(matches['Date'])
         matches['year_month'] = matches['Date'].dt.to_period('M')
         matches['match_day'] = matches['Date'].dt.date
@@ -183,9 +183,6 @@ def load_premier_league_data():
 
 def enhanced_burglary_match_analysis(crime_data, matches, match_summary, match_dates_by_team, stadiums):
     """Enhanced analysis of burglary patterns around match days"""
-    print("Performing enhanced burglary-match relationship analysis...")
-    print("Excluding June and July (summer break months) from analysis...")
-    
     # Ensure we have the month_date as date for comparison
     crime_data['crime_date'] = crime_data['month_date'].dt.date
     
@@ -194,23 +191,14 @@ def enhanced_burglary_match_analysis(crime_data, matches, match_summary, match_d
     
     for team in stadiums.keys():
         print(f"\nAnalyzing {team}...")
-        
         near_col = f'near_{team.lower()}'
         distance_col = f'distance_to_{team.lower()}'
         
         # Get burglaries near this stadium
         team_burglary = crime_data[crime_data[near_col] == True].copy()
         
-        if team_burglary.empty:
-            print(f"  No burglary data near {team} stadium")
-            continue
-        
         # EXCLUDE JUNE AND JULY (months 6 and 7) - summer break
         team_burglary = team_burglary[~team_burglary['month_date'].dt.month.isin([6, 7])]
-        
-        if team_burglary.empty:
-            print(f"  No burglary data near {team} stadium after excluding summer months")
-            continue
         
         print(f"  Found {len(team_burglary)} burglaries near {team} stadium (excluding Jun/Jul)")
         
@@ -254,49 +242,32 @@ def enhanced_burglary_match_analysis(crime_data, matches, match_summary, match_d
             # LSOA analysis
             avg_lsoas_match = match_months['unique_lsoas'].mean()
             avg_lsoas_no_match = no_match_months['unique_lsoas'].mean()
+                        
+            # T-test for burglary counts
+            t_stat, p_value_ttest = stats.ttest_ind(
+                match_months['burglary_count'], 
+                no_match_months['burglary_count']
+            )
             
-            # Enhanced statistical testing
-            try:
-                from scipy import stats
-                
-                # T-test for burglary counts
-                t_stat, p_value_ttest = stats.ttest_ind(
-                    match_months['burglary_count'], 
-                    no_match_months['burglary_count']
-                )
-                
-                # Mann-Whitney U test (non-parametric)
-                u_stat, p_value_mann = stats.mannwhitneyu(
-                    match_months['burglary_count'], 
-                    no_match_months['burglary_count'],
-                    alternative='two-sided'
-                )
-                
-                # Effect size (Cohen's d)
-                pooled_std = np.sqrt(((len(match_months) - 1) * std_burglary_match**2 + 
-                                    (len(no_match_months) - 1) * std_burglary_no_match**2) / 
-                                   (len(match_months) + len(no_match_months) - 2))
-                cohens_d = (avg_burglary_match - avg_burglary_no_match) / pooled_std if pooled_std > 0 else 0
-                
-            except ImportError:
-                t_stat, p_value_ttest = 0, 0.5
-                u_stat, p_value_mann = 0, 0.5
-                cohens_d = 0
-            except:
-                t_stat, p_value_ttest = 0, 1.0
-                u_stat, p_value_mann = 0, 1.0
-                cohens_d = 0
+            # Mann-Whitney U test (non-parametric)
+            u_stat, p_value_mann = stats.mannwhitneyu(
+                match_months['burglary_count'], 
+                no_match_months['burglary_count'],
+                alternative='two-sided'
+            )
             
+            # Effect size (Cohen's d)
+            pooled_std = np.sqrt(((len(match_months) - 1) * std_burglary_match**2 + 
+                                (len(no_match_months) - 1) * std_burglary_no_match**2) / 
+                                (len(match_months) + len(no_match_months) - 2))
+            cohens_d = (avg_burglary_match - avg_burglary_no_match) / pooled_std if pooled_std > 0 else 0
+                        
             # Correlation analysis
             if len(combined) > 5:
                 corr_matches_burglary = combined['match_count'].corr(combined['burglary_count'])
                 corr_attendance_burglary = combined['avg_attendance'].corr(combined['burglary_count']) if combined['avg_attendance'].sum() > 0 else 0
                 corr_goals_burglary = combined['avg_home_goals'].corr(combined['burglary_count']) if combined['avg_home_goals'].sum() > 0 else 0
-            else:
-                corr_matches_burglary = 0.0
-                corr_attendance_burglary = 0.0
-                corr_goals_burglary = 0.0
-            
+
             # LSOA-level analysis
             team_lsoa_analysis = team_burglary.groupby('LSOA code').agg({
                 'Crime ID': 'count',
@@ -606,9 +577,11 @@ def create_comprehensive_visualizations(results, stadiums):
     ax9.set_title('Stadium Information', fontweight='bold')
     
     plt.tight_layout()
-    plt.savefig('Football_matches/comprehensive_football_stadium_analysis.png', dpi=300, bbox_inches='tight')
-    print(f"Visualization saved to: Football_matches/comprehensive_football_stadium_analysis.png")
+    plt.savefig('comprehensive_football_stadium_analysis.png', dpi=300, bbox_inches='tight')
+    print(f"Visualization saved to: comprehensive_football_stadium_analysis.png")
     plt.show()
+    
+    return fig
 
 def generate_enhanced_comprehensive_report(results, detailed_results, stadiums):
     """Generate comprehensive analysis report with detailed explanations"""
@@ -774,8 +747,8 @@ def generate_enhanced_comprehensive_report(results, detailed_results, stadiums):
     # Save detailed results
     detailed_df = pd.DataFrame(detailed_results)
     
-    summary_df.to_csv('Football_matches/enhanced_stadium_analysis_summary.csv', index=False)
-    detailed_df.to_csv('Football_matches/enhanced_stadium_analysis_detailed.csv', index=False)
+    summary_df.to_csv('enhanced_stadium_analysis_summary.csv', index=False)
+    detailed_df.to_csv('enhanced_stadium_analysis_detailed.csv', index=False)
     
     print(f"\n• Summary results saved to: Football_matches/enhanced_stadium_analysis_summary.csv")
     print(f"• Detailed results saved to: Football_matches/enhanced_stadium_analysis_detailed.csv")
@@ -783,38 +756,304 @@ def generate_enhanced_comprehensive_report(results, detailed_results, stadiums):
     # Save LSOA analysis for each team
     for team, r in results.items():
         if not r['lsoa_analysis'].empty:
-            lsoa_filename = f"Football_matches/{team.lower()}_lsoa_analysis.csv"
+            lsoa_filename = f"{team.lower()}_lsoa_analysis.csv"
             r['lsoa_analysis'].to_csv(lsoa_filename, index=False)
             print(f"• {team} LSOA analysis saved to: {lsoa_filename}")
     
     return summary_df, detailed_df
+
+def run_multi_parameter_analysis():
+    """Run analysis with multiple parameter combinations"""
+    from datetime import datetime
+    import itertools
+    
+    print("=" * 80)
+    print("COMPREHENSIVE MULTI-PARAMETER FOOTBALL STADIUM BURGLARY ANALYSIS")
+    print("=" * 80)
+    
+    # Define parameter combinations to test
+    years_options = [5, 8, 10, 15]
+    radius_options = [2, 5, 10]  # km
+    
+    stadiums = define_london_stadiums()
+    all_results = {}
+    all_detailed_results = {}
+    
+    # Load match data once (it's the same for all iterations)
+    matches, match_summary, match_dates_by_team = load_premier_league_data()
+    if matches is None:
+        return
+    
+    print(f"\nRunning analysis for {len(years_options)} year periods × {len(radius_options)} radii = {len(years_options) * len(radius_options)} configurations")
+    print(f"Years: {years_options}")
+    print(f"Radii: {radius_options} km")
+    
+    for years in years_options:
+        for radius in radius_options:
+            config = (years, radius)
+            print(f"\n{'='*60}")
+            print(f"CONFIGURATION: {years} years of data, {radius}km radius")
+            print(f"{'='*60}")
+            
+            # Load crime data for this time period
+            print(f"\nLoading {years} years of burglary data...")
+            crime_data = load_spatial_monthly_data(months_to_load=years*12)
+            
+            if crime_data.empty:
+                print(f"No data available for {years} years")
+                continue
+            
+            # Identify crimes near stadiums with this radius
+            print(f"\nIdentifying crimes within {radius}km of stadiums...")
+            crime_data_enhanced = identify_stadium_nearby_crimes_enhanced(crime_data, stadiums, radius_km=radius)
+            
+            # Run analysis for this configuration
+            results, detailed_results = enhanced_burglary_match_analysis(
+                crime_data_enhanced, matches, match_summary, match_dates_by_team, stadiums)
+            
+            all_results[config] = results
+            all_detailed_results[config] = detailed_results
+            
+            # Create visualizations for this configuration
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            fig = create_comprehensive_visualizations(results, stadiums)
+            
+            # Save this configuration's plot
+            config_filename = f'analysis_{years}years_{radius}km_{timestamp}.png'
+            fig.savefig(f'{config_filename}', dpi=300, bbox_inches='tight')
+            print(f"Visualization saved as {config_filename}")
+            
+            # Print summary for this configuration
+            print(f"\nSUMMARY for {years} years, {radius}km radius:")
+            for team, stats in results.items():
+                sig_marker = "***" if stats['p_value_ttest'] < 0.001 else "**" if stats['p_value_ttest'] < 0.01 else "*" if stats['p_value_ttest'] < 0.05 else ""
+                print(f"  {team}: {stats['total_burglaries']} crimes, {stats['percentage_change']:+.1f}% change, p={stats['p_value_ttest']:.3f}{sig_marker}")
+    
+    # Create comprehensive comparison visualization
+    print(f"\n{'='*60}")
+    print("CREATING COMPREHENSIVE COMPARISON VISUALIZATION")
+    print(f"{'='*60}")
+    
+    comparison_data = create_multi_parameter_comparison(all_results)
+    
+    # Save detailed results for all configurations
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    results_filename = f'multi_parameter_analysis_results_{timestamp}.csv'
+    comparison_data.to_csv(f'{results_filename}', index=False)
+    
+    # Print final summary
+    print(f"\n{'='*60}")
+    print("FINAL ANALYSIS SUMMARY")
+    print(f"{'='*60}")
+    
+    print(f"\nConfigurations with significant results (p < 0.05):")
+    significant_results = comparison_data[comparison_data['significant_ttest'] == True]
+    if len(significant_results) > 0:
+        for _, row in significant_results.iterrows():
+            print(f"  {row['team']} - {row['years_of_data']} years, {row['radius_km']}km: {row['percentage_change']:+.1f}% (p={row['p_value_ttest']:.3f})")
+    else:
+        print("  No statistically significant results found in any configuration")
+    
+    print(f"\nLargest effects by configuration:")
+    top_effects = comparison_data.nlargest(5, 'percentage_change')
+    for _, row in top_effects.iterrows():
+        sig_marker = "*" if row['significant_ttest'] else ""
+        print(f"  {row['team']} - {row['years_of_data']} years, {row['radius_km']}km: {row['percentage_change']:+.1f}% (p={row['p_value_ttest']:.3f}){sig_marker}")
+    
+    print(f"\nTotal configurations analyzed: {len(all_results)}")
+    print(f"Results saved to: {results_filename}")
+    
+    return all_results, all_detailed_results, comparison_data
+
+def create_multi_parameter_comparison(all_results):
+    """Create comparison data from all parameter combinations"""
+    comparison_data = []
+    
+    for config, results in all_results.items():
+        years, radius = config
+        for team, stats in results.items():
+            row = {
+                'years_of_data': years,
+                'radius_km': radius,
+                'team': team,
+                'venue': stats['venue'],
+                'borough': stats['borough'],
+                'total_burglaries': stats['total_burglaries'],
+                'unique_lsoas': stats['unique_lsoas_affected'],
+                'data_months': stats['data_months'],
+                'match_months': stats['match_months_count'],
+                'no_match_months': stats['no_match_months_count'],
+                'avg_burglary_match': stats['avg_burglary_match_months'],
+                'avg_burglary_no_match': stats['avg_burglary_no_match_months'],
+                'difference': stats['difference'],
+                'percentage_change': stats['percentage_change'],
+                't_statistic': stats['t_statistic'],
+                'p_value_ttest': stats['p_value_ttest'],
+                'p_value_mann_whitney': stats['p_value_mann_whitney'],
+                'cohens_d': stats['cohens_d'],
+                'effect_size': stats['effect_size_interpretation'],
+                'significant_ttest': stats['significant_ttest'],
+                'significant_mann_whitney': stats['significant_mann_whitney'],
+                'correlation_matches_burglary': stats['correlation_matches_burglary'],
+                'correlation_attendance_burglary': stats['correlation_attendance_burglary'],
+                'correlation_goals_burglary': stats['correlation_goals_burglary']
+            }
+            comparison_data.append(row)
+    
+    return pd.DataFrame(comparison_data)
+
+def create_comparison_visualization(comparison_df):
+    """Create comprehensive comparison visualization"""
+    plt.style.use('default')
+    fig, axes = plt.subplots(3, 3, figsize=(20, 18))
+    fig.suptitle('Multi-Parameter Football Stadium Burglary Analysis Comparison', fontsize=16, fontweight='bold')
+    
+    # Plot 1: Total crimes by radius and years
+    ax1 = axes[0, 0]
+    pivot_crimes = comparison_df.pivot_table(values='total_burglaries', index='team', columns=['years_of_data', 'radius_km'], aggfunc='sum')
+    sns.heatmap(pivot_crimes, annot=True, fmt='.0f', cmap='YlOrRd', ax=ax1)
+    ax1.set_title('Total Crimes by Configuration')
+    ax1.set_xlabel('(Years, Radius km)')
+    
+    # Plot 2: Percent increase by radius
+    ax2 = axes[0, 1]
+    for years in sorted(comparison_df['years_of_data'].unique()):
+        year_data = comparison_df[comparison_df['years_of_data'] == years]
+        for team in year_data['team'].unique():
+            team_data = year_data[year_data['team'] == team]
+            ax2.plot(team_data['radius_km'], team_data['percentage_change'], 
+                    marker='o', label=f'{team} ({years}yr)', alpha=0.7)
+    ax2.set_xlabel('Radius (km)')
+    ax2.set_ylabel('Percent Increase (%)')
+    ax2.set_title('Percent Increase vs Radius')
+    ax2.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+    ax2.grid(True, alpha=0.3)
+    
+    # Plot 3: Statistical significance heatmap
+    ax3 = axes[0, 2]
+    sig_pivot = comparison_df.pivot_table(values='significant_ttest', index='team', columns=['years_of_data', 'radius_km'], aggfunc='first')
+    sns.heatmap(sig_pivot.astype(int), annot=True, cmap='RdYlGn', cbar_kws={'label': 'Significant'}, ax=ax3)
+    ax3.set_title('Statistical Significance (p < 0.05)')
+    ax3.set_xlabel('(Years, Radius km)')
+    
+    # Plot 4: Effect sizes (Cohen's d)
+    ax4 = axes[1, 0]
+    effect_pivot = comparison_df.pivot_table(values='cohens_d', index='team', columns=['years_of_data', 'radius_km'], aggfunc='first')
+    sns.heatmap(effect_pivot, annot=True, fmt='.3f', cmap='RdBu_r', center=0, ax=ax4)
+    ax4.set_title("Effect Sizes (Cohen's d)")
+    ax4.set_xlabel('(Years, Radius km)')
+    
+    # Plot 5: P-values heatmap
+    ax5 = axes[1, 1]
+    p_pivot = comparison_df.pivot_table(values='p_value_ttest', index='team', columns=['years_of_data', 'radius_km'], aggfunc='first')
+    sns.heatmap(p_pivot, annot=True, fmt='.3f', cmap='RdYlGn_r', ax=ax5)
+    ax5.set_title('P-values (lower = more significant)')
+    ax5.set_xlabel('(Years, Radius km)')
+    
+    # Plot 6: Crimes vs Years for each radius
+    ax6 = axes[1, 2]
+    for radius in sorted(comparison_df['radius_km'].unique()):
+        radius_data = comparison_df[comparison_df['radius_km'] == radius]
+        for team in radius_data['team'].unique():
+            team_data = radius_data[radius_data['team'] == team]
+            ax6.plot(team_data['years_of_data'], team_data['total_burglaries'], 
+                    marker='o', label=f'{team} ({radius}km)', alpha=0.7)
+    ax6.set_xlabel('Years of Data')
+    ax6.set_ylabel('Total Crimes')
+    ax6.set_title('Total Crimes vs Data Period')
+    ax6.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+    ax6.grid(True, alpha=0.3)
+    
+    # Plot 7: Box plot of percent increases by radius
+    ax7 = axes[2, 0]
+    sns.boxplot(data=comparison_df, x='radius_km', y='percentage_change', ax=ax7)
+    ax7.set_title('Distribution of Percent Increases by Radius')
+    ax7.set_xlabel('Radius (km)')
+    ax7.set_ylabel('Percent Increase (%)')
+    
+    # Plot 8: Box plot of percent increases by years
+    ax8 = axes[2, 1]
+    sns.boxplot(data=comparison_df, x='years_of_data', y='percentage_change', ax=ax8)
+    ax8.set_title('Distribution of Percent Increases by Years')
+    ax8.set_xlabel('Years of Data')
+    ax8.set_ylabel('Percent Increase (%)')
+    
+    # Plot 9: Summary statistics table
+    ax9 = axes[2, 2]
+    ax9.axis('off')
+    
+    # Create summary statistics table
+    summary_stats = comparison_df.groupby(['years_of_data', 'radius_km']).agg({
+        'total_burglaries': 'sum',
+        'percentage_change': 'mean',
+        'significant_ttest': 'sum',
+        'p_value_ttest': 'mean'
+    }).round(3)
+    
+    # Create table text
+    table_text = "Summary Statistics by Configuration\n\n"
+    table_text += f"{'Years':<6} {'Radius':<8} {'Total':<8} {'Avg %':<8} {'Sig':<4} {'Avg p':<8}\n"
+    table_text += "-" * 50 + "\n"
+    
+    for (years, radius), row in summary_stats.iterrows():
+        table_text += f"{years:<6} {radius:<8} {int(row['total_burglaries']):<8} {row['percentage_change']:+.1f}%{'':<3} {int(row['significant_ttest']):<4} {row['p_value_ttest']:.3f}\n"
+    
+    ax9.text(0.1, 0.9, table_text, transform=ax9.transAxes, fontfamily='monospace',
+             verticalalignment='top', fontsize=10)
+    
+    plt.tight_layout()
+    
+    from datetime import datetime
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    comparison_filename = f'multi_parameter_comparison_{timestamp}.png'
+    plt.savefig(f'{comparison_filename}', dpi=300, bbox_inches='tight')
+    print(f"Comprehensive comparison visualization saved as {comparison_filename}")
+    
+    return fig
 
 def main():
     print("ENHANCED COMPREHENSIVE FOOTBALL STADIUM BURGLARY ANALYSIS")
     print("Including statistical testing, effect sizes, and correlation analysis")
     print("Excluding June/July (summer break) from match-burglary correlations")
     print("="*100)
-    crime_data = load_spatial_monthly_data()  # Last 12 years
-    stadiums = define_london_stadiums()
     
-    crime_data = identify_stadium_nearby_crimes_enhanced(crime_data, stadiums, radius_km=25.0)
+    # Ask user for analysis type
+    print("\nChoose analysis type:")
+    print("1. Single configuration (original analysis)")
+    print("2. Multi-parameter analysis (different radii and time periods)")
     
-    matches, match_summary, match_dates_by_team = load_premier_league_data()
+    choice = input("Enter choice (1 or 2): ").strip()
     
-    results, detailed_results = enhanced_burglary_match_analysis(
-        crime_data, matches, match_summary, match_dates_by_team, stadiums)
+    if choice == "2":
+        all_results, all_detailed_results, comparison_df = run_multi_parameter_analysis()
+        
+        # Create final comparison visualization
+        create_comparison_visualization(comparison_df)
+        
+        return all_results, all_detailed_results, comparison_df
+    else:
+        # Original single configuration analysis
+        crime_data = load_spatial_monthly_data()  # Last 12 years
+        stadiums = define_london_stadiums()
+        
+        crime_data = identify_stadium_nearby_crimes_enhanced(crime_data, stadiums, radius_km=25.0)
+        
+        matches, match_summary, match_dates_by_team = load_premier_league_data()
+        
+        results, detailed_results = enhanced_burglary_match_analysis(
+            crime_data, matches, match_summary, match_dates_by_team, stadiums)
 
-    create_comprehensive_visualizations(results, stadiums)
-    summary_df, detailed_df = generate_enhanced_comprehensive_report(
-        results, detailed_results, stadiums)
-    
-    print("Generated files:")
-    print("- comprehensive_football_stadium_analysis.png")
-    print("- Football_matches/enhanced_stadium_analysis_summary.csv")
-    print("- Football_matches/enhanced_stadium_analysis_detailed.csv")
-    print("- Individual LSOA analysis files for each team")
-    
-    return results, detailed_results, summary_df, detailed_df
+        create_comprehensive_visualizations(results, stadiums)
+        summary_df, detailed_df = generate_enhanced_comprehensive_report(
+            results, detailed_results, stadiums)
+        
+        print("Generated files:")
+        print("- comprehensive_football_stadium_analysis.png")
+        print("- enhanced_stadium_analysis_summary.csv")
+        print("- enhanced_stadium_analysis_detailed.csv")
+        print("- Individual LSOA analysis files for each team")
+        
+        return results, detailed_results, summary_df, detailed_df
 
 if __name__ == "__main__":
     main() 
