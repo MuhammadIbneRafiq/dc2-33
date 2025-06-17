@@ -75,18 +75,23 @@ const MapDashboard: React.FC<MapDashboardProps> = ({ onLSOASelect, selectedLSOA 
     const dummyData = [];
     const londonCenter = { lat: 51.5074, lng: -0.1278 };
     
-    // Generate 30 simple random dots around London
-    for (let i = 0; i < 30; i++) {
-      const lat = londonCenter.lat + (Math.random() - 0.5) * 0.15; // ~8km spread
-      const lng = londonCenter.lng + (Math.random() - 0.5) * 0.2; // ~10km spread
+    // Generate 4000 burglary points all over London with red alert emojis 🚨
+    for (let i = 0; i < 4000; i++) {
+      const lat = londonCenter.lat + (Math.random() - 0.5) * 0.3; // ~15km spread
+      const lng = londonCenter.lng + (Math.random() - 0.5) * 0.4; // ~20km spread
       
       dummyData.push({
-        id: `random-${i}`,
+        id: `burglary-alert-${i}`,
         lat,
         lng,
-        borough: 'Central London',
+        borough: ['Westminster', 'Camden', 'Hackney', 'Tower Hamlets', 'Southwark', 'Lambeth', 'Islington', 'Newham', 'Greenwich', 'Lewisham'][Math.floor(Math.random() * 10)],
         category: 'burglary',
-        risk_level: ['High', 'Medium', 'Low'][Math.floor(Math.random() * 3)]
+        risk_level: ['High', 'High', 'High', 'Medium', 'Low'][Math.floor(Math.random() * 5)], // More high risk
+        alert_emoji: '🚨',
+        alert_level: 'RED ALERT',
+        date: new Date().toISOString().slice(0, 10),
+        location_type: 'High Risk Area',
+        outcome_status: 'Active Alert'
       });
     }
     
@@ -119,30 +124,34 @@ const MapDashboard: React.FC<MapDashboardProps> = ({ onLSOASelect, selectedLSOA 
   // Step 4: INSTANT police allocation with random placement
   const handlePoliceAllocation = () => {
     setPoliceAllocationEnabled(true);
-    console.log('👮 Placing police units instantly...');
+    console.log('👮 Placing 4000 police units instantly across London...');
     
-    // Generate instant police units around London
+    // Generate 4000 instant police units all over London with red alert emojis 🚨
     const randomPoliceUnits = [];
     const londonCenter = { lat: 51.5074, lng: -0.1278 };
-    const numUnits = 15; // Fixed number
+    const numUnits = 4000; // Fixed number
     
     for (let i = 0; i < numUnits; i++) {
-      const lat = londonCenter.lat + (Math.random() - 0.5) * 0.12;
-      const lng = londonCenter.lng + (Math.random() - 0.5) * 0.15;
+      const lat = londonCenter.lat + (Math.random() - 0.5) * 0.3;
+      const lng = londonCenter.lng + (Math.random() - 0.5) * 0.4;
       
       randomPoliceUnits.push({
-        id: i,
+        id: `police-unit-${i}`,
         lat,
         lng,
         type: Math.random() > 0.5 ? 'vehicle' : 'officer',
-        assignedArea: 'Central London',
-        status: 'patrol'
+        assignedArea: ['Westminster', 'Camden', 'Hackney', 'Tower Hamlets', 'Southwark', 'Lambeth', 'Islington', 'Newham', 'Greenwich', 'Lewisham'][Math.floor(Math.random() * 10)],
+        status: 'active_patrol',
+        alert_emoji: '🚨',
+        alert_level: 'RED ALERT',
+        unit_type: Math.random() > 0.7 ? 'Armed Response' : Math.random() > 0.5 ? 'Patrol Unit' : 'Foot Patrol',
+        response_time: Math.round(Math.random() * 10) + 2 + ' mins'
       });
     }
     
     setPoliceUnits([...randomPoliceUnits]);
     setShowPoliceAllocation(true);
-    console.log(`✅ Placed ${randomPoliceUnits.length} police units instantly!`);
+    console.log(`🚨 Deployed ${randomPoliceUnits.length} police units across London with RED ALERT status!`);
   };
 
   // Generate some high-risk areas if no burglary data exists

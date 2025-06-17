@@ -148,8 +148,11 @@ const DynamicMarker = ({ position, patrolType, children }: Omit<DynamicMarkerPro
 const createPoliceIcon = (zoom = 11) => {
   const iconSize = getZoomDependentSize(20, zoom);
   return L.divIcon({
-    html: `<div style="background-color: #1e40af; width: ${iconSize}px; height: ${iconSize}px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">👮</div>`,
-    className: 'police-icon',
+    html: `<div style="background-color: #dc2626; width: ${iconSize}px; height: ${iconSize}px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; border: 2px solid #fbbf24; box-shadow: 0 2px 8px rgba(220,38,38,0.6); position: relative;">
+      <span style="font-size: ${iconSize * 0.6}px;">👮</span>
+      <div style="position: absolute; top: -2px; right: -2px; font-size: ${iconSize * 0.3}px;">🚨</div>
+    </div>`,
+    className: 'police-icon-alert',
     iconSize: [iconSize, iconSize],
     iconAnchor: [iconSize/2, iconSize/2],
   });
@@ -159,8 +162,11 @@ const createPoliceIcon = (zoom = 11) => {
 const createVehicleIcon = (zoom = 11) => {
   const iconSize = getZoomDependentSize(24, zoom);
   return L.divIcon({
-    html: `<div style="background-color: #0369a1; width: ${iconSize}px; height: ${iconSize}px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">🚓</div>`,
-    className: 'vehicle-icon',
+    html: `<div style="background-color: #dc2626; width: ${iconSize}px; height: ${iconSize}px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; border: 2px solid #fbbf24; box-shadow: 0 2px 8px rgba(220,38,38,0.6); position: relative;">
+      <span style="font-size: ${iconSize * 0.6}px;">🚓</span>
+      <div style="position: absolute; top: -2px; right: -2px; font-size: ${iconSize * 0.3}px;">🚨</div>
+    </div>`,
+    className: 'vehicle-icon-alert',
     iconSize: [iconSize, iconSize],
     iconAnchor: [iconSize/2, iconSize/2],
   });
@@ -303,9 +309,6 @@ const MapComponent = ({
   // Define London center coordinates
   const LONDON_CENTER: [number, number] = [51.5074, -0.1278];
   const LONDON_ZOOM = 10;
-
-  // Add state for level toggle
-  const [viewLevel, setViewLevel] = useState<'lsoa' | 'borough'>(mapLevel || 'lsoa');
 
   // ONS API endpoint
   const ONS_ENDPOINT = 'https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/Lower_layer_Super_Output_Areas_December_2021_Boundaries_EW_BFC_V10/FeatureServer/0/query';
@@ -553,12 +556,7 @@ const MapComponent = ({
     }
   };
 
-  // Sync viewLevel with mapLevel prop
-  useEffect(() => {
-    if (mapLevel) {
-      setViewLevel(mapLevel);
-    }
-  }, [mapLevel]);
+  // mapLevel is now controlled by parent component
 
   // Handle adding new burglary points by clicking on map
   const handleAddBurglaryPoint = (lat: number, lng: number) => {
@@ -583,10 +581,10 @@ const MapComponent = ({
       setLoading(true);
       setError(null);
       
-      console.log(`🗺️ Loading simple boundaries for level: ${viewLevel} (NO API CALLS)`);
+      console.log(`🗺️ Loading simple boundaries for level: ${mapLevel} (NO API CALLS)`);
       
       // Load ONLY LSOA boundaries from ONS API - nothing else
-      if (viewLevel === 'lsoa') {
+      if (mapLevel === 'lsoa') {
         console.log('📡 Loading LSOA boundaries from ONS API...');
         loadRealLSOAData(); // Only load LSOA boundaries
       } else {
@@ -672,7 +670,7 @@ const MapComponent = ({
     return () => {
       window.removeEventListener('dateRangeChanged', handleDateRangeChange as EventListener);
     };
-  }, [showPredictions, viewLevel]); // Simplified dependencies to prevent loops
+  }, [showPredictions, mapLevel]); // Simplified dependencies to prevent loops
 
   // Load historical data based on date range
   const loadHistoricalData = async () => {
@@ -898,11 +896,7 @@ const MapComponent = ({
     }
   }, [burglaryData.length]); // Only depend on length, not the array itself
 
-  // Update view level when mapLevel prop changes
-  useEffect(() => {
-    setViewLevel(mapLevel);
-    console.log(`🗺️ Map view level changed to: ${mapLevel}`);
-  }, [mapLevel]);
+  // mapLevel is controlled by parent, no need to sync internal state
 
   // Fetch socio-economic data from external APIs only
   const fetchSocioEconomicData = async (lsoaCode: string) => {
@@ -1159,7 +1153,7 @@ const MapComponent = ({
       <div className="h-full w-full flex items-center justify-center bg-slate-100">
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-slate-600">Loading {viewLevel === 'lsoa' ? 'LSOA' : 'Borough'} boundaries...</p>
+          <p className="text-slate-600">Loading {mapLevel === 'lsoa' ? 'LSOA' : 'Borough'} boundaries...</p>
         </div>
       </div>
     );
@@ -1183,48 +1177,17 @@ const MapComponent = ({
     );
   }
 
-  const currentBoundaries = viewLevel === 'lsoa' ? lsoaBoundaries : boroughBoundaries;
+      const currentBoundaries = mapLevel === 'lsoa' ? lsoaBoundaries : boroughBoundaries;
   
   if (!currentBoundaries) {
     return (
       <div className="h-full w-full flex items-center justify-center bg-slate-100">
         <div className="text-center">
-          <p className="text-slate-600">No {viewLevel === 'lsoa' ? 'LSOA' : 'Borough'} boundary data available</p>
+          <p className="text-slate-600">No {mapLevel === 'lsoa' ? 'LSOA' : 'Borough'} boundary data available</p>
         </div>
       </div>
     );
   }
-
-  // Add level toggle controls to the map
-  const LevelToggleControl = () => (
-    <div className="absolute top-4 left-4 z-[1000]">
-      <div className="bg-white rounded-lg shadow-md border border-gray-300 p-2">
-        <div className="text-xs font-semibold text-gray-700 mb-2">View Level</div>
-        <div className="flex space-x-1">
-          <button
-            onClick={() => setViewLevel('lsoa')}
-            className={`px-3 py-1 text-xs rounded transition-colors ${
-              viewLevel === 'lsoa' 
-                ? 'bg-blue-500 text-white' 
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-            }`}
-          >
-            LSOA
-          </button>
-          <button
-            onClick={() => setViewLevel('borough')}
-            className={`px-3 py-1 text-xs rounded transition-colors ${
-              viewLevel === 'borough' 
-                ? 'bg-blue-500 text-white' 
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-            }`}
-          >
-            Borough
-          </button>
-        </div>
-      </div>
-    </div>
-  );
 
   return (
     <ErrorBoundary fallback={
@@ -1255,7 +1218,7 @@ const MapComponent = ({
           {/* Layer controls */}
           <LayersControl position="topright">
             {/* LSOA Boundaries Layer */}
-            {viewLevel === 'lsoa' && lsoaBoundaries && (
+            {mapLevel === 'lsoa' && lsoaBoundaries && (
               <LayersControl.Overlay checked name="LSOA Boundaries">
                 <FeatureGroup>
                   <GeoJSON
@@ -1269,7 +1232,7 @@ const MapComponent = ({
             )}
 
             {/* Borough Boundaries Layer */}
-            {viewLevel === 'borough' && boroughBoundaries && (
+            {mapLevel === 'borough' && boroughBoundaries && (
               <LayersControl.Overlay checked name="Borough Boundaries">
                 <FeatureGroup>
                   <GeoJSON
@@ -1295,13 +1258,21 @@ const MapComponent = ({
                       >
                         <Popup>
                           <div className="text-center">
-                            <h4 className="font-semibold text-sm mb-1">👮 Police Unit</h4>
-                            <p className="text-xs mb-1">Type: {unit.type === 'vehicle' ? '🚓 Vehicle Patrol' : '👮 Foot Patrol'}</p>
-                            <p className="text-xs mb-1">Area: {unit.assignedArea || 'Central London'}</p>
-                            <p className="text-xs mb-1">Status: {unit.status || 'Active'}</p>
+                            <h4 className="font-semibold text-sm mb-1 text-red-600">🚨 POLICE UNIT - RED ALERT</h4>
+                            <div className="bg-red-100 border border-red-300 rounded p-2 mb-2">
+                              <p className="text-xs font-bold text-red-800">{unit.alert_level || 'RED ALERT'}</p>
+                            </div>
+                            <p className="text-xs mb-1"><strong>Type:</strong> {unit.type === 'vehicle' ? '🚓 Vehicle Patrol' : '👮 Foot Patrol'}</p>
+                            <p className="text-xs mb-1"><strong>Unit Type:</strong> {unit.unit_type || 'Patrol Unit'}</p>
+                            <p className="text-xs mb-1"><strong>Area:</strong> {unit.assignedArea || 'Central London'}</p>
+                            <p className="text-xs mb-1"><strong>Status:</strong> <span className="text-red-600 font-bold">{unit.status || 'ACTIVE PATROL'}</span></p>
+                            <p className="text-xs mb-1"><strong>Response Time:</strong> {unit.response_time || '5 mins'}</p>
                             <p className="text-xs text-gray-600">
-                              Unit ID: {unit.id}
+                              <strong>Unit ID:</strong> {unit.id}
                             </p>
+                            <div className="mt-2 text-xs text-red-700 font-bold">
+                              {unit.alert_emoji || '🚨'} IMMEDIATE RESPONSE READY
+                            </div>
                           </div>
                         </Popup>
                       </ZoomAwareMarker>
@@ -1357,15 +1328,21 @@ const MapComponent = ({
                     >
                       <Popup>
                         <div className="text-sm">
-                          <h4 className="font-semibold mb-2">🔮 Forecast Point</h4>
+                          <h4 className="font-semibold mb-2 text-red-600">🚨 BURGLARY ALERT - {point.alert_level || 'RED ALERT'}</h4>
+                          <div className="bg-red-100 border border-red-300 rounded p-2 mb-2">
+                            <p className="text-xs font-bold text-red-800">{point.alert_emoji || '🚨'} HIGH PRIORITY INCIDENT</p>
+                          </div>
                           <p><strong>Borough:</strong> {point.borough}</p>
                           <p><strong>Risk Level:</strong> <span style={{color: point.risk_level === 'High' ? '#dc2626' : point.risk_level === 'Medium' ? '#ea580c' : '#16a34a'}}>{point.risk_level}</span></p>
                           <p><strong>Date:</strong> {point.date || point.month}</p>
-                          <p><strong>Location:</strong> {point.location_type || 'Forecast Area'}</p>
-                          <p><strong>Status:</strong> {point.outcome_status || 'Predicted'}</p>
+                          <p><strong>Location:</strong> {point.location_type || 'High Risk Area'}</p>
+                          <p><strong>Status:</strong> <span className="text-red-600 font-bold">{point.outcome_status || 'ACTIVE ALERT'}</span></p>
                           <p className="text-xs text-gray-600 mt-1">
                             Coordinates: {point.lat.toFixed(4)}, {point.lng.toFixed(4)}
                           </p>
+                          <div className="mt-2 text-xs text-red-700 font-bold">
+                            🚨 IMMEDIATE POLICE RESPONSE REQUIRED
+                          </div>
                         </div>
                       </Popup>
                     </CircleMarker>
@@ -1386,9 +1363,6 @@ const MapComponent = ({
               </div>
             </div>
           )}
-
-          {/* Level Toggle Control */}
-          <LevelToggleControl />
         </MapContainer>
       </div>
     </ErrorBoundary>
