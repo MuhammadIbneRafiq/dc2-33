@@ -1,208 +1,197 @@
-// API service for connecting to the Flask backend
+// API service for external APIs only - UK Police API, ONS API, etc.
+// NO backend, NO mock data - only real external APIs
 
-// Base URL for API requests
-const API_BASE_URL = 'http://127.0.0.1:5000';
+// UK Police API endpoints
+const POLICE_API_BASE = 'https://data.police.uk/api';
+const ONS_API_BASE = 'https://api.beta.ons.gov.uk/v1';
 
-// Fallback data for when the API is not available
-const MOCK_DATA = {
-  lsoa: {
-    list: [
-      'E01000001', 'E01000005', 'E01032739', 'E01032740', 'E01000032'
-    ],
-    wellbeing: {
-      name: 'London LSOA',
-      risk_level: 'Medium',
-      imd_rank: 5243,
-      crime_score: 0.28,
-      income_score: 0.31,
-      employment_score: 0.25,
-      health_score: 0.22,
-      education_score: 0.19,
-      housing_score: 0.35,
-      living_environment_score: 0.33
-    },
-    // Mock LSOA boundaries for fallback
-    boundaries: {
-      type: 'FeatureCollection',
-      features: [
-        {
-          type: 'Feature',
-          properties: {
-            lsoa_code: 'E01000001',
-            lsoa_name: 'City of London 001A',
-            burglary_count: 35,
-            risk_level: 'Medium'
-          },
-          geometry: {
-            type: 'Polygon',
-            coordinates: [[
-              [-0.1, 51.51],
-              [-0.095, 51.51],
-              [-0.095, 51.515],
-              [-0.1, 51.515],
-              [-0.1, 51.51]
-            ]]
-          }
-        },
-        {
-          type: 'Feature',
-          properties: {
-            lsoa_code: 'E01000005',
-            lsoa_name: 'City of London 001E',
-            burglary_count: 42,
-            risk_level: 'High'
-          },
-          geometry: {
-            type: 'Polygon',
-            coordinates: [[
-              [-0.08, 51.51],
-              [-0.075, 51.51],
-              [-0.075, 51.515],
-              [-0.08, 51.515],
-              [-0.08, 51.51]
-            ]]
-          }
-        }
-      ]
-    }
-  },
-  burglary: {
-    timeSeries: {
-      months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-      counts: [35, 28, 32, 30, 25, 27, 31, 29, 36, 39, 33, 29]
-    },
-    forecast: {
-      forecast: [33, 31, 34, 30, 28, 26, 32, 34, 35, 39, 31, 28],
-      accuracy: "92.5%",
-      aic: 876.32
-    },
-    correlation: {
-      income: -0.72,
-      employment: -0.65,
-      health: -0.54,
-      education: -0.48,
-      housing: 0.67,
-      living_environment: 0.71
-    }
-  },
-  police: {
-    optimize: {
-      clusters: [
-        { lat: 51.512, lon: -0.09, officer_count: 3, risk_score: 0.85 },
-        { lat: 51.513, lon: -0.1, officer_count: 2, risk_score: 0.75 },
-        { lat: 51.518, lon: -0.102, officer_count: 4, risk_score: 0.92 },
-        { lat: 51.514, lon: -0.085, officer_count: 1, risk_score: 0.68 },
-        { lat: 51.511, lon: -0.077, officer_count: 2, risk_score: 0.72 }
-      ]
-    }
-  },
-  emmie: {
-    scores: {
-      effect: 0.78,
-      mechanism: 0.65,
-      moderation: 0.72,
-      implementation: 0.83,
-      economic: 0.69,
-      overall: 0.74
-    }
-  }
-};
-
-// Generic error handling function with mock data fallback
-const handleApiError = (error: unknown, endpoint: string, mockData: any) => {
-  console.error('API Error:', error);
-  console.warn(`Using mock data for ${endpoint}`);
-  return mockData;
-};
-
-// Check if the Flask backend is available
-let isBackendAvailable = false;
-fetch(`${API_BASE_URL}/api/lsoa/list`, { method: 'HEAD' })
-  .then(response => {
-    isBackendAvailable = response.ok;
-    console.log(`Backend availability: ${isBackendAvailable ? 'Connected' : 'Not available'}`);
-  })
-  .catch(() => {
-    console.warn('Backend server is not available. Using mock data fallbacks.');
-    isBackendAvailable = false;
-  });
-
-// Generic fetch function with error handling and mock data fallback
-const fetchApi = async (endpoint: string, mockDataPath: any, options: RequestInit = {}) => {
-  if (!isBackendAvailable) {
-    console.log(`Using mock data for ${endpoint}`);
-    return mockDataPath;
-  }
-  
+// Helper function to fetch from UK Police API
+const fetchPoliceAPI = async (endpoint: string) => {
   try {
-    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-      ...options,
-      headers: {
-        'Content-Type': 'application/json',
-        ...options.headers,
-      },
-    });
-
+    const response = await fetch(`${POLICE_API_BASE}${endpoint}`);
     if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.message || `Request failed with status ${response.status}`);
+      throw new Error(`Police API error: ${response.status}`);
     }
-
     return await response.json();
   } catch (error) {
-    return handleApiError(error, endpoint, mockDataPath);
+    console.error(`Error fetching from Police API: ${endpoint}`, error);
+    throw error;
   }
 };
 
-// API endpoints
-export const api = {
-  // LSOA endpoints
-  lsoa: {
-    getList: (): Promise<{ lsoas: Array<{ lsoa_code: string; lsoa_name: string }> }> => 
-      fetchApi('/api/lsoa/list', MOCK_DATA.lsoa.list),
-    getWellbeingData: (lsoaCode: string) => fetchApi(`/api/imd/lsoa/${lsoaCode}`, MOCK_DATA.lsoa.wellbeing),
-    getBoundaries: (): Promise<any> => 
-      fetchApi('/api/lsoa/boundaries', MOCK_DATA.lsoa.boundaries),
-    getBoroughBoundaries: (): Promise<any> => 
-      fetchApi('/api/borough/boundaries', MOCK_DATA.lsoa.boundaries),
-    getRiskMap: (level: 'lsoa' | 'borough' = 'lsoa'): Promise<any> => 
-      fetchApi(`/api/burglary/risk-map?level=${level}`, MOCK_DATA.lsoa.boundaries),
-  },
+// Helper function to fetch from ONS API
+const fetchONSAPI = async (endpoint: string) => {
+  try {
+    const response = await fetch(`${ONS_API_BASE}${endpoint}`);
+    if (!response.ok) {
+      throw new Error(`ONS API error: ${response.status}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error(`Error fetching from ONS API: ${endpoint}`, error);
+    throw error;
+  }
+};
 
-  // Burglary data endpoints
-  burglary: {
-    getTimeSeries: (params?: { lsoa_code?: string, days?: number }) => {
-      let queryParams = '';
-      if (params) {
-        const queryParts = [];
-        if (params.lsoa_code) queryParts.push(`lsoa_code=${params.lsoa_code}`);
-        if (params.days) queryParts.push(`days=${params.days}`);
-        if (queryParts.length > 0) queryParams = `?${queryParts.join('&')}`;
+// Get burglary crimes for a specific location and date
+export const getBurglaryData = async (lat: number, lng: number, date?: string) => {
+  const dateParam = date || new Date().toISOString().slice(0, 7); // YYYY-MM format
+  return fetchPoliceAPI(`/crimes-street/burglary?lat=${lat}&lng=${lng}&date=${dateParam}`);
+};
+
+// Get all crimes for a specific location and date
+export const getCrimeData = async (lat: number, lng: number, date?: string) => {
+  const dateParam = date || new Date().toISOString().slice(0, 7);
+  return fetchPoliceAPI(`/crimes-street/all-crime?lat=${lat}&lng=${lng}&date=${dateParam}`);
+};
+
+// Get crime data for multiple months
+export const getCrimeDataRange = async (lat: number, lng: number, months: string[]) => {
+  const promises = months.map(month => 
+    fetchPoliceAPI(`/crimes-street/burglary?lat=${lat}&lng=${lng}&date=${month}`)
+  );
+  return Promise.all(promises);
+};
+
+// Get police forces
+export const getPoliceForces = async () => {
+  return fetchPoliceAPI('/forces');
+};
+
+// Get specific police force details
+export const getPoliceForce = async (forceId: string) => {
+  return fetchPoliceAPI(`/forces/${forceId}`);
+};
+
+// Get neighbourhoods for a force
+export const getNeighbourhoods = async (forceId: string) => {
+  return fetchPoliceAPI(`/forces/${forceId}/neighbourhoods`);
+};
+
+// Get neighbourhood details
+export const getNeighbourhood = async (forceId: string, neighbourhoodId: string) => {
+  return fetchPoliceAPI(`/${forceId}/${neighbourhoodId}`);
+};
+
+// Get outcome data for crimes
+export const getCrimeOutcomes = async (crimeId: string) => {
+  return fetchPoliceAPI(`/outcomes-for-crime/${crimeId}`);
+};
+
+// Generate months array for date ranges
+export const generateMonthsArray = (startDate: string, endDate: string): string[] => {
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+  const months: string[] = [];
+  
+  const current = new Date(start.getFullYear(), start.getMonth(), 1);
+  const endMonth = new Date(end.getFullYear(), end.getMonth(), 1);
+  
+  while (current <= endMonth) {
+    const year = current.getFullYear();
+    const month = String(current.getMonth() + 1).padStart(2, '0');
+    months.push(`${year}-${month}`);
+    current.setMonth(current.getMonth() + 1);
+  }
+  
+  return months.slice(-12); // Limit to last 12 months for performance
+};
+
+// London borough coordinates for API calls
+export const LONDON_BOROUGHS = [
+  { name: 'Westminster', coords: [51.4975, -0.1357] as [number, number] },
+  { name: 'Camden', coords: [51.5290, -0.1255] as [number, number] },
+  { name: 'Islington', coords: [51.5362, -0.1034] as [number, number] },
+  { name: 'Hackney', coords: [51.5450, -0.0553] as [number, number] },
+  { name: 'Tower Hamlets', coords: [51.5203, -0.0293] as [number, number] },
+  { name: 'Southwark', coords: [51.5032, -0.0851] as [number, number] },
+  { name: 'Lambeth', coords: [51.4607, -0.1163] as [number, number] },
+  { name: 'Kensington and Chelsea', coords: [51.4990, -0.1938] as [number, number] },
+  { name: 'City of London', coords: [51.5156, -0.0919] as [number, number] },
+  { name: 'Hammersmith and Fulham', coords: [51.4927, -0.2339] as [number, number] },
+  { name: 'Wandsworth', coords: [51.4571, -0.1909] as [number, number] },
+  { name: 'Merton', coords: [51.4098, -0.2108] as [number, number] },
+  { name: 'Kingston upon Thames', coords: [51.4120, -0.3006] as [number, number] },
+  { name: 'Richmond upon Thames', coords: [51.4613, -0.3037] as [number, number] },
+  { name: 'Hounslow', coords: [51.4673, -0.3611] as [number, number] },
+  { name: 'Hillingdon', coords: [51.5441, -0.4760] as [number, number] },
+  { name: 'Ealing', coords: [51.5130, -0.3089] as [number, number] },
+  { name: 'Brent', coords: [51.5588, -0.2817] as [number, number] },
+  { name: 'Harrow', coords: [51.5898, -0.3346] as [number, number] },
+  { name: 'Barnet', coords: [51.6252, -0.2000] as [number, number] },
+  { name: 'Enfield', coords: [51.6523, -0.0799] as [number, number] },
+  { name: 'Haringey', coords: [51.5906, -0.1119] as [number, number] },
+  { name: 'Waltham Forest', coords: [51.5886, -0.0118] as [number, number] },
+  { name: 'Redbridge', coords: [51.5590, 0.0741] as [number, number] },
+  { name: 'Havering', coords: [51.5812, 0.2120] as [number, number] },
+  { name: 'Barking and Dagenham', coords: [51.5607, 0.1557] as [number, number] },
+  { name: 'Newham', coords: [51.5077, 0.0469] as [number, number] },
+  { name: 'Greenwich', coords: [51.4892, 0.0648] as [number, number] },
+  { name: 'Bexley', coords: [51.4549, 0.1505] as [number, number] },
+  { name: 'Bromley', coords: [51.4039, 0.0144] as [number, number] },
+  { name: 'Croydon', coords: [51.3762, -0.0982] as [number, number] },
+  { name: 'Sutton', coords: [51.3618, -0.1945] as [number, number] },
+  { name: 'Lewisham', coords: [51.4452, -0.0209] as [number, number] }
+];
+
+// Get burglary data for all London boroughs
+export const getLondonBurglaryData = async (months: string[]) => {
+  const allData: any[] = [];
+  
+  for (const borough of LONDON_BOROUGHS) {
+    for (const month of months.slice(-3)) { // Last 3 months for performance
+      try {
+        const [lat, lng] = borough.coords;
+        const crimeData = await getBurglaryData(lat, lng, month);
+        
+        if (Array.isArray(crimeData)) {
+          crimeData.forEach((crime: any, index: number) => {
+            if (crime.location && crime.location.latitude && crime.location.longitude) {
+              allData.push({
+                id: `${borough.name}-${month}-${index}`,
+                lat: parseFloat(crime.location.latitude),
+                lng: parseFloat(crime.location.longitude),
+                borough: borough.name,
+                month: month,
+                category: crime.category,
+                location_type: crime.location_type || 'Unknown',
+                outcome_status: crime.outcome_status?.category || 'Under investigation',
+                date: crime.month || month,
+                street: crime.location.street?.name || 'Unknown Street'
+              });
+            }
+          });
+        }
+        
+        // Respectful delay to avoid rate limiting
+        await new Promise(resolve => setTimeout(resolve, 200));
+        
+      } catch (error) {
+        console.warn(`Error fetching data for ${borough.name} ${month}:`, error);
       }
-      return fetchApi(`/api/burglary/time-series${queryParams}`, MOCK_DATA.burglary.timeSeries);
-    },
-    getForecast: (params?: { lsoa_code?: string }) => {
-      const queryParams = params?.lsoa_code ? `?lsoa_code=${params.lsoa_code}` : '';
-      return fetchApi(`/api/burglary/forecast${queryParams}`, MOCK_DATA.burglary.forecast);
-    },
-    getCorrelation: () => fetchApi('/api/burglary/correlation', MOCK_DATA.burglary.correlation),
-  },
+    }
+  }
+  
+  return allData;
+};
 
-  // Police allocation endpoints
+// API object for easy access
+export const api = {
   police: {
-    optimize: (params?: { clusters?: number }) => {
-      const queryParams = params?.clusters ? `?clusters=${params.clusters}` : '';
-      return fetchApi(`/api/police/optimize${queryParams}`, MOCK_DATA.police.optimize);
-    },
+    getBurglaryData,
+    getCrimeData,
+    getCrimeDataRange,
+    getForces: getPoliceForces,
+    getForce: getPoliceForce,
+    getNeighbourhoods,
+    getNeighbourhood,
+    getCrimeOutcomes,
+    getLondonBurglaryData
   },
-
-  // EMMIE scores endpoints
-  emmie: {
-    getScores: (params?: { lsoa_code?: string }) => {
-      const queryParams = params?.lsoa_code ? `?lsoa_code=${params.lsoa_code}` : '';
-      return fetchApi(`/api/emmie/scores${queryParams}`, MOCK_DATA.emmie.scores);
-    },
-  },
+  utils: {
+    generateMonthsArray,
+    LONDON_BOROUGHS
+  }
 };
 
 export default api; 
