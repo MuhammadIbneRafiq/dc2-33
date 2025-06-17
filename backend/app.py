@@ -20,11 +20,11 @@ CORS(app)  # Enable CORS for all routes
 
 # Data paths - adjust based on actual project structure
 BASE_DIR = Path(__file__).resolve().parent.parent
-BURGLARY_DATA_PATH = BASE_DIR / "cleaned_monthly_burglary_data"
-SPATIAL_BURGLARY_DATA_PATH = BASE_DIR / "cleaned_spatial_monthly_burglary_data"
-IMD_DATA_PATH = BASE_DIR / "societal_wellbeing_dataset/imd2019lsoa_london_cleaned.csv"
-LSOA_CODES_PATH = BASE_DIR / "societal_wellbeing_dataset/LSOA_codes.csv"
-LSOA_SHAPES_PATH = BASE_DIR / "Societal_wellbeing_dataset/LB_LSOA2021_shp/LB_shp"
+BURGLARY_DATA_PATH = BASE_DIR / "data" / "cleaned_spatial_monthly_data" / "cleaned_monthly_burglary_data"
+SPATIAL_BURGLARY_DATA_PATH = BASE_DIR / "data" / "cleaned_spatial_monthly_data" / "cleaned_spatial_monthly_burglary_data"
+IMD_DATA_PATH = BASE_DIR / "data" / "cleaned_spatial_monthly_data" / "Societal_wellbeing_dataset" / "final_merged_cleaned_lsoa_london_social_dataset.csv"
+LSOA_CODES_PATH = BASE_DIR / "data" / "cleaned_spatial_monthly_data" / "Societal_wellbeing_dataset" / "LSOA_codes.csv"
+LSOA_SHAPES_PATH = BASE_DIR / "data" / "cleaned_spatial_monthly_data" / "Societal_wellbeing_dataset" / "LB_LSOA2021_shp" / "LB_shp"
 
 # Cache for loaded data to avoid loading large datasets on every request
 data_cache = {}
@@ -138,9 +138,21 @@ def load_burglary_time_series():
                 # Count burglaries per LSOA per month
                 if 'Month' in data_cache['burglary_time_series'].columns and 'LSOA code' in data_cache['burglary_time_series'].columns:
                     print("Creating aggregated count data by month and LSOA code")
+                    # Count actual crime records instead of looking for burglary_count column
                     grouped = data_cache['burglary_time_series'].groupby(['Month', 'LSOA code']).size().reset_index(name='burglary_count')
                     data_cache['burglary_time_series'] = grouped
                     print(f"Aggregated dataframe shape: {data_cache['burglary_time_series'].shape}")
+                else:
+                    print("Required columns not found, keeping original data structure")
+                    # If we don't have the expected columns, create a count anyway
+                    if len(data_cache['burglary_time_series']) > 0:
+                        # Create a simple count per LSOA if possible
+                        if 'LSOA code' in data_cache['burglary_time_series'].columns:
+                            grouped = data_cache['burglary_time_series'].groupby('LSOA code').size().reset_index(name='burglary_count')
+                            # Add a dummy month column
+                            grouped['Month'] = '2023-01'
+                            data_cache['burglary_time_series'] = grouped
+                            print(f"Created simple aggregated dataframe shape: {data_cache['burglary_time_series'].shape}")
             else:
                 print("No data loaded, creating empty DataFrame")
                 # If no data files found, create empty DataFrame with expected columns
@@ -1067,6 +1079,110 @@ def get_lsoa_boundaries():
         print(f"Error in get_lsoa_boundaries: {str(e)}")
         import traceback
         traceback.print_exc()
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/borough/boundaries', methods=['GET'])
+def get_borough_boundaries():
+    """Get GeoJSON of borough boundaries with aggregated burglary data"""
+    try:
+        print("Received request for Borough boundaries")
+        
+        # Check if we have already cached the processed borough GeoJSON
+        if 'borough_geojson' in data_cache:
+            print("Using cached borough GeoJSON data")
+            return data_cache['borough_geojson']
+            
+        # Load LSOA shapes first
+        lsoa_shapes = load_lsoa_shapes()
+        if lsoa_shapes is None:
+            return jsonify({'error': 'LSOA shape data not available'}), 500
+            
+        print(f"Loaded LSOA shapes: {len(lsoa_shapes)} areas")
+        
+        # Extract borough information from LSOA names
+        # Typically the format is "Borough Name NNN..."
+        lsoa_shapes['Borough'] = lsoa_shapes['LSOA code'].str[:3]  # Extract first 3 chars which often indicate borough
+        
+        # For better borough extraction from LSOA names, let's use the name column if available
+        if 'LSOA11NM' in lsoa_shapes.columns:
+            lsoa_shapes['Borough'] = lsoa_shapes['LSOA11NM'].str.split(' ').str[0] + ' ' + lsoa_shapes['LSOA11NM'].str.split(' ').str[1]
+        elif any('NM' in col for col in lsoa_shapes.columns):
+            name_col = [col for col in lsoa_shapes.columns if 'NM' in col][0]
+            lsoa_shapes['Borough'] = lsoa_shapes[name_col].str.split(' ').str[0] + ' ' + lsoa_shapes[name_col].str.split(' ').str[1]
+        
+        # Ensure we're using WGS84 for Leaflet compatibility
+        if lsoa_shapes.crs != "EPSG:4326":
+            print(f"Converting CRS from {lsoa_shapes.crs} to EPSG:4326 (WGS84)")
+            lsoa_shapes = lsoa_shapes.to_crs("EPSG:4326")
+        
+        # Load burglary data
+        burglary_data = load_burglary_time_series()
+        
+        # Merge burglary data with LSOA shapes
+        if 'LSOA code' in burglary_data.columns and 'burglary_count' in burglary_data.columns:
+            print("Aggregating burglary data by LSOA first")
+            burglary_by_lsoa = burglary_data.groupby('LSOA code')['burglary_count'].sum().reset_index()
+            
+            # Join the burglary data with the shapes
+            merged_data = lsoa_shapes.merge(burglary_by_lsoa, on='LSOA code', how='left')
+            merged_data['burglary_count'] = merged_data['burglary_count'].fillna(0)
+        else:
+            print("Burglary data not available, using shapes only")
+            merged_data = lsoa_shapes.copy()
+            merged_data['burglary_count'] = 0
+        
+        # Now aggregate by borough
+        print("Aggregating by borough")
+        borough_data = merged_data.groupby('Borough').agg({
+            'burglary_count': 'sum',
+            'geometry': lambda x: x.unary_union  # Merge all geometries for each borough
+        }).reset_index()
+        
+        # Create a GeoDataFrame for boroughs
+        borough_gdf = gpd.GeoDataFrame(borough_data, geometry='geometry', crs="EPSG:4326")
+        
+        # Calculate risk levels for boroughs
+        borough_gdf['risk_level'] = pd.qcut(
+            borough_gdf['burglary_count'], 
+            q=[0, 0.2, 0.4, 0.6, 0.8, 1], 
+            labels=['Very Low', 'Low', 'Medium', 'High', 'Very High'],
+            duplicates='drop'
+        ).astype(str)
+        
+        # Simplify borough geometries for better performance
+        print("Simplifying borough geometries")
+        borough_gdf['geometry'] = borough_gdf['geometry'].simplify(0.002, preserve_topology=True)
+        
+        # Convert to GeoJSON
+        print("Converting borough data to GeoJSON")
+        geojson_data = borough_gdf.to_json()
+        
+        # Cache the GeoJSON
+        data_cache['borough_geojson'] = geojson_data
+        print("Borough GeoJSON cached for future requests")
+        
+        return geojson_data
+        
+    except Exception as e:
+        print(f"Error in get_borough_boundaries: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/burglary/risk-map', methods=['GET'])
+def get_burglary_risk_map():
+    """Get optimized risk map data for visualization"""
+    try:
+        print("Received request for burglary risk map")
+        level = request.args.get('level', 'lsoa')  # 'lsoa' or 'borough'
+        
+        if level == 'borough':
+            return get_borough_boundaries()
+        else:
+            return get_lsoa_boundaries()
+            
+    except Exception as e:
+        print(f"Error in get_burglary_risk_map: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':

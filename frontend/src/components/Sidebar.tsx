@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { BarChart, Map, Shield, TrendingUp, ChevronLeft, ChevronRight, Info } from 'lucide-react';
+import { BarChart, Map, Shield, TrendingUp, ChevronLeft, ChevronRight } from 'lucide-react';
 import SidebarPoliceControl from './SidebarPoliceControl';
-import EmmieScorecard from './EmmieScorecard';
 
 interface SidebarProps {
   activeView: string;
@@ -26,7 +25,6 @@ const Sidebar: React.FC<SidebarProps> = ({
     { id: 'map', name: 'Map View', icon: <Map size={22} /> },
     { id: 'allocation', name: 'Police Allocation', icon: <Shield size={22} /> },
     { id: 'analytics', name: 'Data Analytics', icon: <TrendingUp size={22} /> },
-    { id: 'emmie', name: 'EMMIE Framework', icon: <Info size={22} /> },
   ];
 
   const sidebarVariants = {
@@ -147,14 +145,6 @@ const Sidebar: React.FC<SidebarProps> = ({
           isCollapsed={isCollapsed}
         />
       </div>
-      
-      {/* EMMIE Scorecard */}
-      <motion.div 
-        className="mt-4 mx-3 overflow-hidden"
-        variants={isCollapsed ? { expanded: {}, collapsed: { display: 'none' } } : {}}
-      >
-        <EmmieScorecard selectedLSOA={selectedLSOA} />
-      </motion.div>
 
       {/* Collapse/Expand toggle */}
       <div className="p-4 mt-auto border-t border-gray-800/70 bg-gradient-to-t from-gray-950 to-transparent">

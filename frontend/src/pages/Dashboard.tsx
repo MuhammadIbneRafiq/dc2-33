@@ -16,10 +16,8 @@ import Header from '@/components/Header';
 import Sidebar from '@/components/Sidebar';
 import PoliceAllocation from '@/components/PoliceAllocation';
 import DataAnalytics from '@/components/DataAnalytics';
-import EmmieExplanation from '@/components/EmmieExplanation';
 import PoliceChat from '@/components/PoliceChat';
 import TermsDialog from '@/components/TermsDialog';
-import TutorialVideo from '@/components/TutorialVideo';
 import { motion } from 'framer-motion';
 
 // Dashboard page component
@@ -31,7 +29,6 @@ const Dashboard = () => {
   const [activeView, setActiveView] = useState('dashboard');
   const [showChatNotification, setShowChatNotification] = useState(true);
   const [showTermsDialog, setShowTermsDialog] = useState(true);
-  const [showTutorial, setShowTutorial] = useState(false);
   
   // Prediction state
   const [predictionModel, setPredictionModel] = useState('sdgcn');
@@ -168,11 +165,7 @@ const Dashboard = () => {
     setShowTermsDialog(false);
   };
   
-  // Handle watch tutorial
-  const handleWatchTutorial = () => {
-    setShowTermsDialog(false);
-    setShowTutorial(true);
-  };
+
   
   // Handle prediction generation
   const handleGeneratePrediction = () => {
@@ -439,7 +432,6 @@ const Dashboard = () => {
                 lsoaWellbeingData={lsoaData} 
                 isLoadingLsoaData={isLoadingLsoaData} 
               />
-              <EmmieExplanation />
             </div>
           </div>
         );
@@ -464,7 +456,6 @@ const Dashboard = () => {
       {/* Main Content */}
       <div className="flex-1 flex flex-col pl-[280px]">
         <Header 
-          onOpenTutorial={() => setShowTutorial(true)} 
           onDateRangeChange={handleDateRangeChange}
         />
         <main className="flex-1 overflow-auto">
@@ -505,11 +496,7 @@ const Dashboard = () => {
         } : null}
       />
       
-      {/* Tutorial Video Dialog */}
-      <TutorialVideo
-        open={showTutorial}
-        onClose={() => setShowTutorial(false)}
-      />
+
       
       {/* Terms and Services Dialog - Render this last to ensure it's on top */}
       <div className="relative z-[100000]">
@@ -517,7 +504,6 @@ const Dashboard = () => {
           open={showTermsDialog}
           onClose={() => {}}  // Prevent closing without accepting
           onAccept={handleTermsAccept}
-          onWatchTutorial={handleWatchTutorial}
         />
       </div>
     </div>

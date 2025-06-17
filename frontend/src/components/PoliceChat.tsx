@@ -21,7 +21,7 @@ const PoliceChat: React.FC<PoliceChatProps> = ({ selectedLSOA, selectedAllocatio
     {
       id: '1',
       sender: 'assistant',
-      text: "Ello, ello, ello! I'm your Police Chat Assistant. How can I help with the residential burglary data? Select an area on the map or ask about EMMIE scores!",
+      text: "Ello, ello, ello! I'm your Police Chat Assistant. How can I help with the residential burglary data? Select an area on the map or ask about crime patterns!",
       timestamp: new Date()
     }
   ]);
@@ -40,7 +40,7 @@ const PoliceChat: React.FC<PoliceChatProps> = ({ selectedLSOA, selectedAllocatio
       const newMessage: Message = {
         id: Date.now().toString(),
         sender: 'assistant',
-        text: `You've selected LSOA ${selectedLSOA}. This area shows elevated residential burglary risk. Would you like me to provide the EMMIE recommendations for this location?`,
+        text: `You've selected LSOA ${selectedLSOA}. This area shows elevated residential burglary risk. Would you like me to provide crime prevention recommendations for this location?`,
         timestamp: new Date()
       };
       setMessages(prev => [...prev, newMessage]);
@@ -90,9 +90,9 @@ const PoliceChat: React.FC<PoliceChatProps> = ({ selectedLSOA, selectedAllocatio
   const generateResponse = (query: string): string => {
     const lowercaseQuery = query.toLowerCase();
     
-    // Check for EMMIE related questions
-    if (lowercaseQuery.includes('emmie')) {
-      return "EMMIE stands for Effects, Mechanisms, Moderators, Implementation and Economic impacts. It's our framework for evidence-based policing. Each intervention gets a score based on these five dimensions. A bit like how we rate our tea breaks, but more scientific, innit!";
+    // Check for evidence-based policing questions
+    if (lowercaseQuery.includes('evidence') || lowercaseQuery.includes('framework')) {
+      return "Our evidence-based policing approach evaluates interventions based on their effectiveness, implementation requirements, and cost-impact analysis. Each intervention gets scored across multiple dimensions to ensure we're using the most proven crime prevention strategies. A bit like how we rate our tea breaks, but more scientific, innit!";
     }
     
     // Check for burglary related questions
@@ -124,7 +124,7 @@ const PoliceChat: React.FC<PoliceChatProps> = ({ selectedLSOA, selectedAllocatio
 
   // Common questions that can be clicked
   const commonQuestions = [
-    "What is EMMIE?",
+    "How does evidence-based policing work?",
     "How accurate is the burglary prediction?",
     "How does resource allocation work?",
     "What do the colors on the map mean?"

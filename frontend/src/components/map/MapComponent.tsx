@@ -65,8 +65,16 @@ const MapStyleLayer = () => {
 
 // Define interface for LSOA GeoJSON properties
 interface LSOAProperties {
-  lsoa_code: string;
-  lsoa_name: string;
+  'LSOA code': string;
+  LSOA11NM?: string;
+  burglary_count: number;
+  risk_level: string;
+  Borough?: string;
+}
+
+// Define interface for Borough GeoJSON properties
+interface BoroughProperties {
+  Borough: string;
   burglary_count: number;
   risk_level: string;
 }
@@ -78,30 +86,59 @@ interface LSOAFeature {
   geometry: any;
 }
 
+interface BoroughFeature {
+  type: 'Feature';
+  properties: BoroughProperties;
+  geometry: any;
+}
+
 interface LSOAGeoJSON {
   type: 'FeatureCollection';
   features: LSOAFeature[];
+}
+
+interface BoroughGeoJSON {
+  type: 'FeatureCollection';
+  features: BoroughFeature[];
 }
 
 // Risk level color mapping
 const getRiskColor = (risk_level: string) => {
   switch (risk_level) {
     case 'Very Low':
-      return '#4ade80'; // Green
+      return '#22c55e'; // Green
     case 'Low':
-      return '#a3e635'; // Light green
+      return '#84cc16'; // Light green
     case 'Medium':
-      return '#fcd34d'; // Yellow
+      return '#eab308'; // Yellow
     case 'High':
-      return '#fb923c'; // Orange
+      return '#f97316'; // Orange
     case 'Very High':
-      return '#f87171'; // Red
+      return '#ef4444'; // Red
     default:
       return '#94a3b8'; // Gray for unknown
   }
 };
 
-// Helper component to handle zoom-dependent styling - simplify to avoid TypeScript errors
+// Get fill opacity based on risk level
+const getFillOpacity = (risk_level: string) => {
+  switch (risk_level) {
+    case 'Very High':
+      return 0.8;
+    case 'High':
+      return 0.7;
+    case 'Medium':
+      return 0.6;
+    case 'Low':
+      return 0.5;
+    case 'Very Low':
+      return 0.4;
+    default:
+      return 0.3;
+  }
+};
+
+// Helper component to handle zoom-dependent styling
 const ZoomDependentMarkers = ({ children }: { children: React.ReactNode }) => {
   const map = useMap();
   const [zoom, setZoom] = useState<number>(map.getZoom());
@@ -118,10 +155,8 @@ const ZoomDependentMarkers = ({ children }: { children: React.ReactNode }) => {
     };
   }, [map]);
   
-  // Return the current zoom as a context value that children can use
   return (
     <div className="zoom-dependent-markers" data-zoom={zoom}>
-      {/* Pass zoom as a data attribute that can be accessed by marker components */}
       {children}
     </div>
   );
@@ -130,7 +165,7 @@ const ZoomDependentMarkers = ({ children }: { children: React.ReactNode }) => {
 interface DynamicMarkerProps {
   position: [number, number];
   patrolType: 'officer' | 'vehicle';
-  zoomLevel?: number; // Changed from currentZoom to zoomLevel for clarity
+  zoomLevel?: number;
   children?: React.ReactNode;
 }
 
@@ -191,23 +226,23 @@ const createVehicleIcon = (zoom = 11) => {
 
 // Function to calculate marker size based on zoom level
 const getZoomDependentSize = (baseSize: number, zoom: number): number => {
-  // Enhanced scaling factor with more aggressive scaling at higher zoom levels
-  // Start scaling from zoom level 11 onwards
   if (zoom <= 11) return baseSize;
   if (zoom <= 13) return baseSize * (1 + (zoom - 11) * 0.25);
   if (zoom <= 15) return baseSize * (1.5 + (zoom - 13) * 0.4);
-  return baseSize * (2.3 + (zoom - 15) * 0.5); // More dramatic scaling at highest zoom levels
+  return baseSize * (2.3 + (zoom - 15) * 0.5);
 };
 
 interface MapComponentProps {
   onLSOASelect?: (lsoa: string) => void;
+  onBoroughSelect?: (borough: string) => void;
   showPoliceAllocation?: boolean;
   selectedLSOA?: string | null;
-  // policeAllocationData?: { clusters: any[] } | null; // This prop might be deprecated if we fetch internally
+  selectedBorough?: string | null;
   showPredictions?: boolean;
   predictionModel?: string;
   predictionRange?: number;
-  dateRange?: number[]; // Add dateRange prop to connect to header slider
+  dateRange?: number[];
+  mapLevel?: 'lsoa' | 'borough'; // Add map level control
 }
 
 // Create a custom function to sanitize GeoJSON before rendering
@@ -294,16 +329,20 @@ const sanitizeGeoJSON = (data: any): any => {
 };
 
 const MapComponent = ({ 
-  onLSOASelect, 
+  onLSOASelect,
+  onBoroughSelect, 
   showPoliceAllocation = false, 
   selectedLSOA = null,
-  // policeAllocationData = null, // Comment out if fetching internally
+  selectedBorough = null,
   showPredictions = false,
   predictionModel = 'lstm-gcn',
   predictionRange = 60,
-  dateRange = [30] // Default to 30 days range
+  dateRange = [30],
+  mapLevel = 'lsoa' // Default to LSOA level
 }: MapComponentProps) => {
   const [lsoaData, setLsoaData] = useState<LSOAGeoJSON | null>(null);
+  const [boroughData, setBoroughData] = useState<BoroughGeoJSON | null>(null);
+  const [currentLevel, setCurrentLevel] = useState<'lsoa' | 'borough'>(mapLevel);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [policeAllocationPoints, setPoliceAllocationPoints] = useState<any[]>([]);
@@ -314,29 +353,29 @@ const MapComponent = ({
   const [historicalData, setHistoricalData] = useState<any>(null);
   const [showHistorical, setShowHistorical] = useState<boolean>(true);
 
-  // Random predictions generator
+  // Update current level when prop changes
+  useEffect(() => {
+    setCurrentLevel(mapLevel);
+  }, [mapLevel]);
+
+  // Enhanced random predictions generator for London bounds
   const generateRandomPredictions = useCallback(() => {
-    // Clear existing predictions
     const newMarkers = [];
-    // London coordinates boundaries
+    // More precise London coordinates
     const londonBounds = {
       minLat: 51.28, maxLat: 51.69,
       minLon: -0.51, maxLon: 0.34
     };
     
-    // Generate between 30-50 random markers
     const numMarkers = Math.floor(Math.random() * 20) + 30;
     
     for (let i = 0; i < numMarkers; i++) {
-      // Random coordinates within London
       const lat = londonBounds.minLat + (Math.random() * (londonBounds.maxLat - londonBounds.minLat));
       const lon = londonBounds.minLon + (Math.random() * (londonBounds.maxLon - londonBounds.minLon));
       
-      // Random risk level
       const riskLevels = ['High', 'Medium', 'Low'];
-      const riskProbabilities = [0.2, 0.5, 0.3]; // 20% high, 50% medium, 30% low
+      const riskProbabilities = [0.2, 0.5, 0.3];
       
-      // Weighted random selection
       const rand = Math.random();
       let cumulativeProbability = 0;
       let riskIndex = 0;
@@ -359,46 +398,71 @@ const MapComponent = ({
     setPredictionMarkers(newMarkers);
   }, []);
   
-  // Use static mock data instead of fetching
+  // Enhanced data fetching with level support
   useEffect(() => {
-    const fetchLsoaData = async () => {
+    const fetchMapData = async () => {
       setLoading(true);
       setError(null);
       try {
-        const response = await api.lsoa.getBoundaries(); // Corrected to use the defined API structure
-        // The backend already returns JSON, so response.data should be the GeoJSON object
-        // The fetchApi in api.ts already parses JSON, so 'response' here is the data itself.
+        console.log(`Fetching ${currentLevel} level data...`);
+        
+        if (currentLevel === 'borough') {
+          // Fetch borough boundaries
+          const response = await api.lsoa.getBoroughBoundaries();
         const geojsonData = response;
 
         if (geojsonData) {
-          const sanitizedData = sanitizeGeoJSON(geojsonData); // Sanitize if necessary
+            const sanitizedData = sanitizeGeoJSON(geojsonData);
           if (sanitizedData) {
-            setLsoaData(sanitizedData as LSOAGeoJSON);
+              setBoroughData(sanitizedData as BoroughGeoJSON);
+              console.log(`Successfully loaded ${sanitizedData.features?.length || 0} borough boundaries`);
+            } else {
+              setError('Failed to process borough boundary data');
+              setBoroughData(null);
+            }
           } else {
-            setError('Failed to process LSOA data. Invalid GeoJSON structure after sanitization.');
-            setLsoaData(null); // Clear any previous data
+            setError('No borough boundary data received');
+            setBoroughData(null);
           }
         } else {
-          setError('No LSOA data received from server.');
+          // Fetch LSOA boundaries
+          const response = await api.lsoa.getBoundaries();
+          const geojsonData = response;
+
+          if (geojsonData) {
+            const sanitizedData = sanitizeGeoJSON(geojsonData);
+            if (sanitizedData) {
+              setLsoaData(sanitizedData as LSOAGeoJSON);
+              console.log(`Successfully loaded ${sanitizedData.features?.length || 0} LSOA boundaries`);
+            } else {
+              setError('Failed to process LSOA boundary data');
+              setLsoaData(null);
+            }
+          } else {
+            setError('No LSOA boundary data received');
           setLsoaData(null);
+          }
         }
       } catch (err: any) {
-        console.error("Error fetching LSOA data:", err);
-        setError(err.message || 'Failed to fetch LSOA data. Please check the network connection and backend server.');
+        console.error(`Error fetching ${currentLevel} data:`, err);
+        setError(err.message || `Failed to fetch ${currentLevel} data`);
+        if (currentLevel === 'borough') {
+          setBoroughData(null);
+        } else {
         setLsoaData(null);
+        }
       }
       setLoading(false);
     };
 
-    fetchLsoaData();
-  }, []);
+    fetchMapData();
+  }, [currentLevel]);
   
   // Generate predictions when showPredictions changes
   useEffect(() => {
     if (showPredictions) {
       generateRandomPredictions();
     } else {
-      // Clear predictions when showPredictions is false
       setPredictionMarkers([]);
     }
   }, [showPredictions, generateRandomPredictions, predictionModel, predictionRange]);
@@ -410,24 +474,23 @@ const MapComponent = ({
         setLoadingPoliceData(true);
         setErrorPoliceData(null);
         try {
-          // Default to 100 units, can be made configurable later via props if needed
           const data = await api.police.optimize({ clusters: 100 }); 
           if (data && data.police_allocation) {
             setPoliceAllocationPoints(data.police_allocation);
           } else {
             setPoliceAllocationPoints([]);
-            setErrorPoliceData('No police allocation data received or data is in unexpected format.');
+            setErrorPoliceData('No police allocation data received');
           }
         } catch (err: any) {
           console.error("Error fetching police allocation data:", err);
-          setErrorPoliceData(err.message || 'Failed to fetch police allocation data.');
+          setErrorPoliceData(err.message || 'Failed to fetch police allocation data');
           setPoliceAllocationPoints([]);
         }
         setLoadingPoliceData(false);
       };
       fetchPoliceData();
     } else {
-      setPoliceAllocationPoints([]); // Clear data when not shown
+      setPoliceAllocationPoints([]);
     }
   }, [showPoliceAllocation]);
   
@@ -435,7 +498,6 @@ const MapComponent = ({
   useEffect(() => {
     const loadHistoricalData = async () => {
       try {
-        // Call API to load historical data based on dateRange
         const response = await api.burglary.getTimeSeries({ days: dateRange[0] });
         if (response) {
           setHistoricalData(response);
@@ -448,9 +510,7 @@ const MapComponent = ({
     loadHistoricalData();
   }, [dateRange]);
 
-  // Use historical data by default before any prediction
   useEffect(() => {
-    // Set historical mode as default
     if (!showPredictions && historicalData) {
       setShowHistorical(true);
     } else {
@@ -461,7 +521,7 @@ const MapComponent = ({
   // Style function for LSOA polygons - memoized to prevent unnecessary recalculations
   const getAreaStyle = useCallback((feature: any): L.PathOptions => {
     const properties = feature.properties || {};
-    const isSelected = selectedLSOA === properties.lsoa_code;
+    const isSelected = selectedLSOA === properties['LSOA code'];
     const riskLevel = properties.risk_level || 'Unknown';
     const fillColor = getRiskColor(riskLevel);
     
@@ -482,8 +542,8 @@ const MapComponent = ({
     // Create popup content
     const popupContent = `
       <div>
-        <h3 style="font-weight: bold; margin-bottom: 8px;">${props.lsoa_name || 'Unknown Area'}</h3>
-        <p style="margin: 4px 0;">LSOA Code: ${props.lsoa_code || 'N/A'}</p>
+        <h3 style="font-weight: bold; margin-bottom: 8px;">${props.LSOA11NM || 'Unknown Area'}</h3>
+        <p style="margin: 4px 0;">LSOA Code: ${props['LSOA code'] || 'N/A'}</p>
         <p style="margin: 4px 0;">Burglary Count: ${props.burglary_count || 0}</p>
         <p style="margin: 4px 0;">Risk Level: ${props.risk_level || 'Unknown'}</p>
       </div>
@@ -506,13 +566,13 @@ const MapComponent = ({
       },
       mouseout: (e) => {
         // Reset style unless this is the selected LSOA
-        if (selectedLSOA !== props.lsoa_code) {
+        if (selectedLSOA !== props['LSOA code']) {
           (e.target as L.Path).setStyle(getAreaStyle(feature));
         }
       },
       click: () => {
         if (onLSOASelect) {
-          onLSOASelect(props.lsoa_code);
+          onLSOASelect(props['LSOA code']);
         }
       }
     });
@@ -561,7 +621,7 @@ const MapComponent = ({
     // Use historical data if we're in historical mode
     if (showHistorical && historicalData && historicalData.lsoa_risk) {
       const historicalRisk = historicalData.lsoa_risk.find(
-        item => item.lsoa_code === feature.properties.lsoa_code
+        item => item.lsoa_code === feature.properties['LSOA code']
       );
       
       if (historicalRisk) {
@@ -576,8 +636,8 @@ const MapComponent = ({
       ...defaultStyle,
       fillColor,
       // Highlight the selected LSOA
-      weight: selectedLSOA === feature.properties.lsoa_code ? 3 : 1,
-      color: selectedLSOA === feature.properties.lsoa_code ? '#3b82f6' : '#334155',
+      weight: selectedLSOA === feature.properties['LSOA code'] ? 3 : 1,
+      color: selectedLSOA === feature.properties['LSOA code'] ? '#3b82f6' : '#334155',
     };
   }, [selectedLSOA, showHistorical, historicalData]);
 

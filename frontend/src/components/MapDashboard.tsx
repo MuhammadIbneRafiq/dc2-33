@@ -1,19 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { BarChart3, Map, Users, TrendingUp, ToggleLeft, ToggleRight } from 'lucide-react';
+import MapComponent from './map/MapComponent';
 import Header from './Header';
 import Sidebar from './Sidebar';
 import CrimeMap from './CrimeMap';
 import PoliceAllocation from './PoliceAllocation';
 import DashboardStats from './DashboardStats';
 import DataAnalytics from './DataAnalytics';
-import EmmieExplanation from './EmmieExplanation';
 import PoliceChat from './PoliceChat';
 
-const MapDashboard: React.FC = () => {
-  const [activeView, setActiveView] = useState('map');
-  const [showPoliceAllocation, setShowPoliceAllocation] = useState(false);
+interface MapDashboardProps {
+  onLSOASelect?: (lsoa: string) => void;
+  selectedLSOA?: string | null;
+}
+
+const MapDashboard: React.FC<MapDashboardProps> = ({ onLSOASelect, selectedLSOA }) => {
+  const [activeView, setActiveView] = useState<'lsoa' | 'borough'>('lsoa');
+  const [showPoliceAllocation, setShowPoliceAllocation] = useState<boolean>(false);
+  const [showPredictions, setShowPredictions] = useState<boolean>(false);
+  const [isBackendConnected, setIsBackendConnected] = useState<boolean>(false);
   const [policeData, setPoliceData] = useState<any[] | null>(null);
-  const [selectedLSOA, setSelectedLSOA] = useState<string | null>(null);
   const [allocationMetrics, setAllocationMetrics] = useState<any | null>(null);
+
+  // Check backend connection on mount
+  useEffect(() => {
+    const checkBackendConnection = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/lsoa/list');
+        setIsBackendConnected(response.ok);
+      } catch (error) {
+        setIsBackendConnected(false);
+      }
+    };
+    
+    checkBackendConnection();
+  }, []);
 
   const handleTogglePoliceAllocation = () => {
     setShowPoliceAllocation(!showPoliceAllocation);
@@ -24,15 +46,161 @@ const MapDashboard: React.FC = () => {
   };
 
   const handleSelectLSOA = (lsoa: string) => {
-    setSelectedLSOA(lsoa);
+    onLSOASelect && onLSOASelect(lsoa);
   };
 
   const handleMetricsUpdate = (metrics: any) => {
     setAllocationMetrics(metrics);
   };
 
+  const handleBoroughSelect = (borough: string) => {
+    console.log('Borough selected:', borough);
+    // You can add borough-specific logic here
+  };
+
   return (
-    <div className="min-h-screen flex">
+    <div className="h-full flex flex-col bg-gray-900">
+      {/* Enhanced Header with Level Controls */}
+      <div className="bg-gray-800 border-b border-gray-700 p-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-4">
+            <h2 className="text-xl font-bold text-white">London Crime Map</h2>
+            
+            {/* Backend Status Indicator */}
+            <div className="flex items-center space-x-2">
+              <div className={`w-2 h-2 rounded-full ${isBackendConnected ? 'bg-green-500' : 'bg-red-500'}`} />
+              <span className="text-xs text-gray-400">
+                {isBackendConnected ? 'Real Data Connected' : 'Using Mock Data'}
+              </span>
+            </div>
+          </div>
+
+          {/* Map Level Toggle */}
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 bg-gray-700 rounded-lg p-1">
+              <button
+                onClick={() => setActiveView('lsoa')}
+                className={`px-3 py-1 text-sm rounded transition-all ${
+                  activeView === 'lsoa' 
+                    ? 'bg-blue-600 text-white shadow-lg' 
+                    : 'text-gray-300 hover:text-white hover:bg-gray-600'
+                }`}
+              >
+                <div className="flex items-center space-x-1">
+                  <Map size={14} />
+                  <span>LSOA Level</span>
+                </div>
+              </button>
+              <button
+                onClick={() => setActiveView('borough')}
+                className={`px-3 py-1 text-sm rounded transition-all ${
+                  activeView === 'borough' 
+                    ? 'bg-blue-600 text-white shadow-lg' 
+                    : 'text-gray-300 hover:text-white hover:bg-gray-600'
+                }`}
+              >
+                <div className="flex items-center space-x-1">
+                  <BarChart3 size={14} />
+                  <span>Borough Level</span>
+                </div>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Secondary Controls */}
+        <div className="mt-3 flex items-center justify-between">
+          <div className="flex items-center space-x-4">
+            <div className="text-sm text-gray-400">
+              Viewing: <span className="text-white font-medium">
+                {activeView === 'lsoa' ? 'Lower Super Output Areas' : 'London Boroughs'}
+              </span>
+            </div>
+          </div>
+
+          <div className="flex items-center space-x-3">
+            {/* Police Allocation Toggle */}
+            <button
+              onClick={() => setShowPoliceAllocation(!showPoliceAllocation)}
+              className={`flex items-center space-x-2 px-3 py-1 rounded text-sm transition-all ${
+                showPoliceAllocation 
+                  ? 'bg-green-600 text-white' 
+                  : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+              }`}
+            >
+              <Users size={14} />
+              <span>Police Units</span>
+              {showPoliceAllocation ? <ToggleRight size={16} /> : <ToggleLeft size={16} />}
+            </button>
+
+            {/* Predictions Toggle */}
+            <button
+              onClick={() => setShowPredictions(!showPredictions)}
+              className={`flex items-center space-x-2 px-3 py-1 rounded text-sm transition-all ${
+                showPredictions 
+                  ? 'bg-purple-600 text-white' 
+                  : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+              }`}
+            >
+              <TrendingUp size={14} />
+              <span>Predictions</span>
+              {showPredictions ? <ToggleRight size={16} /> : <ToggleLeft size={16} />}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Enhanced Map View */}
+      <div className="flex-1 relative">
+        <motion.div 
+          className="h-full"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <MapComponent
+            onLSOASelect={handleSelectLSOA}
+            onBoroughSelect={handleBoroughSelect}
+            selectedLSOA={selectedLSOA}
+            showPoliceAllocation={showPoliceAllocation}
+            showPredictions={showPredictions}
+            mapLevel={activeView}
+          />
+        </motion.div>
+
+        {/* Level Information Panel */}
+        <div className="absolute top-4 left-4 bg-gray-800 bg-opacity-90 rounded-lg p-4 text-white max-w-xs">
+          <h3 className="font-bold text-lg mb-2">
+            {activeView === 'lsoa' ? 'LSOA View' : 'Borough View'}
+          </h3>
+          <p className="text-sm text-gray-300 mb-2">
+            {activeView === 'lsoa' 
+              ? 'Detailed area-level analysis showing individual Lower Super Output Areas with precise burglary risk assessment.'
+              : 'Borough-level overview showing aggregated burglary statistics across London\'s administrative boroughs.'
+            }
+          </p>
+          <div className="text-xs text-gray-400">
+            {activeView === 'lsoa' 
+              ? 'Click on areas to view detailed LSOA statistics'
+              : 'Click on boroughs to view aggregated borough data'
+            }
+          </div>
+        </div>
+
+        {/* Real Data Indicator */}
+        {isBackendConnected && (
+          <div className="absolute bottom-4 right-4 bg-green-600 bg-opacity-90 rounded-lg p-3 text-white">
+            <div className="flex items-center space-x-2">
+              <div className="w-2 h-2 bg-green-300 rounded-full animate-pulse"></div>
+              <span className="text-sm font-medium">Live London Data</span>
+            </div>
+            <p className="text-xs mt-1 opacity-90">
+              Real LSOA boundaries & burglary statistics
+            </p>
+          </div>
+        )}
+      </div>
+
       {/* Sidebar */}
       <Sidebar 
         activeView={activeView} 
@@ -111,8 +279,6 @@ const MapDashboard: React.FC = () => {
           )}
           
           {activeView === 'analytics' && <DataAnalytics />}
-
-          {activeView === 'emmie' && <EmmieExplanation />}
         </div>
       </div>
 

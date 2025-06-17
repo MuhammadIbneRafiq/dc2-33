@@ -104,8 +104,8 @@ const LandingHero: React.FC = () => {
             <div className="w-12 h-12 bg-purple-900/30 rounded-lg flex items-center justify-center mb-4 text-purple-400">
               <BarChart size={24} />
             </div>
-            <h3 className="text-xl font-semibold text-white mb-2">EMMIE Framework</h3>
-            <p className="text-gray-300">Evidence-based intervention assessment using the EMMIE scoring methodology.</p>
+                            <h3 className="text-xl font-semibold text-white mb-2">Evidence-Based Framework</h3>
+                <p className="text-gray-300">Evidence-based intervention assessment using comprehensive effectiveness scoring methodology.</p>
           </div>
         </motion.div>
         

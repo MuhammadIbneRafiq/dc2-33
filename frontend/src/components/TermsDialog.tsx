@@ -2,21 +2,19 @@ import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import { AlertTriangle, Info, Video, MessageCircle } from 'lucide-react';
+import { AlertTriangle, Info, MessageCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 interface TermsDialogProps {
   open: boolean;
   onClose: () => void;
   onAccept: () => void;
-  onWatchTutorial: () => void;
 }
 
 const TermsDialog: React.FC<TermsDialogProps> = ({ 
   open, 
   onClose, 
-  onAccept,
-  onWatchTutorial
+  onAccept
 }) => {
   const [accepted, setAccepted] = useState(false);
   const [showPrivacyDetails, setShowPrivacyDetails] = useState(false);
@@ -58,7 +56,7 @@ const TermsDialog: React.FC<TermsDialogProps> = ({
           <div className="rounded-lg bg-blue-900/30 p-4 border border-blue-800/50">
             <p className="font-medium mb-2 text-blue-400">Data Usage</p>
             <p className="text-sm">
-              The crime forecast and EMMIE framework scores are based on statistical models and historical data.
+              The crime forecast and intervention effectiveness scores are based on statistical models and historical data.
               These predictions should be used as decision support tools and not as the sole basis for resource allocation.
             </p>
           </div>
@@ -107,17 +105,6 @@ const TermsDialog: React.FC<TermsDialogProps> = ({
         
         <DialogFooter className="flex flex-col sm:flex-row sm:justify-between sm:space-x-2">
           <div className="flex space-x-2 mb-3 sm:mb-0">
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              className="text-blue-400 border-blue-400/50 hover:bg-blue-400/10"
-              onClick={onWatchTutorial}
-            >
-              <Video className="mr-2 h-4 w-4" />
-              Watch Tutorial
-            </Button>
-            
             <Button
               type="button"
               variant="outline"

@@ -1,7 +1,7 @@
 // API service for connecting to the Flask backend
 
 // Base URL for API requests
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = 'http://127.0.0.1:5000';
 
 // Fallback data for when the API is not available
 const MOCK_DATA = {
@@ -117,7 +117,7 @@ const handleApiError = (error: unknown, endpoint: string, mockData: any) => {
 
 // Check if the Flask backend is available
 let isBackendAvailable = false;
-fetch(`${API_BASE_URL}/lsoa/list`, { method: 'HEAD' })
+fetch(`${API_BASE_URL}/api/lsoa/list`, { method: 'HEAD' })
   .then(response => {
     isBackendAvailable = response.ok;
     console.log(`Backend availability: ${isBackendAvailable ? 'Connected' : 'Not available'}`);
@@ -158,9 +158,15 @@ const fetchApi = async (endpoint: string, mockDataPath: any, options: RequestIni
 export const api = {
   // LSOA endpoints
   lsoa: {
-    getList: () => fetchApi('/lsoa/list', MOCK_DATA.lsoa.list),
-    getWellbeingData: (lsoaCode: string) => fetchApi(`/imd/lsoa/${lsoaCode}`, MOCK_DATA.lsoa.wellbeing),
-    getBoundaries: () => fetchApi('/lsoa/boundaries', MOCK_DATA.lsoa.boundaries),
+    getList: (): Promise<{ lsoas: Array<{ lsoa_code: string; lsoa_name: string }> }> => 
+      fetchApi('/api/lsoa/list', MOCK_DATA.lsoa.list),
+    getWellbeingData: (lsoaCode: string) => fetchApi(`/api/imd/lsoa/${lsoaCode}`, MOCK_DATA.lsoa.wellbeing),
+    getBoundaries: (): Promise<any> => 
+      fetchApi('/api/lsoa/boundaries', MOCK_DATA.lsoa.boundaries),
+    getBoroughBoundaries: (): Promise<any> => 
+      fetchApi('/api/borough/boundaries', MOCK_DATA.lsoa.boundaries),
+    getRiskMap: (level: 'lsoa' | 'borough' = 'lsoa'): Promise<any> => 
+      fetchApi(`/api/burglary/risk-map?level=${level}`, MOCK_DATA.lsoa.boundaries),
   },
 
   // Burglary data endpoints
@@ -173,20 +179,20 @@ export const api = {
         if (params.days) queryParts.push(`days=${params.days}`);
         if (queryParts.length > 0) queryParams = `?${queryParts.join('&')}`;
       }
-      return fetchApi(`/burglary/time-series${queryParams}`, MOCK_DATA.burglary.timeSeries);
+      return fetchApi(`/api/burglary/time-series${queryParams}`, MOCK_DATA.burglary.timeSeries);
     },
     getForecast: (params?: { lsoa_code?: string }) => {
       const queryParams = params?.lsoa_code ? `?lsoa_code=${params.lsoa_code}` : '';
-      return fetchApi(`/burglary/forecast${queryParams}`, MOCK_DATA.burglary.forecast);
+      return fetchApi(`/api/burglary/forecast${queryParams}`, MOCK_DATA.burglary.forecast);
     },
-    getCorrelation: () => fetchApi('/burglary/correlation', MOCK_DATA.burglary.correlation),
+    getCorrelation: () => fetchApi('/api/burglary/correlation', MOCK_DATA.burglary.correlation),
   },
 
   // Police allocation endpoints
   police: {
     optimize: (params?: { clusters?: number }) => {
       const queryParams = params?.clusters ? `?clusters=${params.clusters}` : '';
-      return fetchApi(`/police/optimize${queryParams}`, MOCK_DATA.police.optimize);
+      return fetchApi(`/api/police/optimize${queryParams}`, MOCK_DATA.police.optimize);
     },
   },
 
@@ -194,7 +200,7 @@ export const api = {
   emmie: {
     getScores: (params?: { lsoa_code?: string }) => {
       const queryParams = params?.lsoa_code ? `?lsoa_code=${params.lsoa_code}` : '';
-      return fetchApi(`/emmie/scores${queryParams}`, MOCK_DATA.emmie.scores);
+      return fetchApi(`/api/emmie/scores${queryParams}`, MOCK_DATA.emmie.scores);
     },
   },
 };
