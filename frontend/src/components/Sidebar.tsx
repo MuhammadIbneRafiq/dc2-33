@@ -37,6 +37,18 @@ const Sidebar: React.FC<SidebarProps> = ({
     collapsed: { opacity: 0, display: 'none' }
   };
 
+  // Handle navigation with special logic for police allocation
+  const handleNavigation = (itemId: string) => {
+    if (itemId === 'allocation') {
+      // Toggle police allocation when allocation tab is clicked
+      onTogglePoliceAllocation();
+      // Stay on dashboard but show allocation
+      setActiveView('dashboard');
+    } else {
+      setActiveView(itemId);
+    }
+  };
+
   return (
     <motion.div 
       className="bg-gradient-to-b from-gray-900 to-gray-950 h-screen border-r border-gray-800/50 flex flex-col overflow-y-auto fixed left-0 top-0 z-10 shadow-xl shadow-black/30"
@@ -117,12 +129,12 @@ const Sidebar: React.FC<SidebarProps> = ({
                   rounded-lg text-sm font-medium
                   transition-all duration-300 ease-out
                   backdrop-blur-sm
-                  ${activeView === item.id
+                  ${(activeView === item.id) || (item.id === 'allocation' && showPoliceAllocation)
                     ? 'bg-gradient-to-r from-indigo-600/40 to-blue-500/20 text-blue-300 shadow-lg shadow-blue-900/30 border-l-2 border-blue-400 hover:from-indigo-500/50 hover:to-blue-400/30'
                     : 'text-gray-400 hover:text-gray-200 hover:bg-gray-800/90 hover:shadow-lg hover:shadow-gray-900/30 hover:border-l hover:border-gray-600'
                   }
                 `}
-                onClick={() => setActiveView(item.id)}
+                onClick={() => handleNavigation(item.id)}
               >
                 <span className="text-xl mr-3 opacity-90">{item.icon}</span>
                 <motion.span
@@ -145,6 +157,32 @@ const Sidebar: React.FC<SidebarProps> = ({
           isCollapsed={isCollapsed}
         />
       </div>
+
+      {/* Quick Stats - Only visible when expanded */}
+      <motion.div 
+        className="p-4 mx-3 bg-gray-800/30 rounded-lg border border-gray-700/20 mt-4"
+        variants={logoTextVariants}
+      >
+        <h3 className="text-sm font-semibold text-white mb-3">Quick Stats</h3>
+        <div className="space-y-2">
+          <div className="flex justify-between text-xs">
+            <span className="text-gray-400">Active Units</span>
+            <span className="text-green-400 font-semibold">142</span>
+          </div>
+          <div className="flex justify-between text-xs">
+            <span className="text-gray-400">Coverage</span>
+            <span className="text-blue-400 font-semibold">68%</span>
+          </div>
+          <div className="flex justify-between text-xs">
+            <span className="text-gray-400">Risk Level</span>
+            <span className="text-yellow-400 font-semibold">Medium</span>
+          </div>
+          <div className="flex justify-between text-xs">
+            <span className="text-gray-400">Response Time</span>
+            <span className="text-purple-400 font-semibold">12.5 min</span>
+          </div>
+        </div>
+      </motion.div>
 
       {/* Collapse/Expand toggle */}
       <div className="p-4 mt-auto border-t border-gray-800/70 bg-gradient-to-t from-gray-950 to-transparent">

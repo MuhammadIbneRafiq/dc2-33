@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import MapComponent from '@/components/map/MapComponent';
-import { api } from '@/api/api';
+// import { api } from '@/api/api'; // Remove backend API
+import { hardcodedApi } from '@/data/hardcodedData'; // Use hardcoded data instead
 import { Button } from "@/components/ui/button";
 import LoadingScreen from '@/components/ui/loading-screen';
 import { 
@@ -92,43 +93,43 @@ const Dashboard = () => {
     }
   }, [isLoading, showChatNotification]);
   
-  // Fetch police allocation data
+  // Fetch police allocation data - NOW USING HARDCODED DATA
   const { 
     data: policeAllocationData,
     isLoading: isLoadingPoliceData 
   } = useQuery({
     queryKey: ['policeAllocation'],
-    queryFn: () => api.police.optimize(),
+    queryFn: () => hardcodedApi.police.optimize(), // Use hardcoded API
     enabled: showPoliceAllocation,
     retry: 1,
     retryDelay: 1000
   });
   
-  // Fetch LSOA data for selected LSOA
+  // Fetch LSOA data for selected LSOA - NOW USING HARDCODED DATA
   const {
     data: lsoaData,
     isLoading: isLoadingLsoaData
   } = useQuery({
     queryKey: ['lsoaData', selectedLSOA],
-    queryFn: () => selectedLSOA ? api.lsoa.getWellbeingData(selectedLSOA) : null,
+    queryFn: () => selectedLSOA ? hardcodedApi.lsoa.getWellbeingData(selectedLSOA) : null, // Use hardcoded API
     enabled: !!selectedLSOA,
     retry: 1,
     retryDelay: 1000
   });
   
-  // Fetch SARIMA forecast data
+  // Fetch SARIMA forecast data - NOW USING HARDCODED DATA
   const {
     data: forecastData,
     isLoading: isLoadingForecast
   } = useQuery({
     queryKey: ['forecast', selectedLSOA],
-    queryFn: () => selectedLSOA ? api.burglary.getForecast({ lsoa_code: selectedLSOA }) : null,
+    queryFn: () => selectedLSOA ? hardcodedApi.burglary.getForecast({ lsoa_code: selectedLSOA }) : null, // Use hardcoded API
     enabled: !!selectedLSOA,
     retry: 1,
     retryDelay: 1000
   });
   
-  // Fetch Burglary Time Series Data
+  // Fetch Burglary Time Series Data - NOW USING HARDCODED DATA
   const { 
     data: timeSeriesData, 
     isLoading: isLoadingTimeSeries,
@@ -141,7 +142,7 @@ const Dashboard = () => {
       // For now, let's assume numPoints dictates the length of historical data requested.
       // Adjust the 'days' parameter based on your API's expectation.
       const daysToFetch = dateRange[0] || numPoints; // Example logic, adjust as needed
-      return api.burglary.getTimeSeries({ 
+      return hardcodedApi.burglary.getTimeSeries({ // Use hardcoded API
         lsoa_code: selectedLSOA || undefined, // Pass LSOA code if selected
         days: daysToFetch // Or another relevant parameter like 'limit' or 'count'
       });
@@ -462,10 +463,188 @@ const Dashboard = () => {
             </div>
           </div>
         );
+      
+      case 'map':
+        return (
+          <div className="p-6">
+            {/* Full-screen Map View */}
+            <div className="h-[calc(100vh-120px)] rounded-xl shadow-2xl overflow-hidden border border-gray-700/50 relative">
+              <MapComponent 
+                onLSOASelect={handleLSOASelect} 
+                showPoliceAllocation={showPoliceAllocation}
+                selectedLSOA={selectedLSOA}
+                showPredictions={showPredictions}
+                predictionModel={predictionModel}
+                dateRange={dateRange}
+              />
+              
+              {/* Map controls overlay */}
+              <div className="absolute top-4 right-4 z-[1000] space-y-2">
+                <div className="bg-gray-800/90 backdrop-blur-sm rounded-lg p-3 border border-gray-700/50">
+                  <h3 className="text-white font-semibold mb-2">Map Controls</h3>
+                  <button
+                    onClick={handleGeneratePrediction}
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded text-sm transition-colors"
+                  >
+                    {showPredictions ? 'Hide Predictions' : 'Show Predictions'}
+                  </button>
+                  <select
+                    value={predictionModel}
+                    onChange={handleModelChange}
+                    className="w-full mt-2 bg-gray-700 text-white border border-gray-600 rounded px-2 py-1 text-sm"
+                  >
+                    <option value="sdgcn">SD-GCN Model</option>
+                    <option value="sarima">SARIMA Model</option>
+                    <option value="lstm">LSTM Model</option>
+                  </select>
+                </div>
+              </div>
+              
+              {/* LSOA Info Panel */}
+              {selectedLSOA && (
+                <div className="absolute bottom-4 left-4 z-[1000] bg-gray-800/90 backdrop-blur-sm rounded-lg p-4 border border-gray-700/50 max-w-sm">
+                  <h3 className="text-white font-semibold mb-2">Selected LSOA: {selectedLSOA}</h3>
+                  {lsoaData && (
+                    <div className="space-y-1 text-sm">
+                      <div className="flex justify-between">
+                        <span className="text-gray-300">Borough:</span>
+                        <span className="text-white">{lsoaData.borough}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-300">Population:</span>
+                        <span className="text-white">{lsoaData.population.toLocaleString()}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-300">Crime Rate:</span>
+                        <span className="text-white">{lsoaData.crime_rate.toFixed(1)}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-300">Safety Score:</span>
+                        <span className="text-white">{lsoaData.safety_score.toFixed(0)}/100</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      
+      case 'analytics':
+        return (
+          <div className="p-6 space-y-6">
+            <h1 className="text-2xl font-bold text-white mb-6">Data Analytics</h1>
+            
+            {/* Analytics Grid */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Enhanced Data Analytics Component */}
+              <div className="lg:col-span-2">
+                <DataAnalytics 
+                  selectedLsoaCode={selectedLSOA} 
+                  lsoaWellbeingData={lsoaData} 
+                  isLoadingLsoaData={isLoadingLsoaData} 
+                />
+              </div>
+              
+              {/* Time Series Chart */}
+              <div className="bg-gray-800 rounded-xl p-6 border border-gray-700/50">
+                <h3 className="text-lg font-semibold text-white mb-4">Burglary Time Series</h3>
+                {renderTimeSeriesPanel()}
+              </div>
+              
+              {/* LSOA Details */}
+              {selectedLSOA && lsoaData && (
+                <div className="bg-gray-800 rounded-xl p-6 border border-gray-700/50">
+                  <h3 className="text-lg font-semibold text-white mb-4">LSOA Details</h3>
+                  <div className="space-y-3">
+                    <div className="flex justify-between">
+                      <span className="text-gray-300">LSOA Code:</span>
+                      <span className="text-white font-mono">{lsoaData.lsoa_code}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-300">Borough:</span>
+                      <span className="text-white">{lsoaData.borough}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-300">Population:</span>
+                      <span className="text-white">{lsoaData.population.toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-300">Average Income:</span>
+                      <span className="text-white">£{lsoaData.average_income.toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-300">Unemployment Rate:</span>
+                      <span className="text-white">{lsoaData.unemployment_rate.toFixed(1)}%</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-300">Deprivation Score:</span>
+                      <span className="text-white">{lsoaData.deprivation_score.toFixed(1)}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-300">Education Score:</span>
+                      <span className="text-white">{lsoaData.education_score.toFixed(0)}/100</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-300">Health Score:</span>
+                      <span className="text-white">{lsoaData.health_score.toFixed(0)}/100</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-300">Housing Score:</span>
+                      <span className="text-white">{lsoaData.housing_score.toFixed(0)}/100</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-300">Safety Score:</span>
+                      <span className="text-white">{lsoaData.safety_score.toFixed(0)}/100</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-300">Community Cohesion:</span>
+                      <span className="text-white">{lsoaData.community_cohesion.toFixed(0)}/100</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+              
+              {/* Forecast Data */}
+              {selectedLSOA && forecastData && (
+                <div className="bg-gray-800 rounded-xl p-6 border border-gray-700/50">
+                  <h3 className="text-lg font-semibold text-white mb-4">Forecast Summary</h3>
+                  <div className="space-y-3">
+                    <div className="flex justify-between">
+                      <span className="text-gray-300">Next 7 Days:</span>
+                      <span className="text-white">{forecastData.forecast.slice(0, 7).reduce((a, b) => a + b, 0)} incidents</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-300">Next 30 Days:</span>
+                      <span className="text-white">{forecastData.forecast.reduce((a, b) => a + b, 0)} incidents</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-300">Peak Day:</span>
+                      <span className="text-white">{forecastData.dates[forecastData.forecast.indexOf(Math.max(...forecastData.forecast))]}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-300">Peak Incidents:</span>
+                      <span className="text-white">{Math.max(...forecastData.forecast)}</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      
       case 'chat':
         return <PoliceChat />;
+      
       default:
-        return <div>Select a view</div>;
+        return (
+          <div className="p-6">
+            <div className="text-center text-gray-400">
+              <h2 className="text-xl font-semibold mb-2">Select a view from the sidebar</h2>
+              <p>Use the navigation menu to explore different sections of the dashboard.</p>
+            </div>
+          </div>
+        );
     }
   };
   

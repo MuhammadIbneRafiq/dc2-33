@@ -14,6 +14,7 @@ import {
   type LSOAFeature,
   type BoroughFeature
 } from '@/data/londonBoundaries';
+import { hardcodedApi } from '@/data/hardcodedData';
 
 // Fix for Leaflet default icon issue in React
 // @ts-ignore - Leaflet has type issues with icon URLs
@@ -289,9 +290,12 @@ const MapComponent = ({
   const LONDON_CENTER: [number, number] = [51.5074, -0.1278];
   const LONDON_ZOOM = 10;
 
+  // Add state for level toggle
+  const [viewLevel, setViewLevel] = useState<'lsoa' | 'borough'>('lsoa');
+
   // Load boundaries and other data
   useEffect(() => {
-    const fetchMapData = async () => {
+    const loadMapData = () => {
       try {
         setLoading(true);
         setError(null);
@@ -310,19 +314,23 @@ const MapComponent = ({
           console.log('Borough boundaries loaded from hardcoded data');
         }
 
-        // Load police allocation data if requested
+        // Use hardcoded police allocation data
         if (showPoliceAllocation) {
           console.log('Loading hardcoded police allocation data...');
-          // Use mock police allocation data for demonstration
-          const mockPoliceData = [
-            { lat: 51.515, lon: -0.09, officer_count: 3, risk_score: 0.85 },
-            { lat: 51.508, lon: -0.12, officer_count: 2, risk_score: 0.75 },
-            { lat: 51.522, lon: -0.15, officer_count: 4, risk_score: 0.92 },
-            { lat: 51.494, lon: -0.14, officer_count: 1, risk_score: 0.68 },
-            { lat: 51.531, lon: -0.07, officer_count: 2, risk_score: 0.72 },
-            { lat: 51.507, lon: -0.06, officer_count: 3, risk_score: 0.89 }
-          ];
-          setPoliceAllocation(mockPoliceData);
+          hardcodedApi.police.optimize().then(data => {
+            // Convert the police allocation data to the expected format
+            const policePoints = data.clusters.map(cluster => ({
+              lat: cluster.center[1], // Latitude is second in [lng, lat] format
+              lon: cluster.center[0], // Longitude is first
+              officer_count: cluster.recommended_units,
+              risk_score: cluster.risk_level === 'Very High' ? 0.9 : 
+                         cluster.risk_level === 'High' ? 0.75 : 
+                         cluster.risk_level === 'Medium' ? 0.6 : 0.4
+            }));
+            setPoliceAllocation(policePoints);
+          });
+        } else {
+          setPoliceAllocation([]);
         }
 
         // Load prediction data if requested
@@ -330,12 +338,14 @@ const MapComponent = ({
           console.log('Loading hardcoded prediction data...');
           // Mock prediction data for demonstration
           const mockPredictions = [
-            { lat: 51.513, lon: -0.095, intensity: 0.8 },
-            { lat: 51.498, lon: -0.155, intensity: 0.9 },
-            { lat: 51.520, lon: -0.165, intensity: 0.6 },
-            { lat: 51.508, lon: -0.065, intensity: 0.7 }
+            { lat: 51.5074, lon: -0.1278, intensity: 0.85 },
+            { lat: 51.5155, lon: -0.0922, intensity: 0.72 },
+            { lat: 51.4994, lon: -0.1270, intensity: 0.68 },
+            { lat: 51.4895, lon: -0.1423, intensity: 0.45 }
           ];
           setPredictions(mockPredictions);
+        } else {
+          setPredictions([]);
         }
 
       } catch (err) {
@@ -346,18 +356,23 @@ const MapComponent = ({
       }
     };
 
-    fetchMapData();
+    loadMapData();
   }, [showPoliceAllocation, showPredictions, predictionModel, predictionRange, mapLevel]);
 
   // Load historical data
-  const loadHistoricalData = async () => {
+  const loadHistoricalData = () => {
     try {
-      console.log('Loading historical burglary data...');
-      const timeSeriesData = await api.burglary.getTimeSeries({ days: dateRange[0] });
-      
-      if (timeSeriesData && timeSeriesData.data) {
-        setHistoricalData(timeSeriesData.data);
-      }
+      console.log('Loading hardcoded historical burglary data...');
+      // Mock historical data for demonstration
+      const mockHistoricalData = [
+        { month: '2024-01', burglary_count: 45 },
+        { month: '2024-02', burglary_count: 38 },
+        { month: '2024-03', burglary_count: 52 },
+        { month: '2024-04', burglary_count: 41 },
+        { month: '2024-05', burglary_count: 34 },
+        { month: '2024-06', burglary_count: 48 }
+      ];
+      setHistoricalData(mockHistoricalData);
     } catch (error) {
       console.error('Failed to load historical data:', error);
     }
@@ -367,7 +382,7 @@ const MapComponent = ({
     loadHistoricalData();
   }, [dateRange]);
 
-  // Style function for LSOA boundaries
+  // Style function for LSOA boundaries - Enhanced visibility
   const lsoaStyle = useCallback((feature: LSOAFeature) => {
     const properties = feature.properties;
     const riskLevel = properties.risk_level || 'Unknown';
@@ -375,15 +390,15 @@ const MapComponent = ({
     
     return {
       fillColor: getRiskColor(riskLevel),
-      weight: isSelected ? 3 : 1,
-      opacity: isSelected ? 1 : 0.7,
-      color: isSelected ? '#000' : '#666',
+      weight: isSelected ? 4 : 2, // More prominent borders
+      opacity: 1, // Full opacity for clear visibility
+      color: isSelected ? '#000' : '#fff', // White borders for clear separation
       dashArray: isSelected ? '5, 5' : undefined,
-      fillOpacity: getFillOpacity(riskLevel),
+      fillOpacity: isSelected ? 0.9 : getFillOpacity(riskLevel),
     };
   }, [selectedLSOA]);
 
-  // Style function for borough boundaries
+  // Style function for borough boundaries - Enhanced visibility
   const boroughStyle = useCallback((feature: BoroughFeature) => {
     const properties = feature.properties;
     const riskLevel = properties.risk_level || 'Unknown';
@@ -391,11 +406,11 @@ const MapComponent = ({
     
     return {
       fillColor: getRiskColor(riskLevel),
-      weight: isSelected ? 4 : 2,
-      opacity: isSelected ? 1 : 0.8,
-      color: isSelected ? '#000' : '#333',
+      weight: isSelected ? 6 : 3, // Much thicker borders for borough level
+      opacity: 1, // Full opacity for clear visibility
+      color: isSelected ? '#000' : '#222', // Dark borders for borough separation
       dashArray: isSelected ? '10, 5' : undefined,
-      fillOpacity: getFillOpacity(riskLevel),
+      fillOpacity: isSelected ? 0.9 : getFillOpacity(riskLevel),
     };
   }, [selectedBorough]);
 
@@ -526,6 +541,37 @@ const MapComponent = ({
     );
   }
 
+  // Add level toggle controls to the map
+  const LevelToggleControl = () => (
+    <div className="absolute top-4 left-4 z-[1000]">
+      <div className="bg-white rounded-lg shadow-md border border-gray-300 p-2">
+        <div className="text-xs font-semibold text-gray-700 mb-2">View Level</div>
+        <div className="flex space-x-1">
+          <button
+            onClick={() => setViewLevel('lsoa')}
+            className={`px-3 py-1 text-xs rounded transition-colors ${
+              viewLevel === 'lsoa' 
+                ? 'bg-blue-500 text-white' 
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+            }`}
+          >
+            LSOA
+          </button>
+          <button
+            onClick={() => setViewLevel('borough')}
+            className={`px-3 py-1 text-xs rounded transition-colors ${
+              viewLevel === 'borough' 
+                ? 'bg-blue-500 text-white' 
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+            }`}
+          >
+            Borough
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <ErrorBoundary fallback={
       <div className="h-full w-full flex items-center justify-center bg-slate-100">
@@ -552,7 +598,7 @@ const MapComponent = ({
           {/* Layer controls */}
           <LayersControl position="topright">
             {/* LSOA Boundaries Layer */}
-            {mapLevel === 'lsoa' && lsoaBoundaries && (
+            {viewLevel === 'lsoa' && lsoaBoundaries && (
               <LayersControl.Overlay checked name="LSOA Boundaries">
                 <FeatureGroup>
                   <GeoJSON
@@ -566,7 +612,7 @@ const MapComponent = ({
             )}
 
             {/* Borough Boundaries Layer */}
-            {mapLevel === 'borough' && boroughBoundaries && (
+            {viewLevel === 'borough' && boroughBoundaries && (
               <LayersControl.Overlay checked name="Borough Boundaries">
                 <FeatureGroup>
                   <GeoJSON
@@ -638,6 +684,9 @@ const MapComponent = ({
 
           {/* Map Legend */}
           <MapLegend />
+
+          {/* Level Toggle Control */}
+          <LevelToggleControl />
         </MapContainer>
       </div>
     </ErrorBoundary>
