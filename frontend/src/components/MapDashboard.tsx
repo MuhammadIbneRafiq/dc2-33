@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { BarChart3, Map, Users, TrendingUp, ToggleLeft, ToggleRight } from 'lucide-react';
 import MapComponent from './map/MapComponent';
@@ -25,8 +25,45 @@ const MapDashboard: React.FC<MapDashboardProps> = ({ onLSOASelect, selectedLSOA 
   const [policeAllocationEnabled, setPoliceAllocationEnabled] = useState(false);
   const [policeUnits, setPoliceUnits] = useState<any[]>([]);
   const [mapLevel, setMapLevel] = useState<'lsoa' | 'borough'>('lsoa');
+  const [burglaryData, setBurglaryData] = useState<any[]>([]);
+  const [isLoadingBurglaryData, setIsLoadingBurglaryData] = useState(false);
 
   // Note: No backend connection - using external APIs (UK Police API, ONS) and frontend-only data
+
+  // Fetch real burglary data when component mounts or view changes
+  useEffect(() => {
+    fetchBurglaryData();
+  }, [activeView]);
+
+  const fetchBurglaryData = async () => {
+    setIsLoadingBurglaryData(true);
+    try {
+      console.log('🎯 Fetching real burglary data from UK Police API...');
+      
+      // Import the real API functions
+      const { api } = await import('../api/api');
+      
+      // Get real burglary data for the last 3 months
+      const endDate = new Date();
+      const startDate = new Date();
+      startDate.setMonth(startDate.getMonth() - 3);
+      
+      const months = api.utils.generateMonthsArray(
+        startDate.toISOString().slice(0, 7),
+        endDate.toISOString().slice(0, 7)
+      );
+      
+      const realBurglaryData = await api.police.getLondonBurglaryData(months);
+      setBurglaryData(realBurglaryData);
+      console.log(`✅ Loaded ${realBurglaryData.length} real burglary points from UK Police API`);
+      
+    } catch (error) {
+      console.error('❌ Error fetching burglary data:', error);
+      setBurglaryData([]);
+    } finally {
+      setIsLoadingBurglaryData(false);
+    }
+  };
 
   const handleTogglePoliceAllocation = () => {
     setShowPoliceAllocation(!showPoliceAllocation);
@@ -253,6 +290,8 @@ const MapDashboard: React.FC<MapDashboardProps> = ({ onLSOASelect, selectedLSOA 
             showPoliceAllocation={showPoliceAllocation}
             showPredictions={showPredictions}
             mapLevel={activeView}
+            burglaryData={burglaryData}
+            isLoadingBurglaryData={isLoadingBurglaryData}
           />
         </motion.div>
 
@@ -344,81 +383,35 @@ const MapDashboard: React.FC<MapDashboardProps> = ({ onLSOASelect, selectedLSOA 
       {/* Sidebar */}
       <Sidebar 
         activeView={activeView} 
-        setActiveView={setActiveView} 
+        setActiveView={(view: string) => setActiveView(view as 'lsoa' | 'borough')} 
         showPoliceAllocation={showPoliceAllocation}
         onTogglePoliceAllocation={handleTogglePoliceAllocation}
         selectedLSOA={selectedLSOA}
       />
 
-      {/* Main Content */}
+      {/* Main Content - Remove unused view conditions */}
       <div className="flex-1 ml-[280px]">
         <Header />
         
         <div className="container mx-auto p-6">
-          {activeView === 'dashboard' && (
-            <>
-              <DashboardStats />
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div className="lg:col-span-1">
-                  <CrimeMap 
-                    showPoliceAllocation={showPoliceAllocation}
-                    policeData={policeData}
-                    onSelectLSOA={handleSelectLSOA}
-                  />
-                </div>
-                <div className="lg:col-span-1">
-                  <PoliceAllocation
-                    showPoliceAllocation={showPoliceAllocation}
-                    onTogglePoliceAllocation={handleTogglePoliceAllocation}
-                    onPoliceDataLoaded={handlePoliceDataLoaded}
-                    onMetricsUpdate={handleMetricsUpdate}
-                  />
-                </div>
-              </div>
-            </>
-          )}
-          
-          {activeView === 'map' && (
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <div className="lg:col-span-2">
-                <CrimeMap 
-                  showPoliceAllocation={showPoliceAllocation}
-                  policeData={policeData}
-                  onSelectLSOA={handleSelectLSOA}
-                />
-              </div>
-              <div className="lg:col-span-1">
-                <PoliceAllocation
-                  showPoliceAllocation={showPoliceAllocation}
-                  onTogglePoliceAllocation={handleTogglePoliceAllocation}
-                  onPoliceDataLoaded={handlePoliceDataLoaded}
-                  onMetricsUpdate={handleMetricsUpdate}
-                />
-              </div>
+          {/* Only show map content since activeView is 'lsoa' | 'borough' */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="lg:col-span-1">
+              <CrimeMap 
+                showPoliceAllocation={showPoliceAllocation}
+                policeData={policeData}
+                onSelectLSOA={handleSelectLSOA}
+              />
             </div>
-          )}
-          
-          {activeView === 'allocation' && (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div className="lg:col-span-1">
-                <PoliceAllocation
-                  showPoliceAllocation={showPoliceAllocation}
-                  onTogglePoliceAllocation={handleTogglePoliceAllocation}
-                  onPoliceDataLoaded={handlePoliceDataLoaded}
-                  onMetricsUpdate={handleMetricsUpdate}
-                />
-              </div>
-              <div className="lg:col-span-1">
-                <CrimeMap 
-                  showPoliceAllocation={showPoliceAllocation}
-                  policeData={policeData}
-                  onSelectLSOA={handleSelectLSOA}
-                />
-              </div>
+            <div className="lg:col-span-1">
+              <PoliceAllocation
+                showPoliceAllocation={showPoliceAllocation}
+                onTogglePoliceAllocation={handleTogglePoliceAllocation}
+                onPoliceDataLoaded={handlePoliceDataLoaded}
+                onMetricsUpdate={handleMetricsUpdate}
+              />
             </div>
-          )}
-          
-          {activeView === 'analytics' && <DataAnalytics />}
+          </div>
         </div>
       </div>
 
