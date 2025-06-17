@@ -146,13 +146,12 @@ const DynamicMarker = ({ position, patrolType, children }: Omit<DynamicMarkerPro
 
 // Custom icon creation for police officers - LARGER and MORE VISIBLE
 const createPoliceIcon = (zoom = 11) => {
-  const iconSize = getZoomDependentSize(30, zoom); // Increased base size from 20 to 30
+  const iconSize = getZoomDependentSize(50, zoom); // Increased base size from 30 to 50
   return L.divIcon({
-    html: `<div style="background-color: #dc2626; width: ${iconSize}px; height: ${iconSize}px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; border: 3px solid #fbbf24; box-shadow: 0 4px 12px rgba(220,38,38,0.8); position: relative; z-index: 1000;">
-      <span style="font-size: ${iconSize * 0.6}px;">👮</span>
-      <div style="position: absolute; top: -3px; right: -3px; font-size: ${iconSize * 0.4}px;">🚨</div>
+    html: `<div style="background-color: #ff0000; width: ${iconSize}px; height: ${iconSize}px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; border: 4px solid #ffff00; box-shadow: 0 6px 20px rgba(255,0,0,1); position: relative; z-index: 2000;">
+      <span style="font-size: ${iconSize * 0.7}px;">👮</span>
     </div>`,
-    className: 'police-icon-alert',
+    className: 'police-icon-mega',
     iconSize: [iconSize, iconSize],
     iconAnchor: [iconSize/2, iconSize/2],
   });
@@ -160,13 +159,12 @@ const createPoliceIcon = (zoom = 11) => {
 
 // Custom icon creation for police vehicles - LARGER and MORE VISIBLE
 const createVehicleIcon = (zoom = 11) => {
-  const iconSize = getZoomDependentSize(35, zoom); // Increased base size from 24 to 35
+  const iconSize = getZoomDependentSize(55, zoom); // Increased base size from 35 to 55
   return L.divIcon({
-    html: `<div style="background-color: #dc2626; width: ${iconSize}px; height: ${iconSize}px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; border: 3px solid #fbbf24; box-shadow: 0 4px 12px rgba(220,38,38,0.8); position: relative; z-index: 1000;">
-      <span style="font-size: ${iconSize * 0.6}px;">🚓</span>
-      <div style="position: absolute; top: -3px; right: -3px; font-size: ${iconSize * 0.4}px;">🚨</div>
+    html: `<div style="background-color: #ff0000; width: ${iconSize}px; height: ${iconSize}px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; border: 4px solid #ffff00; box-shadow: 0 6px 20px rgba(255,0,0,1); position: relative; z-index: 2000;">
+      <span style="font-size: ${iconSize * 0.7}px;">🚓</span>
     </div>`,
-    className: 'vehicle-icon-alert',
+    className: 'vehicle-icon-mega',
     iconSize: [iconSize, iconSize],
     iconAnchor: [iconSize/2, iconSize/2],
   });
@@ -469,12 +467,12 @@ const MapComponent = ({
       id: `click-${Date.now()}`,
       lat,
       lng,
-      borough: 'User Added',
+      borough: 'City of London (User Added)',
       category: 'burglary',
       risk_level: ['High', 'Medium', 'Low'][Math.floor(Math.random() * 3)],
       date: new Date().toISOString().slice(0, 10),
       location_type: 'User Defined',
-      outcome_status: 'Predicted'
+      outcome_status: 'User Predicted'
     };
     
     setBurglaryPoints(prev => [...prev, newPoint]);
@@ -617,27 +615,27 @@ const MapComponent = ({
     }
   }, [dateRange]);
 
-  // Style function for LSOA boundaries - Grayscale for better visibility of data points
+  // Style function for LSOA boundaries - Colorful for better visual appeal
   const lsoaStyle = useCallback((feature: any) => {
     const properties = feature.properties;
     const riskLevel = properties.risk_level || 'Medium';
     const burglaryCount = properties.burglary_count || 0;
     const isSelected = selectedLSOA === properties['LSOA code'];
     
-    // Grayscale color scheme - darkest for highest risk
-    let fillColor = '#e5e7eb'; // Light gray for low risk
-    if (riskLevel === 'Very High') fillColor = '#374151'; // Dark gray
-    else if (riskLevel === 'High') fillColor = '#6b7280'; // Medium-dark gray  
-    else if (riskLevel === 'Medium') fillColor = '#9ca3af'; // Medium gray
-    else if (riskLevel === 'Low') fillColor = '#d1d5db'; // Light-medium gray
+    // Colorful scheme - vibrant colors for different risk levels
+    let fillColor = '#3b82f6'; // Blue for low risk
+    if (riskLevel === 'Very High') fillColor = '#dc2626'; // Red
+    else if (riskLevel === 'High') fillColor = '#ea580c'; // Orange  
+    else if (riskLevel === 'Medium') fillColor = '#eab308'; // Yellow
+    else if (riskLevel === 'Low') fillColor = '#16a34a'; // Green
     
     return {
       fillColor,
       weight: isSelected ? 3 : 1,
       opacity: 1,
-      color: isSelected ? '#000000' : '#6b7280', // Gray borders for LSOA divisions
-      dashArray: isSelected ? '8,4' : undefined, // Solid lines for cleaner look
-      fillOpacity: isSelected ? 0.8 : 0.4, // Lower opacity to see data points better
+      color: isSelected ? '#000000' : '#ffffff', // White borders for LSOA divisions
+      dashArray: isSelected ? '8,4' : undefined,
+      fillOpacity: isSelected ? 0.8 : 0.6, // Good opacity to see both boundaries and data
     };
   }, [selectedLSOA]);
 
@@ -951,38 +949,87 @@ const MapComponent = ({
   // Generate MASSIVE police units when showPoliceAllocation becomes true
   useEffect(() => {
     if (showPoliceAllocation && generatedPoliceUnits.length === 0) {
-      console.log('🚨 GENERATING MASSIVE POLICE DEPLOYMENT!');
+      console.log('🚨 GENERATING POLICE DEPLOYMENT IN CITY OF LONDON!');
       
-      const massivePoliceUnits = [];
-      const londonCenter = { lat: 51.5074, lng: -0.1278 };
-      const numUnits = 10000; // MASSIVE deployment!
+      const policeUnits = [];
+      // City of London boundaries (approximately)
+      const cityOfLondon = {
+        north: 51.5230,
+        south: 51.5085,
+        east: -0.0730,
+        west: -0.0980
+      };
+      const numUnits = 10; // Reduced to 10 units
       
       for (let i = 0; i < numUnits; i++) {
-        const lat = londonCenter.lat + (Math.random() - 0.5) * 0.4; // Wide coverage
-        const lng = londonCenter.lng + (Math.random() - 0.5) * 0.5;
+        // Generate random coordinates within City of London boundaries
+        const lat = cityOfLondon.south + Math.random() * (cityOfLondon.north - cityOfLondon.south);
+        const lng = cityOfLondon.west + Math.random() * (cityOfLondon.east - cityOfLondon.west);
         
-        massivePoliceUnits.push({
-          id: `mega-police-${i}`,
+        policeUnits.push({
+          id: `police-${i}`,
           lat,
           lng,
           type: Math.random() > 0.5 ? 'vehicle' : 'officer',
-          assignedArea: ['Westminster', 'Camden', 'Hackney', 'Tower Hamlets', 'Southwark', 'Lambeth', 'Islington', 'Newham', 'Greenwich', 'Lewisham'][Math.floor(Math.random() * 10)],
-          status: 'EMERGENCY_DEPLOYMENT',
+          assignedArea: 'City of London',
+          status: 'ACTIVE_PATROL',
           alert_emoji: '🚨',
-          alert_level: 'MAXIMUM ALERT',
-          unit_type: Math.random() > 0.8 ? 'Armed Response' : Math.random() > 0.6 ? 'Riot Control' : Math.random() > 0.4 ? 'K9 Unit' : 'Patrol Unit',
+          alert_level: 'ACTIVE',
+          unit_type: Math.random() > 0.8 ? 'Armed Response' : Math.random() > 0.6 ? 'K9 Unit' : 'Patrol Unit',
           response_time: Math.round(Math.random() * 5) + 1 + ' mins'
         });
       }
       
-      setGeneratedPoliceUnits(massivePoliceUnits);
-      console.log(`🚨 DEPLOYED ${massivePoliceUnits.length} POLICE UNITS ACROSS LONDON!`);
-      console.log('🔍 First 3 mega police units:', massivePoliceUnits.slice(0, 3));
+      setGeneratedPoliceUnits(policeUnits);
+      console.log(`🚨 DEPLOYED ${policeUnits.length} POLICE UNITS IN CITY OF LONDON!`);
+      console.log('🔍 First 3 police units:', policeUnits.slice(0, 3));
     }
   }, [showPoliceAllocation]);
 
   // Combine provided police units with generated ones
   const allPoliceUnits = [...policeUnits, ...generatedPoliceUnits];
+
+  // Generate burglary points when showPredictions becomes true
+  useEffect(() => {
+    if (showPredictions && burglaryPoints.length === 0) {
+      console.log('🔴 GENERATING BURGLARY PREDICTIONS IN CITY OF LONDON!');
+      
+      const points = [];
+      // City of London boundaries (approximately)
+      const cityOfLondon = {
+        north: 51.5230,
+        south: 51.5085,
+        east: -0.0730,
+        west: -0.0980
+      };
+      const numPoints = 100;
+      
+      for (let i = 0; i < numPoints; i++) {
+        // Generate random coordinates within City of London boundaries
+        const lat = cityOfLondon.south + Math.random() * (cityOfLondon.north - cityOfLondon.south);
+        const lng = cityOfLondon.west + Math.random() * (cityOfLondon.east - cityOfLondon.west);
+        
+        const riskLevels = ['High', 'Medium', 'Low'];
+        const riskLevel = riskLevels[Math.floor(Math.random() * riskLevels.length)];
+        
+        points.push({
+          id: `burglary-${i}`,
+          lat,
+          lng,
+          borough: 'City of London',
+          category: 'burglary',
+          risk_level: riskLevel,
+          date: new Date().toISOString().slice(0, 10),
+          location_type: ['Residential', 'Commercial', 'Other'][Math.floor(Math.random() * 3)],
+          outcome_status: 'Predicted'
+        });
+      }
+      
+      setBurglaryPoints(points);
+      console.log(`🔴 GENERATED ${points.length} BURGLARY PREDICTIONS IN CITY OF LONDON!`);
+      console.log('🔍 First 3 burglary points:', points.slice(0, 3));
+    }
+  }, [showPredictions]);
 
   // Loading state
   if (loading) {
@@ -1087,7 +1134,7 @@ const MapComponent = ({
               <LayersControl.Overlay checked={true} name={`🚨 Police Units (${allPoliceUnits.length})`}>
                 <FeatureGroup>
                   <ZoomDependentMarkers>
-                    {allPoliceUnits.map((unit, index) => {
+                    {allPoliceUnits.slice(0, 10).map((unit, index) => {
                       console.log(`🚔 Rendering police unit ${index}: ${unit.lat}, ${unit.lng}, type: ${unit.type}`);
                       return (
                         <ZoomAwareMarker
@@ -1154,7 +1201,7 @@ const MapComponent = ({
             {burglaryPoints.length > 0 && (
               <LayersControl.Overlay checked={true} name={`🔴 Burglary Points (${burglaryPoints.length})`}>
                 <FeatureGroup>
-                  {burglaryPoints.map((point, index) => {
+                  {burglaryPoints.slice(0, 100).map((point, index) => {
                     console.log(`🔴 Rendering burglary point ${index}: ${point.lat}, ${point.lng}, risk: ${point.risk_level}`);
                     return (
                     <CircleMarker
@@ -1198,7 +1245,7 @@ const MapComponent = ({
           {/* DIRECT Police Units Rendering - Outside LayersControl for guaranteed visibility */}
           {showPoliceAllocation && allPoliceUnits && allPoliceUnits.length > 0 && (
             <FeatureGroup>
-              {allPoliceUnits.slice(0, 100).map((unit, index) => {
+              {allPoliceUnits.slice(0, 10).map((unit, index) => {
                 console.log(`🚨 DIRECT RENDER: Police unit ${index} at ${unit.lat}, ${unit.lng}`);
                 return (
                   <ZoomAwareMarker
@@ -1227,7 +1274,7 @@ const MapComponent = ({
           {/* DIRECT Burglary Points Rendering - Outside LayersControl for guaranteed visibility */}
           {burglaryPoints.length > 0 && (
             <FeatureGroup>
-              {burglaryPoints.slice(0, 1000).map((point, index) => {
+              {burglaryPoints.slice(0, 100).map((point, index) => {
                 console.log(`🔴 DIRECT RENDER: Burglary point ${index} at ${point.lat}, ${point.lng}`);
                 return (
                   <CircleMarker
@@ -1288,6 +1335,69 @@ const MapComponent = ({
                 🚨 Police Units: {allPoliceUnits.length} deployed
               </div>
             </div>
+          )}
+
+          {/* SIMPLE RED CIRCLE Police Units - Guaranteed to be visible */}
+          {showPoliceAllocation && allPoliceUnits && allPoliceUnits.length > 0 && (
+            <FeatureGroup>
+              {allPoliceUnits.slice(0, 10).map((unit, index) => {
+                console.log(`🔴 SIMPLE POLICE CIRCLE: Unit ${index} at ${unit.lat}, ${unit.lng}`);
+                return (
+                  <CircleMarker
+                    key={`simple-police-${unit.id || index}`}
+                    center={[unit.lat, unit.lng]}
+                    radius={8}
+                    pathOptions={{
+                      color: '#ff0000',
+                      fillColor: '#ff0000',
+                      fillOpacity: 0.9,
+                      weight: 3
+                    }}
+                  >
+                    <Popup>
+                      <div className="text-center">
+                        <h4 className="font-semibold text-sm mb-1 text-red-600">🚨 POLICE UNIT</h4>
+                        <p className="text-xs mb-1"><strong>Type:</strong> {unit.type === 'vehicle' ? '🚓 Vehicle' : '👮 Officer'}</p>
+                        <p className="text-xs mb-1"><strong>Status:</strong> <span className="text-red-600 font-bold">DEPLOYED</span></p>
+                        <p className="text-xs text-gray-600">Unit #{index + 1}</p>
+                      </div>
+                    </Popup>
+                  </CircleMarker>
+                );
+              })}
+            </FeatureGroup>
+          )}
+
+          {/* SIMPLE RED CIRCLE Burglary Points - Guaranteed to be visible */}
+          {burglaryPoints.length > 0 && (
+            <FeatureGroup>
+              {burglaryPoints.slice(0, 100).map((point, index) => {
+                console.log(`🔴 SIMPLE BURGLARY CIRCLE: Point ${index} at ${point.lat}, ${point.lng}`);
+                return (
+                  <CircleMarker
+                    key={`simple-burglary-${point.id || index}`}
+                    center={[point.lat, point.lng]}
+                    radius={6}
+                    pathOptions={{
+                      color: point.risk_level === 'High' ? '#dc2626' : point.risk_level === 'Medium' ? '#ea580c' : '#16a34a',
+                      fillColor: point.risk_level === 'High' ? '#dc2626' : point.risk_level === 'Medium' ? '#ea580c' : '#16a34a',
+                      fillOpacity: 0.8,
+                      weight: 2
+                    }}
+                  >
+                    <Popup>
+                      <div className="text-center">
+                        <h4 className="font-semibold text-sm mb-1 text-red-600">🚨 BURGLARY ALERT</h4>
+                        <p className="text-xs mb-1"><strong>Risk:</strong> {point.risk_level}</p>
+                        <p className="text-xs mb-1"><strong>Borough:</strong> {point.borough}</p>
+                        <p className="text-xs mb-1"><strong>Status:</strong> <span className="text-red-600 font-bold">{point.outcome_status}</span></p>
+                        <p className="text-xs text-gray-600">Point #{index + 1}</p>
+                      </div>
+                    </Popup>
+                  </CircleMarker>
+                );
+              })}
+            </FeatureGroup>
           )}
 
           {/* Debug Info Panel */}

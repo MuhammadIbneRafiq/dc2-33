@@ -814,6 +814,12 @@ const Dashboard = () => {
                       {showPoliceAllocation ? '2.1 min' : '12.5 min'}
                     </span>
                   </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-300">Deployment Status</span>
+                    <span className={`font-semibold ${showPoliceAllocation ? 'text-red-400' : 'text-gray-400'}`}>
+                      {showPoliceAllocation ? 'EMERGENCY ACTIVE' : 'Standard'}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
