@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import MapComponent from '@/components/map/MapComponent';
+import RealBoundaryMap from '@/components/RealBoundaryMap';
 // import { api } from '@/api/api'; // Remove backend API
 import { hardcodedApi } from '@/data/hardcodedData'; // Use hardcoded data instead
 import { Button } from "@/components/ui/button";
@@ -413,12 +414,7 @@ const Dashboard = () => {
                   predictionModel={predictionModel}
                   dateRange={dateRange} // Pass dateRange to map
                 />
-                 {/* Time Series Panel - to be rendered below the map */}
-                 <div className="absolute bottom-0 left-0 right-0 z-[1000] p-2 pointer-events-none">
-                  <div className="pointer-events-auto max-w-3xl mx-auto">
-                    {renderTimeSeriesPanel()} 
-                  </div>
-                </div>
+
               </div>
               
               {/* Forecasting Models Section - Now below the map */}
@@ -433,6 +429,9 @@ const Dashboard = () => {
 
             {/* Sidebar/Details Area */}
             <div className="lg:col-span-1 space-y-6">
+              {/* Time Series Forecasting Panel - Now in sidebar */}
+              {renderTimeSeriesPanel()}
+              
               <PoliceAllocation 
                 onToggle={handleTogglePoliceAllocation}
                 showPoliceAllocation={showPoliceAllocation}

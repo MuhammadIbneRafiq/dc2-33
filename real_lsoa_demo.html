@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real London LSOA Boundaries - ONS API Demo</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        #map { height: 100vh; width: 100vw; }
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+            background: rgba(255,255,255,0.95);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            text-align: center;
+        }
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .legend {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255,255,255,0.95);
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+            z-index: 1000;
+            min-width: 180px;
+        }
+        .legend h3 {
+            margin: 0 0 10px 0;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 6px;
+            font-size: 12px;
+        }
+        .legend-color {
+            width: 20px;
+            height: 15px;
+            margin-right: 8px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        .stats {
+            margin-top: 12px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+            font-size: 11px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div id="loading" class="loading">
+        <div class="spinner"></div>
+        <h3>Loading Real London LSOA Boundaries</h3>
+        <p>Fetching data from ONS Open Geography Portal...</p>
+        <p id="progress">Starting...</p>
+    </div>
+    
+    <div class="legend">
+        <h3>🗺️ Real London LSOAs</h3>
+        <div class="legend-item">
+            <div class="legend-color" style="background-color: #ef4444; opacity: 0.6;"></div>
+            <span>Very High Risk</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background-color: #f97316; opacity: 0.5;"></div>
+            <span>High Risk</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background-color: #eab308; opacity: 0.4;"></div>
+            <span>Medium Risk</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background-color: #84cc16; opacity: 0.3;"></div>
+            <span>Low Risk</span>
+        </div>
+        <div class="stats">
+            <div>📍 <span id="lsoa-count">0</span> LSOAs loaded</div>
+            <div>🏛️ Source: ONS API</div>
+            <div>📅 2021 Boundaries</div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        // Initialize map
+        const map = L.map('map').setView([51.5074, -0.1278], 10);
+        
+        // Add OpenStreetMap tiles
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Risk color mapping
+        function getRiskColor(riskLevel) {
+            switch (riskLevel) {
+                case 'Very High': return '#ef4444';
+                case 'High': return '#f97316';
+                case 'Medium': return '#eab308';
+                case 'Low': return '#84cc16';
+                default: return '#94a3b8';
+            }
+        }
+
+        function getFillOpacity(riskLevel) {
+            switch (riskLevel) {
+                case 'Very High': return 0.35;
+                case 'High': return 0.25;
+                case 'Medium': return 0.2;
+                case 'Low': return 0.15;
+                default: return 0.1;
+            }
+        }
+
+        // Fetch real London LSOA boundaries
+        async function fetchLondonLSOAs() {
+            const ONS_ENDPOINT = 'https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/Lower_layer_Super_Output_Areas_December_2021_Boundaries_EW_BFC_V10/FeatureServer/0/query';
+            
+            const priorityBoroughs = [
+                'Westminster%', 'Camden%', 'Islington%', 'Hackney%', 'Tower Hamlets%',
+                'Southwark%', 'Lambeth%', 'Kensington and Chelsea%', 'City of London%'
+            ];
+
+            const allFeatures = [];
+            const progressEl = document.getElementById('progress');
+            const countEl = document.getElementById('lsoa-count');
+
+            for (let i = 0; i < priorityBoroughs.length; i++) {
+                const borough = priorityBoroughs[i];
+                const boroughName = borough.replace('%', '');
+                
+                try {
+                    progressEl.textContent = `Loading ${boroughName}... (${i + 1}/${priorityBoroughs.length})`;
+                    
+                    const params = new URLSearchParams({
+                        where: `LSOA21NM like '${borough}'`,
+                        outSR: '4326',
+                        f: 'geoJSON',
+                        outFields: 'LSOA21CD,LSOA21NM,LAT,LONG'
+                    });
+
+                    const response = await fetch(`${ONS_ENDPOINT}?${params}`);
+                    
+                    if (!response.ok) {
+                        console.warn(`Failed to fetch ${borough}: ${response.status}`);
+                        continue;
+                    }
+
+                    const data = await response.json();
+                    
+                    if (data.features && data.features.length > 0) {
+                        // Add mock crime data based on borough
+                        const enrichedFeatures = data.features.map(feature => {
+                            let baseCount = 20;
+                            
+                            if (['Westminster', 'Camden', 'City of London'].includes(boroughName)) {
+                                baseCount = 45;
+                            } else if (['Tower Hamlets', 'Hackney'].includes(boroughName)) {
+                                baseCount = 35;
+                            } else if (['Kensington and Chelsea'].includes(boroughName)) {
+                                baseCount = 15;
+                            }
+                            
+                            const burglaryCount = Math.round(baseCount + (Math.random() - 0.5) * 20);
+                            let riskLevel = 'Medium';
+                            
+                            if (burglaryCount > 50) riskLevel = 'Very High';
+                            else if (burglaryCount > 35) riskLevel = 'High';
+                            else if (burglaryCount < 20) riskLevel = 'Low';
+
+                            return {
+                                ...feature,
+                                properties: {
+                                    ...feature.properties,
+                                    burglary_count: burglaryCount,
+                                    risk_level: riskLevel
+                                }
+                            };
+                        });
+
+                        allFeatures.push(...enrichedFeatures);
+                        countEl.textContent = allFeatures.length;
+                        console.log(`✅ Fetched ${data.features.length} LSOAs for ${boroughName}`);
+                    }
+
+                    // Small delay to be respectful to the API
+                    await new Promise(resolve => setTimeout(resolve, 300));
+
+                } catch (error) {
+                    console.warn(`Error fetching ${borough}:`, error);
+                    continue;
+                }
+            }
+
+            if (allFeatures.length === 0) {
+                throw new Error('No LSOA data could be fetched');
+            }
+
+            return {
+                type: 'FeatureCollection',
+                features: allFeatures
+            };
+        }
+
+        // Style function for LSOA boundaries
+        function lsoaStyle(feature) {
+            const riskLevel = feature.properties.risk_level || 'Medium';
+            
+            return {
+                fillColor: getRiskColor(riskLevel),
+                weight: 1,
+                opacity: 0.8,
+                color: '#ffffff',
+                fillOpacity: getFillOpacity(riskLevel),
+            };
+        }
+
+        // Event handlers for LSOA features
+        function onEachLSOAFeature(feature, layer) {
+            const properties = feature.properties;
+            
+            layer.on({
+                mouseover: function(e) {
+                    const target = e.target;
+                    target.setStyle({
+                        weight: 2,
+                        color: '#000000',
+                        fillOpacity: 0.6
+                    });
+                    target.bringToFront();
+                },
+                mouseout: function(e) {
+                    const target = e.target;
+                    target.setStyle(lsoaStyle(feature));
+                }
+            });
+
+            // Create popup content
+            const popupContent = `
+                <div style="font-family: system-ui; min-width: 200px;">
+                    <h3 style="margin: 0 0 8px 0; font-size: 14px; font-weight: 600; color: #1f2937;">${properties.LSOA21CD}</h3>
+                    ${properties.LSOA21NM ? `<p style="margin: 0 0 8px 0; font-size: 12px; color: #6b7280;">${properties.LSOA21NM}</p>` : ''}
+                    <div style="border-top: 1px solid #e5e7eb; padding-top: 8px;">
+                        <p style="margin: 0 0 4px 0; font-size: 12px;"><strong>Burglary Count:</strong> ${properties.burglary_count || 0}</p>
+                        <p style="margin: 0 0 4px 0; font-size: 12px;"><strong>Risk Level:</strong> 
+                            <span style="color: ${getRiskColor(properties.risk_level)}; font-weight: bold;">${properties.risk_level || 'Unknown'}</span>
+                        </p>
+                        <p style="margin: 0; font-size: 11px; color: #9ca3af;">Lat: ${properties.LAT?.toFixed(4)}, Lng: ${properties.LONG?.toFixed(4)}</p>
+                    </div>
+                </div>
+            `;
+            
+            layer.bindPopup(popupContent);
+        }
+
+        // Load and display the data
+        async function loadMap() {
+            try {
+                const lsoaData = await fetchLondonLSOAs();
+                
+                console.log(`🎉 Successfully loaded ${lsoaData.features.length} real London LSOAs`);
+                
+                // Add to map
+                L.geoJSON(lsoaData, {
+                    style: lsoaStyle,
+                    onEachFeature: onEachLSOAFeature
+                }).addTo(map);
+
+                // Hide loading indicator
+                document.getElementById('loading').style.display = 'none';
+                
+                // Show success message
+                console.log('✅ Real London LSOA boundaries loaded successfully!');
+                
+            } catch (error) {
+                console.error('❌ Failed to load London LSOA boundaries:', error);
+                document.getElementById('progress').innerHTML = `
+                    <div style="color: #dc2626;">
+                        <strong>Failed to load data</strong><br>
+                        ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        // Start loading
+        loadMap();
+    </script>
+</body>
+</html> 

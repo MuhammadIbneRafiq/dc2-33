@@ -55,6 +55,17 @@ export interface BurglaryTimeSeries {
   trend: 'increasing' | 'decreasing' | 'stable';
 }
 
+// Helper function to convert time range to days
+const getTimeRangeDays = (timeRange: string): number => {
+  switch (timeRange) {
+    case 'Last 30 days': return 30;
+    case '3 months': return 90;
+    case '6 months': return 180;
+    case '1 year': return 365;
+    default: return 180; // Default to 6 months
+  }
+};
+
 // Generate realistic time series data for London burglaries
 const generateTimeSeriesData = (lsoa_code?: string, days: number = 90): BurglaryTimeSeries => {
   const data: TimeSeriesPoint[] = [];
@@ -271,13 +282,14 @@ const generatePoliceAllocationData = (): PoliceAllocationData => {
 // Hardcoded API service that mimics backend responses
 export const hardcodedApi = {
   burglary: {
-    getTimeSeries: async (params: { lsoa_code?: string; days?: number }): Promise<BurglaryTimeSeries> => {
+    getTimeSeries: async (params: { lsoa_code?: string; days?: number; timeRange?: string }): Promise<BurglaryTimeSeries> => {
       // Simulate API delay
       await new Promise(resolve => setTimeout(resolve, 300 + Math.random() * 500));
-      return generateTimeSeriesData(params.lsoa_code, params.days);
+      const days = params.timeRange ? getTimeRangeDays(params.timeRange) : (params.days || 90);
+      return generateTimeSeriesData(params.lsoa_code, days);
     },
     
-    getForecast: async (params: { lsoa_code: string }): Promise<ForecastData> => {
+    getForecast: async (params: { lsoa_code: string; timeRange?: string }): Promise<ForecastData> => {
       await new Promise(resolve => setTimeout(resolve, 400 + Math.random() * 600));
       return generateForecastData(params.lsoa_code);
     }
