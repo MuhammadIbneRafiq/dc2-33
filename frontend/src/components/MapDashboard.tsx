@@ -335,15 +335,15 @@ const MapDashboard: React.FC<MapDashboardProps> = ({ onLSOASelect, selectedLSOA 
         </div>
 
         {/* Real Data Indicator */}
-        <div className="absolute bottom-4 right-4 bg-green-600 bg-opacity-90 rounded-lg p-3 text-white">
-          <div className="flex items-center space-x-2">
-            <div className="w-2 h-2 bg-green-300 rounded-full animate-pulse"></div>
-            <span className="text-sm font-medium">Live London Data</span>
+          <div className="absolute bottom-4 right-4 bg-green-600 bg-opacity-90 rounded-lg p-3 text-white">
+            <div className="flex items-center space-x-2">
+              <div className="w-2 h-2 bg-green-300 rounded-full animate-pulse"></div>
+              <span className="text-sm font-medium">Live London Data</span>
+            </div>
+            <p className="text-xs mt-1 opacity-90">
+              Real LSOA boundaries & burglary statistics
+            </p>
           </div>
-          <p className="text-xs mt-1 opacity-90">
-            Real LSOA boundaries & burglary statistics
-          </p>
-        </div>
 
         {/* Map Controls */}
         <div className="absolute top-4 right-4 z-10 flex flex-col space-y-2">

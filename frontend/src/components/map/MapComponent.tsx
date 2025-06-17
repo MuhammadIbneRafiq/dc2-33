@@ -459,12 +459,12 @@ const MapComponent = ({
         },
         {
           type: "Feature" as const,
-          properties: {
+              properties: {
             "Borough": "Camden", 
             "risk_level": "Medium",
             "burglary_count": Math.round(150 + Math.random() * 80)
-          },
-          geometry: {
+              },
+              geometry: {
             type: "Polygon",
             coordinates: [[
               [-0.15, 51.52], [-0.12, 51.52], [-0.12, 51.55], [-0.15, 51.55], [-0.15, 51.52]
@@ -590,8 +590,8 @@ const MapComponent = ({
       console.log(`Fetching data from ${startDateStr} to ${endDateStr}`);
       
       // NO EXTERNAL API CALLS - use mock data only
-      const mockData = generateMockHistoricalData(days);
-      setHistoricalData(mockData);
+        const mockData = generateMockHistoricalData(days);
+        setHistoricalData(mockData);
       console.log(`✅ Using mock historical data (${mockData.length} months) - NO API CALLS`);
       
     } catch (error) {
@@ -631,7 +631,7 @@ const MapComponent = ({
     if (dateRange && dateRange.length > 0) {
       // Use setTimeout to avoid nested state updates
       const timer = setTimeout(() => {
-        loadHistoricalData();
+      loadHistoricalData();
       }, 0);
       return () => clearTimeout(timer);
     }
@@ -1223,13 +1223,13 @@ const MapComponent = ({
                     {allPoliceUnits.slice(0, 10).map((unit, index) => {
                       console.log(`🚔 Rendering police unit ${index}: ${unit.lat}, ${unit.lng}, type: ${unit.type}`);
                       return (
-                        <ZoomAwareMarker
+                      <ZoomAwareMarker
                           key={unit.id || index}
                           position={[unit.lat, unit.lng]}
                           patrolType={unit.type || 'officer'}
-                        >
-                          <Popup>
-                            <div className="text-center">
+                      >
+                        <Popup>
+                          <div className="text-center">
                               <h4 className="font-semibold text-sm mb-1 text-red-600">🚨 POLICE UNIT - RED ALERT</h4>
                               <div className="bg-red-100 border border-red-300 rounded p-2 mb-2">
                                 <p className="text-xs font-bold text-red-800">{unit.alert_level || 'RED ALERT'}</p>
@@ -1245,9 +1245,9 @@ const MapComponent = ({
                               <div className="mt-2 text-xs text-red-700 font-bold">
                                 {unit.alert_emoji || '🚨'} IMMEDIATE RESPONSE READY
                               </div>
-                            </div>
-                          </Popup>
-                        </ZoomAwareMarker>
+                          </div>
+                        </Popup>
+                      </ZoomAwareMarker>
                       );
                     })}
                   </ZoomDependentMarkers>

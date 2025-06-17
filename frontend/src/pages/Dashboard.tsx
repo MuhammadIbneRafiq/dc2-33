@@ -752,35 +752,31 @@ const Dashboard = () => {
                 showPoliceAllocation={showPoliceAllocation}
               />
               
-              {/* MASSIVE POLICE DEPLOYMENT INDICATOR */}
+              {/* POLICE DEPLOYMENT INDICATOR */}
               {showPoliceAllocation && (
-                <div className="bg-red-600 rounded-xl p-4 border-4 border-red-400 animate-pulse">
+                <div className="bg-blue-600 rounded-xl p-4 border-4 border-blue-400">
                   <h3 className="text-xl font-bold text-white mb-3 flex items-center">
-                    🚨 EMERGENCY DEPLOYMENT ACTIVE 🚨
+                    👮 POLICE ALLOCATION ACTIVE 👮
                   </h3>
                   <div className="space-y-2 text-white">
                     <div className="flex justify-between text-lg font-bold">
                       <span>Total Units Deployed:</span>
-                      <span className="text-yellow-300">10,000+</span>
+                      <span className="text-yellow-300">10</span>
                     </div>
                     <div className="flex justify-between">
                       <span>Armed Response Units:</span>
-                      <span className="text-red-300">2,000</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Riot Control Units:</span>
-                      <span className="text-orange-300">1,800</span>
+                      <span className="text-red-300">2</span>
                     </div>
                     <div className="flex justify-between">
                       <span>K9 Units:</span>
-                      <span className="text-blue-300">1,600</span>
+                      <span className="text-purple-300">2</span>
                     </div>
                     <div className="flex justify-between">
                       <span>Patrol Units:</span>
-                      <span className="text-green-300">4,600</span>
+                      <span className="text-green-300">6</span>
                     </div>
                     <div className="mt-3 text-center text-yellow-300 font-bold text-lg">
-                      🚁 MAXIMUM SECURITY PROTOCOL 🚁
+                      🚔 STRATEGIC DEPLOYMENT PROTOCOL 🚔
                     </div>
                   </div>
                 </div>
