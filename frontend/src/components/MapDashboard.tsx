@@ -20,8 +20,12 @@ const MapDashboard: React.FC<MapDashboardProps> = ({ onLSOASelect, selectedLSOA 
   const [showPoliceAllocation, setShowPoliceAllocation] = useState<boolean>(false);
   const [showPredictions, setShowPredictions] = useState<boolean>(false);
   const [isBackendConnected, setIsBackendConnected] = useState<boolean>(false);
-  const [policeData, setPoliceData] = useState<any[] | null>(null);
-  const [allocationMetrics, setAllocationMetrics] = useState<any | null>(null);
+      const [policeData, setPoliceData] = useState<any[] | null>(null);
+    const [allocationMetrics, setAllocationMetrics] = useState<any | null>(null);
+    const [policeAllocationEnabled, setPoliceAllocationEnabled] = useState(false);
+    const [policeUnits, setPoliceUnits] = useState<any[]>([]);
+    const [selectedLSOA, setSelectedLSOA] = useState<string | null>(null);
+    const [mapLevel, setMapLevel] = useState<'lsoa' | 'borough'>('lsoa');
 
   // Check backend connection on mount
   useEffect(() => {
@@ -56,6 +60,57 @@ const MapDashboard: React.FC<MapDashboardProps> = ({ onLSOASelect, selectedLSOA 
   const handleBoroughSelect = (borough: string) => {
     console.log('Borough selected:', borough);
     // You can add borough-specific logic here
+  };
+
+  // Handle police allocation
+  const handlePoliceAllocation = async () => {
+    try {
+      setPoliceAllocationEnabled(true);
+      console.log('Applying police allocation...');
+      
+      const response = await fetch(`${API_BASE_URL}/api/police/optimize?n_units=150&n_clusters=100`);
+      const data = await response.json();
+      
+      if (data.police_locations) {
+        setPoliceUnits(data.police_locations);
+        console.log('Police allocation applied:', data.police_locations.length, 'units');
+      }
+    } catch (error) {
+      console.error('Error applying police allocation:', error);
+    }
+  };
+
+  // Handle LSOA click
+  const handleLSOAClick = async (lsoaCode: string) => {
+    try {
+      console.log('LSOA clicked:', lsoaCode);
+      setSelectedLSOA(lsoaCode);
+      
+      // Fetch LSOA-specific data
+      const [riskData, burglaryData] = await Promise.all([
+        fetch(`${API_BASE_URL}/api/imd/lsoa/${lsoaCode}`).then(r => r.json()),
+        fetch(`${API_BASE_URL}/api/burglary/time-series?lsoa_code=${lsoaCode}&days=30`).then(r => r.json())
+      ]);
+      
+      // Show popup with LSOA info
+      setLsoaInfo({
+        code: lsoaCode,
+        risk_level: getRiskLevel(riskData.imd_score),
+        burglary_count: burglaryData.length || 0,
+        imd_score: riskData.imd_score,
+        crime_score: riskData.crime_score
+      });
+      
+    } catch (error) {
+      console.error('Error fetching LSOA data:', error);
+    }
+  };
+
+  // Get risk level from IMD score
+  const getRiskLevel = (imdScore) => {
+    if (imdScore > 30) return 'High';
+    if (imdScore > 15) return 'Medium';
+    return 'Low';
   };
 
   return (
@@ -199,6 +254,58 @@ const MapDashboard: React.FC<MapDashboardProps> = ({ onLSOASelect, selectedLSOA 
             </p>
           </div>
         )}
+
+        {/* Map Controls */}
+        <div className="absolute top-4 right-4 z-10 flex flex-col space-y-2">
+          <div className="flex space-x-2">
+            <button
+              onClick={() => setMapLevel(mapLevel === 'lsoa' ? 'borough' : 'lsoa')}
+              className={`px-3 py-2 rounded text-sm font-medium transition-colors ${
+                mapLevel === 'lsoa' 
+                  ? 'bg-blue-600 text-white' 
+                  : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+              }`}
+            >
+              {mapLevel === 'lsoa' ? 'LSOA View' : 'Borough View'}
+            </button>
+            
+            <button
+              onClick={handlePoliceAllocation}
+              className={`px-3 py-2 rounded text-sm font-medium transition-colors ${
+                policeAllocationEnabled 
+                  ? 'bg-green-600 text-white' 
+                  : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+              }`}
+            >
+              {policeAllocationEnabled ? 'Police Units Active' : 'Deploy Police'}
+            </button>
+          </div>
+          
+          {/* Legend */}
+          <div className="bg-gray-800/90 backdrop-blur-sm rounded-lg p-3 text-xs">
+            <div className="text-white font-semibold mb-2">Risk Levels</div>
+            <div className="space-y-1">
+              <div className="flex items-center space-x-2">
+                <div className="w-3 h-3 bg-red-500 rounded"></div>
+                <span className="text-gray-300">High Risk</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-3 h-3 bg-yellow-500 rounded"></div>
+                <span className="text-gray-300">Medium Risk</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-3 h-3 bg-green-500 rounded"></div>
+                <span className="text-gray-300">Low Risk</span>
+              </div>
+              {policeAllocationEnabled && (
+                <div className="flex items-center space-x-2 border-t border-gray-600 pt-1 mt-2">
+                  <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                  <span className="text-gray-300">Police Units</span>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Sidebar */}

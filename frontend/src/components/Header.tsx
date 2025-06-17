@@ -54,7 +54,6 @@ const Header: React.FC<HeaderProps> = ({ onOpenTutorial, onDateRangeChange }) =>
             >
               <NavItem label="Dashboard" active />
               <NavItem label="Reports" />
-              <NavItem label="Settings" />
             </motion.div>
             
             <motion.div 

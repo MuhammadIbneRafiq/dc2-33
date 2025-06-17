@@ -108,26 +108,32 @@ def load_burglary_time_series():
             # We'll concatenate them into a single dataframe
             all_data = []
             files = os.listdir(BURGLARY_DATA_PATH)
-            print(f"Found {len(files)} files in directory")
             
-            for file in files:
-                if file.endswith('.csv'):
-                    try:
-                        file_path = os.path.join(BURGLARY_DATA_PATH, file)
-                        print(f"Loading file: {file_path}")
-                        data = pd.read_csv(file_path)
-                        # Print the first file's columns to debug
-                        if len(all_data) == 0:
-                            print(f"Sample file columns: {data.columns.tolist()}")
-                        print(f"File loaded, shape: {data.shape}")
+            # Sort files to get most recent ones first
+            csv_files = [f for f in files if f.endswith('.csv')]
+            csv_files.sort(reverse=True)  # Most recent first
+            
+            # Only load the most recent 5 months for performance
+            recent_files = csv_files[:5]
+            print(f"Loading only recent {len(recent_files)} files for performance: {recent_files}")
+            
+            for file in recent_files:
+                try:
+                    file_path = os.path.join(BURGLARY_DATA_PATH, file)
+                    print(f"Loading file: {file_path}")
+                    data = pd.read_csv(file_path)
+                    # Print the first file's columns to debug
+                    if len(all_data) == 0:
+                        print(f"Sample file columns: {data.columns.tolist()}")
+                    print(f"File loaded, shape: {data.shape}")
 
-                        # Filter for burglary crimes if the column exists
-                        if 'Crime type' in data.columns:
-                            data = data[data['Crime type'] == 'Burglary']
-                            
-                        all_data.append(data)
-                    except Exception as e:
-                        print(f"Error loading file {file}: {str(e)}")
+                    # Filter for burglary crimes if the column exists
+                    if 'Crime type' in data.columns:
+                        data = data[data['Crime type'] == 'Burglary']
+                        
+                    all_data.append(data)
+                except Exception as e:
+                    print(f"Error loading file {file}: {str(e)}")
             
             if all_data:
                 print(f"Concatenating {len(all_data)} dataframes")
@@ -184,10 +190,16 @@ def load_spatial_burglary_data():
             
             all_data = []
             files = os.listdir(SPATIAL_BURGLARY_DATA_PATH)
-            print(f"Found {len(files)} files in directory")
             
-            for file in files:
-                if file.endswith('.csv'):
+            # Sort files to get most recent ones first  
+            csv_files = [f for f in files if f.endswith('.csv')]
+            csv_files.sort(reverse=True)  # Most recent first
+            
+            # Only load the most recent 5 months for performance
+            recent_files = csv_files[:5]
+            print(f"Loading only recent {len(recent_files)} spatial files for performance: {recent_files}")
+            
+            for file in recent_files:
                     try:
                         file_path = os.path.join(SPATIAL_BURGLARY_DATA_PATH, file)
                         print(f"Loading file: {file_path}")

@@ -401,9 +401,9 @@ const Dashboard = () => {
         return (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 p-6">
             {/* Main content area */}
-            <div className="lg:col-span-2">
-              {/* Map Component taking up the majority of the space */}
-              <div className="h-[600px] rounded-xl shadow-2xl overflow-hidden border border-gray-700/50 relative">
+            <div className="lg:col-span-2 space-y-6">
+              {/* Map Component */}
+              <div className="h-[500px] rounded-xl shadow-2xl overflow-hidden border border-gray-700/50 relative">
                 <MapComponent 
                   onLSOASelect={handleLSOASelect} 
                   showPoliceAllocation={showPoliceAllocation}
@@ -419,6 +419,15 @@ const Dashboard = () => {
                   </div>
                 </div>
               </div>
+              
+              {/* Forecasting Models Section - Now below the map */}
+              <div className="bg-gray-800 rounded-xl shadow-2xl border border-gray-700/50 p-6">
+                <DataAnalytics 
+                  selectedLsoaCode={selectedLSOA} 
+                  lsoaWellbeingData={lsoaData} 
+                  isLoadingLsoaData={isLoadingLsoaData} 
+                />
+              </div>
             </div>
 
             {/* Sidebar/Details Area */}
@@ -427,11 +436,29 @@ const Dashboard = () => {
                 onToggle={handleTogglePoliceAllocation}
                 showPoliceAllocation={showPoliceAllocation}
               />
-              <DataAnalytics 
-                selectedLsoaCode={selectedLSOA} 
-                lsoaWellbeingData={lsoaData} 
-                isLoadingLsoaData={isLoadingLsoaData} 
-              />
+              
+              {/* Quick Stats Card */}
+              <div className="bg-gray-800 rounded-xl p-4 border border-gray-700/50">
+                <h3 className="text-lg font-semibold text-white mb-3">Quick Stats</h3>
+                <div className="space-y-3">
+                  <div className="flex justify-between">
+                    <span className="text-gray-300">Active Police Units</span>
+                    <span className="text-green-400 font-semibold">142</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-300">Coverage</span>
+                    <span className="text-blue-400 font-semibold">68%</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-300">Risk Level</span>
+                    <span className="text-yellow-400 font-semibold">Medium</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-300">Response Time</span>
+                    <span className="text-purple-400 font-semibold">12.5 min</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         );

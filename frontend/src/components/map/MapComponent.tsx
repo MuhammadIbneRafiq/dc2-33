@@ -4,6 +4,16 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { api } from '@/api/api';
 import MapLegend from './MapLegend';
+import { 
+  LONDON_LSOA_BOUNDARIES, 
+  LONDON_BOROUGH_BOUNDARIES, 
+  getRiskColor, 
+  getFillOpacity,
+  type LSOAGeoJSON,
+  type BoroughGeoJSON,
+  type LSOAFeature,
+  type BoroughFeature
+} from '@/data/londonBoundaries';
 
 // Fix for Leaflet default icon issue in React
 // @ts-ignore - Leaflet has type issues with icon URLs
@@ -63,80 +73,7 @@ const MapStyleLayer = () => {
   return null;
 };
 
-// Define interface for LSOA GeoJSON properties
-interface LSOAProperties {
-  'LSOA code': string;
-  LSOA11NM?: string;
-  burglary_count: number;
-  risk_level: string;
-  Borough?: string;
-}
-
-// Define interface for Borough GeoJSON properties
-interface BoroughProperties {
-  Borough: string;
-  burglary_count: number;
-  risk_level: string;
-}
-
-// Define types for the LSOA boundaries
-interface LSOAFeature {
-  type: 'Feature';
-  properties: LSOAProperties;
-  geometry: any;
-}
-
-interface BoroughFeature {
-  type: 'Feature';
-  properties: BoroughProperties;
-  geometry: any;
-}
-
-interface LSOAGeoJSON {
-  type: 'FeatureCollection';
-  features: LSOAFeature[];
-}
-
-interface BoroughGeoJSON {
-  type: 'FeatureCollection';
-  features: BoroughFeature[];
-}
-
-// Risk level color mapping
-const getRiskColor = (risk_level: string) => {
-  switch (risk_level) {
-    case 'Very Low':
-      return '#22c55e'; // Green
-    case 'Low':
-      return '#84cc16'; // Light green
-    case 'Medium':
-      return '#eab308'; // Yellow
-    case 'High':
-      return '#f97316'; // Orange
-    case 'Very High':
-      return '#ef4444'; // Red
-    default:
-      return '#94a3b8'; // Gray for unknown
-  }
-};
-
-// Get fill opacity based on risk level
-const getFillOpacity = (risk_level: string) => {
-  switch (risk_level) {
-    case 'Very High':
-      return 0.8;
-    case 'High':
-      return 0.7;
-    case 'Medium':
-      return 0.6;
-    case 'Low':
-      return 0.5;
-    case 'Very Low':
-      return 0.4;
-    default:
-      return 0.3;
-  }
-};
+// These interfaces and functions are now imported from '@/data/londonBoundaries'
 
 // Helper component to handle zoom-dependent styling
 const ZoomDependentMarkers = ({ children }: { children: React.ReactNode }) => {
@@ -340,492 +277,370 @@ const MapComponent = ({
   dateRange = [30],
   mapLevel = 'lsoa' // Default to LSOA level
 }: MapComponentProps) => {
-  const [lsoaData, setLsoaData] = useState<LSOAGeoJSON | null>(null);
-  const [boroughData, setBoroughData] = useState<BoroughGeoJSON | null>(null);
-  const [currentLevel, setCurrentLevel] = useState<'lsoa' | 'borough'>(mapLevel);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [lsoaBoundaries, setLsoaBoundaries] = useState<LSOAGeoJSON | null>(null);
+  const [boroughBoundaries, setBoroughBoundaries] = useState<BoroughGeoJSON | null>(null);
+  const [policeAllocation, setPoliceAllocation] = useState<any[]>([]);
+  const [predictions, setPredictions] = useState<any[]>([]);
+  const [historicalData, setHistoricalData] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [policeAllocationPoints, setPoliceAllocationPoints] = useState<any[]>([]);
-  const [loadingPoliceData, setLoadingPoliceData] = useState<boolean>(false);
-  const [errorPoliceData, setErrorPoliceData] = useState<string | null>(null);
-  const geoJsonLayerRef = useRef<L.GeoJSON | null>(null);
-  const [predictionMarkers, setPredictionMarkers] = useState<Array<{lat: number, lon: number, risk: string}>>([]);
-  const [historicalData, setHistoricalData] = useState<any>(null);
-  const [showHistorical, setShowHistorical] = useState<boolean>(true);
 
-  // Update current level when prop changes
-  useEffect(() => {
-    setCurrentLevel(mapLevel);
-  }, [mapLevel]);
+  // Define London center coordinates
+  const LONDON_CENTER: [number, number] = [51.5074, -0.1278];
+  const LONDON_ZOOM = 10;
 
-  // Enhanced random predictions generator for London bounds
-  const generateRandomPredictions = useCallback(() => {
-    const newMarkers = [];
-    // More precise London coordinates
-    const londonBounds = {
-      minLat: 51.28, maxLat: 51.69,
-      minLon: -0.51, maxLon: 0.34
-    };
-    
-    const numMarkers = Math.floor(Math.random() * 20) + 30;
-    
-    for (let i = 0; i < numMarkers; i++) {
-      const lat = londonBounds.minLat + (Math.random() * (londonBounds.maxLat - londonBounds.minLat));
-      const lon = londonBounds.minLon + (Math.random() * (londonBounds.maxLon - londonBounds.minLon));
-      
-      const riskLevels = ['High', 'Medium', 'Low'];
-      const riskProbabilities = [0.2, 0.5, 0.3];
-      
-      const rand = Math.random();
-      let cumulativeProbability = 0;
-      let riskIndex = 0;
-      
-      for (let j = 0; j < riskProbabilities.length; j++) {
-        cumulativeProbability += riskProbabilities[j];
-        if (rand <= cumulativeProbability) {
-          riskIndex = j;
-          break;
-        }
-      }
-      
-      newMarkers.push({
-        lat,
-        lon,
-        risk: riskLevels[riskIndex]
-      });
-    }
-    
-    setPredictionMarkers(newMarkers);
-  }, []);
-  
-  // Enhanced data fetching with level support
+  // Load boundaries and other data
   useEffect(() => {
     const fetchMapData = async () => {
-      setLoading(true);
-      setError(null);
       try {
-        console.log(`Fetching ${currentLevel} level data...`);
+        setLoading(true);
+        setError(null);
         
-        if (currentLevel === 'borough') {
-          // Fetch borough boundaries
-          const response = await api.lsoa.getBoroughBoundaries();
-        const geojsonData = response;
-
-        if (geojsonData) {
-            const sanitizedData = sanitizeGeoJSON(geojsonData);
-          if (sanitizedData) {
-              setBoroughData(sanitizedData as BoroughGeoJSON);
-              console.log(`Successfully loaded ${sanitizedData.features?.length || 0} borough boundaries`);
-            } else {
-              setError('Failed to process borough boundary data');
-              setBoroughData(null);
-            }
-          } else {
-            setError('No borough boundary data received');
-            setBoroughData(null);
-          }
+        console.log(`Loading hardcoded map data for level: ${mapLevel}`);
+        
+        if (mapLevel === 'lsoa') {
+          // Use hardcoded LSOA boundaries
+          console.log('Loading hardcoded LSOA boundaries...');
+          setLsoaBoundaries(sanitizeGeoJSON(LONDON_LSOA_BOUNDARIES));
+          console.log('LSOA boundaries loaded from hardcoded data');
         } else {
-          // Fetch LSOA boundaries
-          const response = await api.lsoa.getBoundaries();
-          const geojsonData = response;
+          // Use hardcoded borough boundaries
+          console.log('Loading hardcoded borough boundaries...');
+          setBoroughBoundaries(sanitizeGeoJSON(LONDON_BOROUGH_BOUNDARIES));
+          console.log('Borough boundaries loaded from hardcoded data');
+        }
 
-          if (geojsonData) {
-            const sanitizedData = sanitizeGeoJSON(geojsonData);
-            if (sanitizedData) {
-              setLsoaData(sanitizedData as LSOAGeoJSON);
-              console.log(`Successfully loaded ${sanitizedData.features?.length || 0} LSOA boundaries`);
-            } else {
-              setError('Failed to process LSOA boundary data');
-              setLsoaData(null);
-            }
-          } else {
-            setError('No LSOA boundary data received');
-          setLsoaData(null);
-          }
+        // Load police allocation data if requested
+        if (showPoliceAllocation) {
+          console.log('Loading hardcoded police allocation data...');
+          // Use mock police allocation data for demonstration
+          const mockPoliceData = [
+            { lat: 51.515, lon: -0.09, officer_count: 3, risk_score: 0.85 },
+            { lat: 51.508, lon: -0.12, officer_count: 2, risk_score: 0.75 },
+            { lat: 51.522, lon: -0.15, officer_count: 4, risk_score: 0.92 },
+            { lat: 51.494, lon: -0.14, officer_count: 1, risk_score: 0.68 },
+            { lat: 51.531, lon: -0.07, officer_count: 2, risk_score: 0.72 },
+            { lat: 51.507, lon: -0.06, officer_count: 3, risk_score: 0.89 }
+          ];
+          setPoliceAllocation(mockPoliceData);
         }
-      } catch (err: any) {
-        console.error(`Error fetching ${currentLevel} data:`, err);
-        setError(err.message || `Failed to fetch ${currentLevel} data`);
-        if (currentLevel === 'borough') {
-          setBoroughData(null);
-        } else {
-        setLsoaData(null);
+
+        // Load prediction data if requested
+        if (showPredictions) {
+          console.log('Loading hardcoded prediction data...');
+          // Mock prediction data for demonstration
+          const mockPredictions = [
+            { lat: 51.513, lon: -0.095, intensity: 0.8 },
+            { lat: 51.498, lon: -0.155, intensity: 0.9 },
+            { lat: 51.520, lon: -0.165, intensity: 0.6 },
+            { lat: 51.508, lon: -0.065, intensity: 0.7 }
+          ];
+          setPredictions(mockPredictions);
         }
+
+      } catch (err) {
+        console.error('Error loading map data:', err);
+        setError(`Failed to load map data: ${err instanceof Error ? err.message : 'Unknown error'}`);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
 
     fetchMapData();
-  }, [currentLevel]);
-  
-  // Generate predictions when showPredictions changes
-  useEffect(() => {
-    if (showPredictions) {
-      generateRandomPredictions();
-    } else {
-      setPredictionMarkers([]);
-    }
-  }, [showPredictions, generateRandomPredictions, predictionModel, predictionRange]);
-  
-  // Fetch police allocation data when showPoliceAllocation is true
-  useEffect(() => {
-    if (showPoliceAllocation) {
-      const fetchPoliceData = async () => {
-        setLoadingPoliceData(true);
-        setErrorPoliceData(null);
-        try {
-          const data = await api.police.optimize({ clusters: 100 }); 
-          if (data && data.police_allocation) {
-            setPoliceAllocationPoints(data.police_allocation);
-          } else {
-            setPoliceAllocationPoints([]);
-            setErrorPoliceData('No police allocation data received');
-          }
-        } catch (err: any) {
-          console.error("Error fetching police allocation data:", err);
-          setErrorPoliceData(err.message || 'Failed to fetch police allocation data');
-          setPoliceAllocationPoints([]);
-        }
-        setLoadingPoliceData(false);
-      };
-      fetchPoliceData();
-    } else {
-      setPoliceAllocationPoints([]);
-    }
-  }, [showPoliceAllocation]);
-  
-  // Load historical data when component mounts or dateRange changes
-  useEffect(() => {
-    const loadHistoricalData = async () => {
-      try {
-        const response = await api.burglary.getTimeSeries({ days: dateRange[0] });
-        if (response) {
-          setHistoricalData(response);
-        }
-      } catch (error) {
-        console.error("Error loading historical data:", error);
+  }, [showPoliceAllocation, showPredictions, predictionModel, predictionRange, mapLevel]);
+
+  // Load historical data
+  const loadHistoricalData = async () => {
+    try {
+      console.log('Loading historical burglary data...');
+      const timeSeriesData = await api.burglary.getTimeSeries({ days: dateRange[0] });
+      
+      if (timeSeriesData && timeSeriesData.data) {
+        setHistoricalData(timeSeriesData.data);
       }
-    };
-    
+    } catch (error) {
+      console.error('Failed to load historical data:', error);
+    }
+  };
+
+  useEffect(() => {
     loadHistoricalData();
   }, [dateRange]);
 
-  useEffect(() => {
-    if (!showPredictions && historicalData) {
-      setShowHistorical(true);
-    } else {
-      setShowHistorical(false);
-    }
-  }, [showPredictions, historicalData]);
-  
-  // Style function for LSOA polygons - memoized to prevent unnecessary recalculations
-  const getAreaStyle = useCallback((feature: any): L.PathOptions => {
-    const properties = feature.properties || {};
-    const isSelected = selectedLSOA === properties['LSOA code'];
+  // Style function for LSOA boundaries
+  const lsoaStyle = useCallback((feature: LSOAFeature) => {
+    const properties = feature.properties;
     const riskLevel = properties.risk_level || 'Unknown';
-    const fillColor = getRiskColor(riskLevel);
+    const isSelected = selectedLSOA === properties['LSOA code'];
     
     return {
-      fillColor,
+      fillColor: getRiskColor(riskLevel),
       weight: isSelected ? 3 : 1,
-      opacity: 1,
-      color: isSelected ? '#1e40af' : '#6b7280',
-      dashArray: isSelected ? '' : '3',
-      fillOpacity: isSelected ? 0.7 : 0.5
+      opacity: isSelected ? 1 : 0.7,
+      color: isSelected ? '#000' : '#666',
+      dashArray: isSelected ? '5, 5' : undefined,
+      fillOpacity: getFillOpacity(riskLevel),
     };
   }, [selectedLSOA]);
-  
-  // Handle interaction with each LSOA area - memoized
-  const onEachFeature = useCallback((feature: any, layer: L.Layer) => {
-    const props = feature.properties;
+
+  // Style function for borough boundaries
+  const boroughStyle = useCallback((feature: BoroughFeature) => {
+    const properties = feature.properties;
+    const riskLevel = properties.risk_level || 'Unknown';
+    const isSelected = selectedBorough === properties.Borough;
     
-    // Create popup content
-    const popupContent = `
-      <div>
-        <h3 style="font-weight: bold; margin-bottom: 8px;">${props.LSOA11NM || 'Unknown Area'}</h3>
-        <p style="margin: 4px 0;">LSOA Code: ${props['LSOA code'] || 'N/A'}</p>
-        <p style="margin: 4px 0;">Burglary Count: ${props.burglary_count || 0}</p>
-        <p style="margin: 4px 0;">Risk Level: ${props.risk_level || 'Unknown'}</p>
-      </div>
-    `;
+    return {
+      fillColor: getRiskColor(riskLevel),
+      weight: isSelected ? 4 : 2,
+      opacity: isSelected ? 1 : 0.8,
+      color: isSelected ? '#000' : '#333',
+      dashArray: isSelected ? '10, 5' : undefined,
+      fillOpacity: getFillOpacity(riskLevel),
+    };
+  }, [selectedBorough]);
+
+  // Event handlers
+  const onEachLSOAFeature = useCallback((feature: LSOAFeature, layer: L.Layer) => {
+    const properties = feature.properties;
     
-    // Add popup
-    layer.bindPopup(popupContent);
-    
-    // Add hover effect
     layer.on({
       mouseover: (e) => {
         const target = e.target;
         target.setStyle({
           weight: 3,
-          color: '#1e40af',
-          dashArray: '',
-          fillOpacity: 0.7
+          color: '#000',
+          fillOpacity: 0.8
         });
         target.bringToFront();
       },
       mouseout: (e) => {
-        // Reset style unless this is the selected LSOA
-        if (selectedLSOA !== props['LSOA code']) {
-          (e.target as L.Path).setStyle(getAreaStyle(feature));
-        }
+        const target = e.target;
+        const currentStyle = lsoaStyle(feature);
+        target.setStyle(currentStyle);
       },
       click: () => {
-        if (onLSOASelect) {
-          onLSOASelect(props['LSOA code']);
+        if (onLSOASelect && properties['LSOA code']) {
+          onLSOASelect(properties['LSOA code']);
         }
       }
     });
-  }, [selectedLSOA, getAreaStyle, onLSOASelect]);
 
-  // Options for the GeoJSON layer - improves performance by using chunks to render large datasets
-  const geoJsonOptions = useMemo(() => ({
-    style: getAreaStyle,
-    onEachFeature: onEachFeature,
-    filter: (feature: any) => {
-      // Optional: Filter out some features if needed for performance
-      return true;
-    }
-  }), [getAreaStyle, onEachFeature]);
+    // Bind popup with LSOA information
+    const popupContent = `
+      <div class="space-y-2">
+        <h3 class="font-semibold text-sm">${properties['LSOA code']}</h3>
+        ${properties.LSOA11NM ? `<p class="text-xs text-gray-300">${properties.LSOA11NM}</p>` : ''}
+        <div class="space-y-1">
+          <p class="text-xs"><span class="font-medium">Burglary Count:</span> ${properties.burglary_count || 0}</p>
+          <p class="text-xs"><span class="font-medium">Risk Level:</span> ${properties.risk_level || 'Unknown'}</p>
+          ${properties.Borough ? `<p class="text-xs"><span class="font-medium">Borough:</span> ${properties.Borough}</p>` : ''}
+        </div>
+      </div>
+    `;
+    
+    layer.bindPopup(popupContent, {
+      className: 'lsoa-popup'
+    });
+  }, [lsoaStyle, onLSOASelect]);
 
-  // Map Controls - helper function for zoom
-  const handleZoom = useCallback((direction: 'in' | 'out') => (e: React.MouseEvent) => {
-    e.preventDefault();
-    const mapElement = document.querySelector('.leaflet-container');
-    if (mapElement) {
-      // Access the Leaflet map instance using the internal property
-      // @ts-ignore - This is a valid way to access the map in Leaflet
-      const map = mapElement['_leaflet_map'];
-      if (map) {
-        direction === 'in' ? map.zoomIn() : map.zoomOut();
+  const onEachBoroughFeature = useCallback((feature: BoroughFeature, layer: L.Layer) => {
+    const properties = feature.properties;
+    
+    layer.on({
+      mouseover: (e) => {
+        const target = e.target;
+        target.setStyle({
+          weight: 4,
+          color: '#000',
+          fillOpacity: 0.8
+        });
+        target.bringToFront();
+      },
+      mouseout: (e) => {
+        const target = e.target;
+        const currentStyle = boroughStyle(feature);
+        target.setStyle(currentStyle);
+      },
+      click: () => {
+        if (onBoroughSelect && properties.Borough) {
+          onBoroughSelect(properties.Borough);
+        }
       }
-    }
-  }, []);
+    });
 
-  // Modify the GeoJSON style function to use historical data when appropriate
-  const getGeoJsonStyle = useCallback((feature) => {
-    // Default style
-    const defaultStyle = {
-      fillColor: '#94a3b8',
-      weight: 1,
-      opacity: 0.7,
-      color: '#334155',
-      dashArray: '1',
-      fillOpacity: 0.7
-    };
+    // Bind popup with borough information
+    const popupContent = `
+      <div class="space-y-2">
+        <h3 class="font-semibold text-sm">${properties.Borough}</h3>
+        <div class="space-y-1">
+          <p class="text-xs"><span class="font-medium">Total Burglaries:</span> ${properties.burglary_count || 0}</p>
+          <p class="text-xs"><span class="font-medium">Risk Level:</span> ${properties.risk_level || 'Unknown'}</p>
+        </div>
+      </div>
+    `;
     
-    if (!feature.properties) return defaultStyle;
-    
-    let riskLevel = feature.properties.risk_level;
-    
-    // Use historical data if we're in historical mode
-    if (showHistorical && historicalData && historicalData.lsoa_risk) {
-      const historicalRisk = historicalData.lsoa_risk.find(
-        item => item.lsoa_code === feature.properties['LSOA code']
-      );
-      
-      if (historicalRisk) {
-        riskLevel = historicalRisk.risk_level;
-      }
-    }
-    
-    // Get color based on risk level
-    const fillColor = getRiskColor(riskLevel);
-    
-    return {
-      ...defaultStyle,
-      fillColor,
-      // Highlight the selected LSOA
-      weight: selectedLSOA === feature.properties['LSOA code'] ? 3 : 1,
-      color: selectedLSOA === feature.properties['LSOA code'] ? '#3b82f6' : '#334155',
-    };
-  }, [selectedLSOA, showHistorical, historicalData]);
+    layer.bindPopup(popupContent, {
+      className: 'borough-popup'
+    });
+  }, [boroughStyle, onBoroughSelect]);
+
+  // Loading state
+  if (loading) {
+    return (
+      <div className="h-full w-full flex items-center justify-center bg-slate-100">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-slate-600">Loading {mapLevel === 'lsoa' ? 'LSOA' : 'Borough'} boundaries...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="h-full w-full flex items-center justify-center bg-slate-100">
+        <div className="text-center text-red-600">
+          <p className="mb-2">Error loading map data:</p>
+          <p className="text-sm">{error}</p>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="mt-4 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const currentBoundaries = mapLevel === 'lsoa' ? lsoaBoundaries : boroughBoundaries;
+  
+  if (!currentBoundaries) {
+    return (
+      <div className="h-full w-full flex items-center justify-center bg-slate-100">
+        <div className="text-center">
+          <p className="text-slate-600">No {mapLevel === 'lsoa' ? 'LSOA' : 'Borough'} boundary data available</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="w-full h-full relative rounded-lg overflow-hidden border border-gray-200">
-      {loading && (
-        <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-75 z-10">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-800"></div>
+    <ErrorBoundary fallback={
+      <div className="h-full w-full flex items-center justify-center bg-slate-100">
+        <div className="text-center text-red-600">
+          <p>Map component error. Please refresh the page.</p>
         </div>
-      )}
-      
-      {error && (
-        <div className="absolute top-0 left-0 right-0 bg-red-500 text-white p-2 text-center text-sm z-10">
-          {error}
-        </div>
-      )}
-      
-      <MapContainer 
-        center={[51.515, -0.09]} 
-        zoom={12} 
-        style={{ height: '100%', width: '100%' }}
-        zoomControl={false}
-        preferCanvas={true} // Use canvas for better performance with large datasets
-      >
-        <MapStyleLayer />
-        
-        {/* Simple base layer - use a minimal tile layer for better performance */}
-        <TileLayer
-          url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-          subdomains="abcd"
-          maxZoom={19}
-        />
-        
-        {/* LSOA Boundaries Layer - with error boundary */}
-        {lsoaData && (
-          <GeoJSON
-            key={`lsoa-geojson-${Date.now()}`} // Add a key to force re-render when data changes
-            data={lsoaData}
-            style={getGeoJsonStyle}
-            onEachFeature={onEachFeature}
-            ref={geoJsonLayerRef}
+      </div>
+    }>
+      <div className="relative h-full w-full">
+        <MapContainer
+          center={LONDON_CENTER}
+          zoom={LONDON_ZOOM}
+          className="h-full w-full rounded-lg"
+          style={{ background: '#f8fafc' }}
+        >
+          <MapStyleLayer />
+          
+          {/* Base tile layer */}
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-        )}
-        
-        {/* Police Allocation Layer - Only shown when enabled */}
-        {showPoliceAllocation && (
-          <div className="police-allocation-overlay absolute inset-0 pointer-events-none z-[500]">
-            {loadingPoliceData && (
-              <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-25">
-                <div className="text-white text-lg bg-slate-700 bg-opacity-80 p-4 rounded-md">Loading Police Allocation...</div>
-              </div>
-            )}
-            {errorPoliceData && (
-              <div className="absolute top-10 left-1/2 -translate-x-1/2 bg-orange-600 text-white p-2 text-center text-sm rounded-md shadow-lg z-20">
-                Error loading police data: {errorPoliceData}
-              </div>
-            )}
-            {!loadingPoliceData && !errorPoliceData && policeAllocationPoints.length > 0 && (
-              <MapContainer
-                key="police-map-overlay" // Ensure this MapContainer instance is separate
-                center={[51.515, -0.09]} // Should match main map
-                zoom={12} // Should match main map initial zoom
-                style={{ height: '100%', width: '100%', background: 'transparent' }}
-                zoomControl={false}
-                attributionControl={false}
-                scrollWheelZoom={false}
-                dragging={false}
-                doubleClickZoom={false}
-                touchZoom={false}
-                className="pointer-events-auto"
-              >
-                <FeatureGroup>
-                  {policeAllocationPoints.map((point, index) => {
-                    if (typeof point.lat !== 'number' || typeof point.lon !== 'number') {
-                      console.warn('Skipping police allocation point with invalid coordinates:', point);
-                      return null;
-                    }
-                    // Determine patrol type based on officer_count or other logic if available
-                    // For now, let's alternate or use a simple logic like the mock data had.
-                    const patrolType = point.officer_count && point.officer_count > 2 ? 'vehicle' : 'officer';
 
-                    return (
+          {/* Layer controls */}
+          <LayersControl position="topright">
+            {/* LSOA Boundaries Layer */}
+            {mapLevel === 'lsoa' && lsoaBoundaries && (
+              <LayersControl.Overlay checked name="LSOA Boundaries">
+                <FeatureGroup>
+                  <GeoJSON
+                    key={`lsoa-${selectedLSOA || 'none'}`}
+                    data={lsoaBoundaries}
+                    style={lsoaStyle}
+                    onEachFeature={onEachLSOAFeature}
+                  />
+                </FeatureGroup>
+              </LayersControl.Overlay>
+            )}
+
+            {/* Borough Boundaries Layer */}
+            {mapLevel === 'borough' && boroughBoundaries && (
+              <LayersControl.Overlay checked name="Borough Boundaries">
+                <FeatureGroup>
+                  <GeoJSON
+                    key={`borough-${selectedBorough || 'none'}`}
+                    data={boroughBoundaries}
+                    style={boroughStyle}
+                    onEachFeature={onEachBoroughFeature}
+                  />
+                </FeatureGroup>
+              </LayersControl.Overlay>
+            )}
+
+            {/* Police Allocation Layer */}
+            {showPoliceAllocation && policeAllocation.length > 0 && (
+              <LayersControl.Overlay checked={showPoliceAllocation} name="Police Allocation">
+                <FeatureGroup>
+                  <ZoomDependentMarkers>
+                    {policeAllocation.map((allocation, index) => (
                       <ZoomAwareMarker
-                        key={`police-point-${index}`}
-                        position={[point.lat, point.lon]}
-                        patrolType={patrolType}
+                        key={index}
+                        position={[allocation.lat, allocation.lon]}
+                        patrolType={allocation.officer_count > 2 ? 'vehicle' : 'officer'}
                       >
                         <Popup>
-                          <div>
-                            <h3 className="font-bold mb-1">Optimized Patrol Point {index + 1}</h3>
-                            <p>Coordinates: {point.lat.toFixed(4)}, {point.lon.toFixed(4)}</p>
-                            {point.officer_count && <p>Officers: {point.officer_count}</p>}
-                            {point.cluster_risk_score && <p>Risk Score: {point.cluster_risk_score.toFixed(3)}</p>}
-                            {/* Add more details from the point data if available */}
+                          <div className="text-center">
+                            <h4 className="font-semibold text-sm mb-1">Police Allocation</h4>
+                            <p className="text-xs mb-1">Officers: {allocation.officer_count}</p>
+                            <p className="text-xs mb-1">Risk Score: {(allocation.risk_score * 100).toFixed(1)}%</p>
+                            <p className="text-xs">
+                              Type: {allocation.officer_count > 2 ? 'Vehicle Patrol' : 'Foot Patrol'}
+                            </p>
                           </div>
                         </Popup>
                       </ZoomAwareMarker>
-                    );
-                  })}
+                    ))}
+                  </ZoomDependentMarkers>
                 </FeatureGroup>
-              </MapContainer>
+              </LayersControl.Overlay>
             )}
-          </div>
-        )}
-        
-        {/* Prediction Markers Layer */}
-        {predictionMarkers.length > 0 && (
-          <div className="prediction-markers-layer">
-            {predictionMarkers.map((marker, index) => {
-              // Set color based on risk level
-              const color = marker.risk === 'High' ? '#ef4444' : 
-                            marker.risk === 'Medium' ? '#f59e0b' : '#22c55e';
-              
-              return (
-                <CircleMarker
-                  key={`prediction-${index}`}
-                  center={[marker.lat, marker.lon]}
-                  radius={marker.risk === 'High' ? 8 : marker.risk === 'Medium' ? 6 : 4}
-                  pathOptions={{
-                    color: color,
-                    fillColor: color,
-                    fillOpacity: 0.7,
-                    weight: 1
-                  }}
-                >
-                  <Popup>
-                    <div>
-                      <h3 className="font-bold mb-1">Predicted Hotspot</h3>
-                      <p>Risk Level: {marker.risk}</p>
-                      <p>Model: {predictionModel}</p>
-                      <p>Confidence: {Math.floor(70 + Math.random() * 25)}%</p>
-                    </div>
-                  </Popup>
-                </CircleMarker>
-              );
-            })}
-          </div>
-        )}
-        
-        {/* Map Controls */}
-        <div className="leaflet-top leaflet-left">
-          <div className="leaflet-control leaflet-bar">
-            <a 
-              href="#" 
-              title="Zoom in"
-              onClick={handleZoom('in')}
-              style={{ 
-                display: 'block', 
-                height: '30px', 
-                width: '30px', 
-                lineHeight: '30px', 
-                textAlign: 'center', 
-                fontSize: '18px',
-                fontWeight: 'bold',
-                color: '#374151',
-                textDecoration: 'none',
-                backgroundColor: 'white',
-                borderBottom: '1px solid #ccc'
-              }}
-            >
-              +
-            </a>
-            <a 
-              href="#" 
-              title="Zoom out"
-              onClick={handleZoom('out')}
-              style={{ 
-                display: 'block', 
-                height: '30px', 
-                width: '30px', 
-                lineHeight: '30px', 
-                textAlign: 'center', 
-                fontSize: '18px',
-                fontWeight: 'bold',
-                color: '#374151',
-                textDecoration: 'none',
-                backgroundColor: 'white'
-              }}
-            >
-              -
-            </a>
-          </div>
-        </div>
-        
-        <MapLegend />
-      </MapContainer>
-    </div>
+
+            {/* Predictions Layer */}
+            {showPredictions && predictions.length > 0 && (
+              <LayersControl.Overlay checked={showPredictions} name="Crime Predictions">
+                <FeatureGroup>
+                  {predictions.map((prediction, index) => (
+                    <CircleMarker
+                      key={index}
+                      center={[prediction.lat, prediction.lon]}
+                      radius={Math.max(3, prediction.intensity * 10)}
+                      pathOptions={{
+                        color: prediction.intensity > 0.7 ? '#ef4444' : prediction.intensity > 0.4 ? '#f97316' : '#eab308',
+                        fillColor: prediction.intensity > 0.7 ? '#ef4444' : prediction.intensity > 0.4 ? '#f97316' : '#eab308',
+                        fillOpacity: 0.6
+                      }}
+                    >
+                      <Popup>
+                        <div className="text-center">
+                          <h4 className="font-semibold text-sm mb-1">Crime Prediction</h4>
+                          <p className="text-xs mb-1">Intensity: {(prediction.intensity * 100).toFixed(1)}%</p>
+                          <p className="text-xs">Model: {predictionModel}</p>
+                        </div>
+                      </Popup>
+                    </CircleMarker>
+                  ))}
+                </FeatureGroup>
+              </LayersControl.Overlay>
+            )}
+          </LayersControl>
+
+          {/* Map Legend */}
+          <MapLegend />
+        </MapContainer>
+      </div>
+    </ErrorBoundary>
   );
 };
 
