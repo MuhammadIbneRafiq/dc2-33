@@ -146,27 +146,53 @@ const DynamicMarker = ({ position, patrolType, children }: Omit<DynamicMarkerPro
 
 // Custom icon creation for police officers - LARGER and MORE VISIBLE
 const createPoliceIcon = (zoom = 11) => {
-  const iconSize = getZoomDependentSize(50, zoom); // Increased base size from 30 to 50
+  const size = Math.max(15, Math.min(25, zoom * 1.5)); // Smaller size: 15-25px
   return L.divIcon({
-    html: `<div style="background-color: #ff0000; width: ${iconSize}px; height: ${iconSize}px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; border: 4px solid #ffff00; box-shadow: 0 6px 20px rgba(255,0,0,1); position: relative; z-index: 2000;">
-      <span style="font-size: ${iconSize * 0.7}px;">👮</span>
-    </div>`,
-    className: 'police-icon-mega',
-    iconSize: [iconSize, iconSize],
-    iconAnchor: [iconSize/2, iconSize/2],
+    html: `
+      <div style="
+        background: #3b82f6;
+        border: 2px solid #1e40af;
+        border-radius: 50%;
+        width: ${size}px;
+        height: ${size}px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: ${size * 0.6}px;
+        color: white;
+        font-weight: bold;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      ">👮</div>
+    `,
+    className: 'police-icon',
+    iconSize: [size, size],
+    iconAnchor: [size/2, size/2]
   });
 };
 
 // Custom icon creation for police vehicles - LARGER and MORE VISIBLE
 const createVehicleIcon = (zoom = 11) => {
-  const iconSize = getZoomDependentSize(55, zoom); // Increased base size from 35 to 55
+  const size = Math.max(15, Math.min(25, zoom * 1.5)); // Smaller size: 15-25px
   return L.divIcon({
-    html: `<div style="background-color: #ff0000; width: ${iconSize}px; height: ${iconSize}px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; border: 4px solid #ffff00; box-shadow: 0 6px 20px rgba(255,0,0,1); position: relative; z-index: 2000;">
-      <span style="font-size: ${iconSize * 0.7}px;">🚓</span>
-    </div>`,
-    className: 'vehicle-icon-mega',
-    iconSize: [iconSize, iconSize],
-    iconAnchor: [iconSize/2, iconSize/2],
+    html: `
+      <div style="
+        background: #059669;
+        border: 2px solid #047857;
+        border-radius: 50%;
+        width: ${size}px;
+        height: ${size}px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: ${size * 0.6}px;
+        color: white;
+        font-weight: bold;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      ">🚔</div>
+    `,
+    className: 'vehicle-icon',
+    iconSize: [size, size],
+    iconAnchor: [size/2, size/2]
   });
 };
 
@@ -952,29 +978,32 @@ const MapComponent = ({
       console.log('🚨 GENERATING POLICE DEPLOYMENT IN CITY OF LONDON!');
       
       const policeUnits = [];
-      // City of London boundaries (approximately)
-      const cityOfLondon = {
-        north: 51.5230,
-        south: 51.5085,
-        east: -0.0730,
-        west: -0.0980
-      };
-      const numUnits = 10; // Reduced to 10 units
+      // Precise City of London coordinates (financial district core)
+      const cityOfLondonPoints = [
+        { lat: 51.5155, lng: -0.0922 }, // Bank Junction
+        { lat: 51.5144, lng: -0.0907 }, // Royal Exchange
+        { lat: 51.5134, lng: -0.0886 }, // Leadenhall Market
+        { lat: 51.5164, lng: -0.0840 }, // Lloyd's of London
+        { lat: 51.5178, lng: -0.0854 }, // Bishopsgate
+        { lat: 51.5151, lng: -0.0955 }, // St Paul's Cathedral area
+        { lat: 51.5140, lng: -0.0963 }, // Ludgate Hill
+        { lat: 51.5124, lng: -0.0934 }, // Cannon Street
+        { lat: 51.5170, lng: -0.0881 }, // Liverpool Street area
+        { lat: 51.5147, lng: -0.0874 }  // Gracechurch Street
+      ];
       
-      for (let i = 0; i < numUnits; i++) {
-        // Generate random coordinates within City of London boundaries
-        const lat = cityOfLondon.south + Math.random() * (cityOfLondon.north - cityOfLondon.south);
-        const lng = cityOfLondon.west + Math.random() * (cityOfLondon.east - cityOfLondon.west);
+      for (let i = 0; i < 10; i++) {
+        const point = cityOfLondonPoints[i];
         
         policeUnits.push({
           id: `police-${i}`,
-          lat,
-          lng,
+          lat: point.lat,
+          lng: point.lng,
           type: Math.random() > 0.5 ? 'vehicle' : 'officer',
           assignedArea: 'City of London',
           status: 'ACTIVE_PATROL',
-          alert_emoji: '🚨',
-          alert_level: 'ACTIVE',
+          alert_emoji: '👮',
+          alert_level: 'PATROL',
           unit_type: Math.random() > 0.8 ? 'Armed Response' : Math.random() > 0.6 ? 'K9 Unit' : 'Patrol Unit',
           response_time: Math.round(Math.random() * 5) + 1 + ' mins'
         });
@@ -995,19 +1024,26 @@ const MapComponent = ({
       console.log('🔴 GENERATING BURGLARY PREDICTIONS IN CITY OF LONDON!');
       
       const points = [];
-      // City of London boundaries (approximately)
-      const cityOfLondon = {
-        north: 51.5230,
-        south: 51.5085,
-        east: -0.0730,
-        west: -0.0980
-      };
-      const numPoints = 100;
+      // Precise City of London coordinates (100 strategic points)
+      const basePoints = [
+        { lat: 51.5155, lng: -0.0922 }, // Bank Junction
+        { lat: 51.5144, lng: -0.0907 }, // Royal Exchange
+        { lat: 51.5134, lng: -0.0886 }, // Leadenhall Market
+        { lat: 51.5164, lng: -0.0840 }, // Lloyd's of London
+        { lat: 51.5178, lng: -0.0854 }, // Bishopsgate
+        { lat: 51.5151, lng: -0.0955 }, // St Paul's Cathedral area
+        { lat: 51.5140, lng: -0.0963 }, // Ludgate Hill
+        { lat: 51.5124, lng: -0.0934 }, // Cannon Street
+        { lat: 51.5170, lng: -0.0881 }, // Liverpool Street area
+        { lat: 51.5147, lng: -0.0874 }  // Gracechurch Street
+      ];
       
-      for (let i = 0; i < numPoints; i++) {
-        // Generate random coordinates within City of London boundaries
-        const lat = cityOfLondon.south + Math.random() * (cityOfLondon.north - cityOfLondon.south);
-        const lng = cityOfLondon.west + Math.random() * (cityOfLondon.east - cityOfLondon.west);
+      // Generate 100 points by creating variations around base points
+      for (let i = 0; i < 100; i++) {
+        const basePoint = basePoints[i % basePoints.length];
+        // Small random offset within City of London (±0.002 degrees ≈ ±200m)
+        const lat = basePoint.lat + (Math.random() - 0.5) * 0.004;
+        const lng = basePoint.lng + (Math.random() - 0.5) * 0.004;
         
         const riskLevels = ['High', 'Medium', 'Low'];
         const riskLevel = riskLevels[Math.floor(Math.random() * riskLevels.length)];
@@ -1020,7 +1056,7 @@ const MapComponent = ({
           category: 'burglary',
           risk_level: riskLevel,
           date: new Date().toISOString().slice(0, 10),
-          location_type: ['Residential', 'Commercial', 'Other'][Math.floor(Math.random() * 3)],
+          location_type: ['Commercial', 'Office', 'Retail'][Math.floor(Math.random() * 3)],
           outcome_status: 'Predicted'
         });
       }
@@ -1311,7 +1347,7 @@ const MapComponent = ({
           {burglaryPoints.length > 0 && (
             <div className="leaflet-top leaflet-left" style={{ marginTop: '300px', marginLeft: '10px' }}>
               <div className="bg-red-600 text-white px-3 py-2 rounded shadow-lg text-sm font-medium">
-                🔴 Burglary Points: {burglaryPoints.length} active alerts
+                🚨 Burglary Points: {burglaryPoints.length} active alerts
               </div>
             </div>
           )}
@@ -1344,22 +1380,21 @@ const MapComponent = ({
                 console.log(`🔴 SIMPLE POLICE CIRCLE: Unit ${index} at ${unit.lat}, ${unit.lng}`);
                 return (
                   <CircleMarker
-                    key={`simple-police-${unit.id || index}`}
+                    key={`simple-police-${index}`}
                     center={[unit.lat, unit.lng]}
                     radius={8}
-                    pathOptions={{
-                      color: '#ff0000',
-                      fillColor: '#ff0000',
-                      fillOpacity: 0.9,
-                      weight: 3
-                    }}
+                    fillColor={unit.type === 'vehicle' ? '#059669' : '#3b82f6'}
+                    color="#ffffff"
+                    weight={2}
+                    opacity={1}
+                    fillOpacity={0.8}
                   >
                     <Popup>
-                      <div className="text-center">
-                        <h4 className="font-semibold text-sm mb-1 text-red-600">🚨 POLICE UNIT</h4>
-                        <p className="text-xs mb-1"><strong>Type:</strong> {unit.type === 'vehicle' ? '🚓 Vehicle' : '👮 Officer'}</p>
-                        <p className="text-xs mb-1"><strong>Status:</strong> <span className="text-red-600 font-bold">DEPLOYED</span></p>
-                        <p className="text-xs text-gray-600">Unit #{index + 1}</p>
+                      <div className="text-sm">
+                        <strong>Police Unit #{index + 1}</strong><br/>
+                        Type: {unit.type}<br/>
+                        Area: {unit.assignedArea}<br/>
+                        Status: {unit.status}
                       </div>
                     </Popup>
                   </CircleMarker>
