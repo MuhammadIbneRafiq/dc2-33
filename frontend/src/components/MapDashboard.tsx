@@ -42,6 +42,7 @@ const MapDashboard: React.FC<MapDashboardProps> = ({ onLSOASelect, selectedLSOA 
       
       // Import the real API functions
       const { api } = await import('../api/api');
+      console.log('✅ API imported successfully');
       
       // Get real burglary data for the last 3 months
       const endDate = new Date();
@@ -53,12 +54,17 @@ const MapDashboard: React.FC<MapDashboardProps> = ({ onLSOASelect, selectedLSOA 
         endDate.toISOString().slice(0, 7)
       );
       
+      console.log('📅 Generated months for API calls:', months);
+      
       const realBurglaryData = await api.police.getLondonBurglaryData(months);
+      console.log('🔍 Raw API response:', realBurglaryData);
+      
       setBurglaryData(realBurglaryData);
       console.log(`✅ Loaded ${realBurglaryData.length} real burglary points from UK Police API`);
       
     } catch (error) {
       console.error('❌ Error fetching burglary data:', error);
+      console.error('❌ Error details:', error instanceof Error ? error.message : 'Unknown error');
       setBurglaryData([]);
     } finally {
       setIsLoadingBurglaryData(false);

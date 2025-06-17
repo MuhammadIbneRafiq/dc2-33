@@ -279,7 +279,7 @@ const MapComponent = ({
   const [policeAllocation, setPoliceAllocation] = useState<any[]>([]);
   const [predictions, setPredictions] = useState<any[]>([]);
   const [historicalData, setHistoricalData] = useState<any[]>([]);
-  const [burglaryPoints, setBurglaryPoints] = useState<any[]>(burglaryData);
+  const [burglaryPoints, setBurglaryPoints] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -822,9 +822,11 @@ const MapComponent = ({
 
   // Update burglary points when data changes from parent
   useEffect(() => {
-    setBurglaryPoints(burglaryData);
-    console.log(`📍 Updated burglary points: ${burglaryData.length} points`);
-  }, [burglaryData]);
+    if (burglaryData.length !== burglaryPoints.length) {
+      setBurglaryPoints(burglaryData);
+      console.log(`📍 Updated burglary points: ${burglaryData.length} points`);
+    }
+  }, [burglaryData, burglaryPoints.length]);
 
   // Update view level when mapLevel prop changes
   useEffect(() => {
