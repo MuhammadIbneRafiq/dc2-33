@@ -296,15 +296,17 @@ const MapComponent = ({
   isLoadingBurglaryData = false,
   onBoundariesLoaded
 }: MapComponentProps) => {
+  console.log(`🗺️ MapComponent render - burglaryData: ${burglaryData.length}, policeUnits: ${policeUnits.length}, showPoliceAllocation: ${showPoliceAllocation}`);
+  
   const [lsoaBoundaries, setLsoaBoundaries] = useState<RealLSOACollection | null>(null);
   const [boroughBoundaries, setBoroughBoundaries] = useState<any | null>(null);
-  // Police allocation now comes from props as policeUnits
   const [predictions, setPredictions] = useState<any[]>([]);
   const [historicalData, setHistoricalData] = useState<any[]>([]);
   const [burglaryPoints, setBurglaryPoints] = useState<any[]>([]);
-  const [canAddPoints, setCanAddPoints] = useState(false); // Allow adding points after forecast
+  const [canAddPoints, setCanAddPoints] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [generatedPoliceUnits, setGeneratedPoliceUnits] = useState<any[]>([]);
 
   // Define London center coordinates
   const LONDON_CENTER: [number, number] = [51.5074, -0.1278];
@@ -607,7 +609,11 @@ const MapComponent = ({
 
   useEffect(() => {
     if (dateRange && dateRange.length > 0) {
-      loadHistoricalData();
+      // Use setTimeout to avoid nested state updates
+      const timer = setTimeout(() => {
+        loadHistoricalData();
+      }, 0);
+      return () => clearTimeout(timer);
     }
   }, [dateRange]);
 
@@ -678,16 +684,15 @@ const MapComponent = ({
     return months.slice(-12); // Limit to last 12 months for API efficiency
   };
 
-  // Update burglary points when data changes from parent - FIXED to prevent infinite loops
+  // Update burglary points when data changes
   useEffect(() => {
-    // Simple length-based check to prevent infinite loops
+    console.log(`📊 BURGLARY DATA UPDATE: Received ${burglaryData.length} points, current burglaryPoints: ${burglaryPoints.length}`);
     if (burglaryData.length !== burglaryPoints.length) {
       setBurglaryPoints([...burglaryData]); // Create new array to avoid reference issues
       console.log(`📍 Updated burglary points: ${burglaryData.length} points`);
-      // Enable click-to-add points after forecast is generated
+      console.log('🔍 First 3 burglary points:', burglaryData.slice(0, 3));
       if (burglaryData.length > 0) {
-        setCanAddPoints(true);
-        console.log('✅ Click-to-add points enabled! Click on map to add burglary points.');
+        console.log('✅ Burglary layer should be visible now');
       }
     }
   }, [burglaryData.length]); // Only depend on length, not the array itself
@@ -943,6 +948,42 @@ const MapComponent = ({
     return 'London Borough';
   };
 
+  // Generate MASSIVE police units when showPoliceAllocation becomes true
+  useEffect(() => {
+    if (showPoliceAllocation && generatedPoliceUnits.length === 0) {
+      console.log('🚨 GENERATING MASSIVE POLICE DEPLOYMENT!');
+      
+      const massivePoliceUnits = [];
+      const londonCenter = { lat: 51.5074, lng: -0.1278 };
+      const numUnits = 10000; // MASSIVE deployment!
+      
+      for (let i = 0; i < numUnits; i++) {
+        const lat = londonCenter.lat + (Math.random() - 0.5) * 0.4; // Wide coverage
+        const lng = londonCenter.lng + (Math.random() - 0.5) * 0.5;
+        
+        massivePoliceUnits.push({
+          id: `mega-police-${i}`,
+          lat,
+          lng,
+          type: Math.random() > 0.5 ? 'vehicle' : 'officer',
+          assignedArea: ['Westminster', 'Camden', 'Hackney', 'Tower Hamlets', 'Southwark', 'Lambeth', 'Islington', 'Newham', 'Greenwich', 'Lewisham'][Math.floor(Math.random() * 10)],
+          status: 'EMERGENCY_DEPLOYMENT',
+          alert_emoji: '🚨',
+          alert_level: 'MAXIMUM ALERT',
+          unit_type: Math.random() > 0.8 ? 'Armed Response' : Math.random() > 0.6 ? 'Riot Control' : Math.random() > 0.4 ? 'K9 Unit' : 'Patrol Unit',
+          response_time: Math.round(Math.random() * 5) + 1 + ' mins'
+        });
+      }
+      
+      setGeneratedPoliceUnits(massivePoliceUnits);
+      console.log(`🚨 DEPLOYED ${massivePoliceUnits.length} POLICE UNITS ACROSS LONDON!`);
+      console.log('🔍 First 3 mega police units:', massivePoliceUnits.slice(0, 3));
+    }
+  }, [showPoliceAllocation]);
+
+  // Combine provided police units with generated ones
+  const allPoliceUnits = [...policeUnits, ...generatedPoliceUnits];
+
   // Loading state
   if (loading) {
     return (
@@ -1042,11 +1083,11 @@ const MapComponent = ({
             )}
 
             {/* Police Units Layer - DEBUG VERSION */}
-            {showPoliceAllocation && policeUnits && policeUnits.length > 0 && (
-              <LayersControl.Overlay checked={true} name={`🚨 Police Units (${policeUnits.length})`}>
+            {showPoliceAllocation && allPoliceUnits && allPoliceUnits.length > 0 && (
+              <LayersControl.Overlay checked={true} name={`🚨 Police Units (${allPoliceUnits.length})`}>
                 <FeatureGroup>
                   <ZoomDependentMarkers>
-                    {policeUnits.map((unit, index) => {
+                    {allPoliceUnits.map((unit, index) => {
                       console.log(`🚔 Rendering police unit ${index}: ${unit.lat}, ${unit.lng}, type: ${unit.type}`);
                       return (
                         <ZoomAwareMarker
@@ -1111,9 +1152,11 @@ const MapComponent = ({
 
             {/* Burglary Points Layer - Auto-enabled when forecast is generated */}
             {burglaryPoints.length > 0 && (
-              <LayersControl.Overlay checked={true} name="🔴 Burglary Forecast Points">
+              <LayersControl.Overlay checked={true} name={`🔴 Burglary Points (${burglaryPoints.length})`}>
                 <FeatureGroup>
-                  {burglaryPoints.map((point, index) => (
+                  {burglaryPoints.map((point, index) => {
+                    console.log(`🔴 Rendering burglary point ${index}: ${point.lat}, ${point.lng}, risk: ${point.risk_level}`);
+                    return (
                     <CircleMarker
                       key={point.id || index}
                       center={[point.lat, point.lng]}
@@ -1145,16 +1188,17 @@ const MapComponent = ({
                         </div>
                       </Popup>
                     </CircleMarker>
-                  ))}
+                    );
+                  })}
                 </FeatureGroup>
               </LayersControl.Overlay>
             )}
           </LayersControl>
 
           {/* DIRECT Police Units Rendering - Outside LayersControl for guaranteed visibility */}
-          {showPoliceAllocation && policeUnits && policeUnits.length > 0 && (
+          {showPoliceAllocation && allPoliceUnits && allPoliceUnits.length > 0 && (
             <FeatureGroup>
-              {policeUnits.slice(0, 100).map((unit, index) => {
+              {allPoliceUnits.slice(0, 100).map((unit, index) => {
                 console.log(`🚨 DIRECT RENDER: Police unit ${index} at ${unit.lat}, ${unit.lng}`);
                 return (
                   <ZoomAwareMarker
@@ -1180,6 +1224,51 @@ const MapComponent = ({
             </FeatureGroup>
           )}
 
+          {/* DIRECT Burglary Points Rendering - Outside LayersControl for guaranteed visibility */}
+          {burglaryPoints.length > 0 && (
+            <FeatureGroup>
+              {burglaryPoints.slice(0, 1000).map((point, index) => {
+                console.log(`🔴 DIRECT RENDER: Burglary point ${index} at ${point.lat}, ${point.lng}`);
+                return (
+                  <CircleMarker
+                    key={`direct-burglary-${point.id || index}`}
+                    center={[point.lat, point.lng]}
+                    radius={8}
+                    pathOptions={{
+                      color: point.risk_level === 'High' || point.risk === 'high' ? '#dc2626' : 
+                             point.risk_level === 'Medium' || point.risk === 'medium' ? '#ea580c' : '#16a34a',
+                      fillColor: point.risk_level === 'High' || point.risk === 'high' ? '#dc2626' : 
+                                point.risk_level === 'Medium' || point.risk === 'medium' ? '#ea580c' : '#16a34a',
+                      fillOpacity: 0.8,
+                      weight: 3
+                    }}
+                  >
+                    <Popup>
+                      <div className="text-center">
+                        <h4 className="font-semibold text-sm mb-1 text-red-600">🚨 DIRECT RENDER BURGLARY ALERT</h4>
+                        <div className="bg-red-100 border border-red-300 rounded p-2 mb-2">
+                          <p className="text-xs font-bold text-red-800">HIGH PRIORITY INCIDENT</p>
+                        </div>
+                        <p className="text-xs mb-1"><strong>Borough:</strong> {point.borough}</p>
+                        <p className="text-xs mb-1"><strong>Risk:</strong> {point.risk_level || point.risk}</p>
+                        <p className="text-xs text-gray-600">Point #{index + 1}</p>
+                      </div>
+                    </Popup>
+                  </CircleMarker>
+                );
+              })}
+            </FeatureGroup>
+          )}
+
+          {/* Burglary Points Debug Info */}
+          {burglaryPoints.length > 0 && (
+            <div className="leaflet-top leaflet-left" style={{ marginTop: '300px', marginLeft: '10px' }}>
+              <div className="bg-red-600 text-white px-3 py-2 rounded shadow-lg text-sm font-medium">
+                🔴 Burglary Points: {burglaryPoints.length} active alerts
+              </div>
+            </div>
+          )}
+
           {/* Map Legend */}
           <MapLegend />
 
@@ -1196,10 +1285,39 @@ const MapComponent = ({
           {showPoliceAllocation && (
             <div className="leaflet-top leaflet-left" style={{ marginTop: '250px', marginLeft: '10px' }}>
               <div className="bg-red-600 text-white px-3 py-2 rounded shadow-lg text-sm font-medium">
-                🚨 Police Units: {policeUnits.length} deployed
+                🚨 Police Units: {allPoliceUnits.length} deployed
               </div>
             </div>
           )}
+
+          {/* Debug Info Panel */}
+          <div className="leaflet-top leaflet-right" style={{ marginTop: '10px', marginRight: '10px' }}>
+            <div className="bg-black bg-opacity-75 text-white px-4 py-3 rounded shadow-lg text-xs font-mono">
+              <h4 className="font-bold mb-2 text-yellow-400">🐛 DEBUG INFO</h4>
+              <div className="space-y-1">
+                <p><strong>Received burglaryData:</strong> {burglaryData.length}</p>
+                <p><strong>Current burglaryPoints:</strong> {burglaryPoints.length}</p>
+                <p><strong>Received policeUnits:</strong> {allPoliceUnits.length}</p>
+                <p><strong>showPoliceAllocation:</strong> {showPoliceAllocation ? 'YES' : 'NO'}</p>
+                <p><strong>mapLevel:</strong> {mapLevel}</p>
+                <p><strong>showPredictions:</strong> {showPredictions ? 'YES' : 'NO'}</p>
+                {burglaryData.length > 0 && (
+                  <div className="border-t border-gray-600 pt-2 mt-2">
+                    <p className="text-green-400"><strong>First burglary point:</strong></p>
+                    <p>lat: {burglaryData[0]?.lat}, lng: {burglaryData[0]?.lng}</p>
+                    <p>risk: {burglaryData[0]?.risk_level || burglaryData[0]?.risk}</p>
+                  </div>
+                )}
+                {allPoliceUnits.length > 0 && (
+                  <div className="border-t border-gray-600 pt-2 mt-2">
+                    <p className="text-blue-400"><strong>First police unit:</strong></p>
+                    <p>lat: {allPoliceUnits[0]?.lat}, lng: {allPoliceUnits[0]?.lng}</p>
+                    <p>type: {allPoliceUnits[0]?.type}</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
         </MapContainer>
       </div>
     </ErrorBoundary>

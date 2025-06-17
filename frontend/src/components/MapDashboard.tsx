@@ -1,14 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { BarChart3, Map, Users, TrendingUp, ToggleLeft, ToggleRight } from 'lucide-react';
+import { TrendingUp, Users } from 'lucide-react';
 import MapComponent from './map/MapComponent';
-import Header from './Header';
-import Sidebar from './Sidebar';
-import CrimeMap from './CrimeMap';
-import PoliceAllocation from './PoliceAllocation';
-import DashboardStats from './DashboardStats';
-import DataAnalytics from './DataAnalytics';
-import PoliceChat from './PoliceChat';
 
 interface MapDashboardProps {
   onLSOASelect?: (lsoa: string) => void;
@@ -16,12 +9,8 @@ interface MapDashboardProps {
 }
 
 const MapDashboard: React.FC<MapDashboardProps> = ({ onLSOASelect, selectedLSOA }) => {
-  const [activeView, setActiveView] = useState<'lsoa' | 'borough'>('lsoa');
   const [showPoliceAllocation, setShowPoliceAllocation] = useState<boolean>(false);
   const [showPredictions, setShowPredictions] = useState<boolean>(false);
-  const [isBackendConnected] = useState<boolean>(false); // Always false - no backend
-  const [policeData, setPoliceData] = useState<any[] | null>(null);
-  const [allocationMetrics, setAllocationMetrics] = useState<any | null>(null);
   const [policeAllocationEnabled, setPoliceAllocationEnabled] = useState(false);
   const [policeUnits, setPoliceUnits] = useState<any[]>([]);
   const [mapLevel, setMapLevel] = useState<'lsoa' | 'borough'>('lsoa');
@@ -66,6 +55,8 @@ const MapDashboard: React.FC<MapDashboardProps> = ({ onLSOASelect, selectedLSOA 
     setBurglaryData([...randomDots]);
     
     console.log(`✅ Generated ${randomDots.length} random burglary dots on map instantly!`);
+    console.log('🔍 MapDashboard: First 3 burglary points:', randomDots.slice(0, 3));
+    console.log('🔍 MapDashboard: Setting burglaryData state with', randomDots.length, 'points');
     
     setIsGeneratingForecast(false);
   };
@@ -100,25 +91,36 @@ const MapDashboard: React.FC<MapDashboardProps> = ({ onLSOASelect, selectedLSOA 
 
   // Generate minimal burglary data as fallback
   const generateMinimalBurglaryData = (): any[] => {
-    const minimalData = [];
+    console.log('🔥 Generating MASSIVE burglary dataset...');
+    const massiveData = [];
     const londonCenter = { lat: 51.5074, lng: -0.1278 };
     
-    // Just 10 points for minimal load
-    for (let i = 0; i < 10; i++) {
-      const lat = londonCenter.lat + (Math.random() - 0.5) * 0.1;
-      const lng = londonCenter.lng + (Math.random() - 0.5) * 0.15;
+    // Generate 8000 burglary points for massive visualization
+    for (let i = 0; i < 8000; i++) {
+      const lat = londonCenter.lat + (Math.random() - 0.5) * 0.4; // Wider spread
+      const lng = londonCenter.lng + (Math.random() - 0.5) * 0.6;
       
-      minimalData.push({
-        id: `minimal-${i}`,
+      const riskLevel = Math.random();
+      const risk = riskLevel > 0.7 ? 'high' : riskLevel > 0.4 ? 'medium' : 'low';
+      
+      massiveData.push({
+        id: `burglary-${i}`,
         lat,
         lng,
-        borough: 'Westminster',
+        latitude: lat, // Both formats for compatibility
+        longitude: lng,
+        borough: ['Westminster', 'Camden', 'Hackney', 'Tower Hamlets', 'Southwark', 'Lambeth'][Math.floor(Math.random() * 6)],
         category: 'burglary',
-        risk_level: 'Medium'
+        risk_level: risk,
+        risk: risk,
+        count: Math.floor(Math.random() * 10) + 1,
+        date: new Date().toISOString(),
+        lsoa: `E01000${String(i).padStart(3, '0')}`
       });
     }
     
-    return minimalData;
+    console.log(`✅ Generated ${massiveData.length} burglary points:`, massiveData.slice(0, 3));
+    return massiveData;
   };
 
   // Step 4: INSTANT police allocation with MASSIVE random placement
@@ -153,6 +155,8 @@ const MapDashboard: React.FC<MapDashboardProps> = ({ onLSOASelect, selectedLSOA 
     setShowPoliceAllocation(true);
     console.log(`🚨 Deployed ${randomPoliceUnits.length} police units across London with RED ALERT status!`);
     console.log('🔍 First 3 police units:', randomPoliceUnits.slice(0, 3));
+    console.log('🔍 MapDashboard: Setting policeUnits state with', randomPoliceUnits.length, 'units');
+    console.log('🔍 MapDashboard: Setting showPoliceAllocation to true');
     console.log('🗺️ Police allocation state:', { showPoliceAllocation: true, unitsCount: randomPoliceUnits.length });
   };
 
@@ -173,21 +177,8 @@ const MapDashboard: React.FC<MapDashboardProps> = ({ onLSOASelect, selectedLSOA 
     setShowPoliceAllocation(!showPoliceAllocation);
   };
 
-  const handlePoliceDataLoaded = (data: any[]) => {
-    setPoliceData(data);
-  };
-
   const handleSelectLSOA = (lsoa: string) => {
     onLSOASelect && onLSOASelect(lsoa);
-  };
-
-  const handleMetricsUpdate = (metrics: any) => {
-    setAllocationMetrics(metrics);
-  };
-
-  const handleBoroughSelect = (borough: string) => {
-    console.log('Borough selected:', borough);
-    // You can add borough-specific logic here
   };
 
   // Handle LSOA click - no external API calls, just local processing
@@ -221,6 +212,22 @@ const MapDashboard: React.FC<MapDashboardProps> = ({ onLSOASelect, selectedLSOA 
     if (crimeCount > 5) return 'Medium';
     return 'Low';
   };
+
+  // Debug useEffect to track state changes
+  useEffect(() => {
+    console.log('🔍 MapDashboard STATE CHANGE: burglaryData length =', burglaryData.length);
+    if (burglaryData.length > 0) {
+      console.log('🔍 MapDashboard: First burglary point in state:', burglaryData[0]);
+    }
+  }, [burglaryData]);
+
+  useEffect(() => {
+    console.log('🔍 MapDashboard STATE CHANGE: policeUnits length =', policeUnits.length);
+    console.log('🔍 MapDashboard STATE CHANGE: showPoliceAllocation =', showPoliceAllocation);
+    if (policeUnits.length > 0) {
+      console.log('🔍 MapDashboard: First police unit in state:', policeUnits[0]);
+    }
+  }, [policeUnits, showPoliceAllocation]);
 
   return (
     <div className="h-full flex flex-col bg-gray-900">
@@ -296,7 +303,7 @@ const MapDashboard: React.FC<MapDashboardProps> = ({ onLSOASelect, selectedLSOA 
         >
           <MapComponent
             onLSOASelect={handleSelectLSOA}
-            onBoroughSelect={handleBoroughSelect}
+            onBoroughSelect={handleSelectLSOA}
             selectedLSOA={selectedLSOA}
             showPoliceAllocation={showPoliceAllocation}
             showPredictions={showPredictions}
@@ -311,16 +318,16 @@ const MapDashboard: React.FC<MapDashboardProps> = ({ onLSOASelect, selectedLSOA 
         {/* Level Information Panel */}
         <div className="absolute top-4 left-4 bg-gray-800 bg-opacity-90 rounded-lg p-4 text-white max-w-xs">
           <h3 className="font-bold text-lg mb-2">
-            {activeView === 'lsoa' ? 'LSOA View' : 'Borough View'}
+            {mapLevel === 'lsoa' ? 'LSOA View' : 'Borough View'}
           </h3>
           <p className="text-sm text-gray-300 mb-2">
-            {activeView === 'lsoa' 
+            {mapLevel === 'lsoa' 
               ? 'Detailed area-level analysis showing individual Lower Super Output Areas with precise burglary risk assessment.'
               : 'Borough-level overview showing aggregated burglary statistics across London\'s administrative boroughs.'
             }
           </p>
           <div className="text-xs text-gray-400">
-            {activeView === 'lsoa' 
+            {mapLevel === 'lsoa' 
               ? 'Click on areas to view detailed LSOA statistics'
               : 'Click on boroughs to view aggregated borough data'
             }
@@ -328,17 +335,15 @@ const MapDashboard: React.FC<MapDashboardProps> = ({ onLSOASelect, selectedLSOA 
         </div>
 
         {/* Real Data Indicator */}
-        {isBackendConnected && (
-          <div className="absolute bottom-4 right-4 bg-green-600 bg-opacity-90 rounded-lg p-3 text-white">
-            <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-green-300 rounded-full animate-pulse"></div>
-              <span className="text-sm font-medium">Live London Data</span>
-            </div>
-            <p className="text-xs mt-1 opacity-90">
-              Real LSOA boundaries & burglary statistics
-            </p>
+        <div className="absolute bottom-4 right-4 bg-green-600 bg-opacity-90 rounded-lg p-3 text-white">
+          <div className="flex items-center space-x-2">
+            <div className="w-2 h-2 bg-green-300 rounded-full animate-pulse"></div>
+            <span className="text-sm font-medium">Live London Data</span>
           </div>
-        )}
+          <p className="text-xs mt-1 opacity-90">
+            Real LSOA boundaries & burglary statistics
+          </p>
+        </div>
 
         {/* Map Controls */}
         <div className="absolute top-4 right-4 z-10 flex flex-col space-y-2">
@@ -392,40 +397,6 @@ const MapDashboard: React.FC<MapDashboardProps> = ({ onLSOASelect, selectedLSOA 
           </div>
         </div>
       </div>
-
-      {/* Sidebar */}
-      <Sidebar 
-        activeView={activeView} 
-        setActiveView={(view: string) => setActiveView(view as 'lsoa' | 'borough')} 
-        showPoliceAllocation={showPoliceAllocation}
-        onTogglePoliceAllocation={handleTogglePoliceAllocation}
-        selectedLSOA={selectedLSOA}
-      />
-
-      {/* Main Content - Removed duplicate PoliceAllocation component */}
-      <div className="flex-1 ml-[280px]">
-        <Header />
-        
-        <div className="container mx-auto p-6">
-          {/* Only show map content since activeView is 'lsoa' | 'borough' */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div className="lg:col-span-1">
-              <CrimeMap 
-                showPoliceAllocation={showPoliceAllocation}
-                policeData={policeData}
-                onSelectLSOA={handleSelectLSOA}
-              />
-            </div>
-            {/* Removed duplicate PoliceAllocation component to prevent double popups */}
-          </div>
-        </div>
-      </div>
-
-      {/* Police Chat Widget */}
-      <PoliceChat 
-        selectedLSOA={selectedLSOA}
-        selectedAllocation={allocationMetrics}
-      />
     </div>
   );
 };

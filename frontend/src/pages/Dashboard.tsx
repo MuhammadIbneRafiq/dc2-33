@@ -752,25 +752,67 @@ const Dashboard = () => {
                 showPoliceAllocation={showPoliceAllocation}
               />
               
+              {/* MASSIVE POLICE DEPLOYMENT INDICATOR */}
+              {showPoliceAllocation && (
+                <div className="bg-red-600 rounded-xl p-4 border-4 border-red-400 animate-pulse">
+                  <h3 className="text-xl font-bold text-white mb-3 flex items-center">
+                    🚨 EMERGENCY DEPLOYMENT ACTIVE 🚨
+                  </h3>
+                  <div className="space-y-2 text-white">
+                    <div className="flex justify-between text-lg font-bold">
+                      <span>Total Units Deployed:</span>
+                      <span className="text-yellow-300">10,000+</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Armed Response Units:</span>
+                      <span className="text-red-300">2,000</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Riot Control Units:</span>
+                      <span className="text-orange-300">1,800</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>K9 Units:</span>
+                      <span className="text-blue-300">1,600</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Patrol Units:</span>
+                      <span className="text-green-300">4,600</span>
+                    </div>
+                    <div className="mt-3 text-center text-yellow-300 font-bold text-lg">
+                      🚁 MAXIMUM SECURITY PROTOCOL 🚁
+                    </div>
+                  </div>
+                </div>
+              )}
+              
               {/* Quick Stats Card */}
               <div className="bg-gray-800 rounded-xl p-4 border border-gray-700/50">
                 <h3 className="text-lg font-semibold text-white mb-3">Quick Stats</h3>
                 <div className="space-y-3">
                   <div className="flex justify-between">
                     <span className="text-gray-300">Active Police Units</span>
-                    <span className="text-green-400 font-semibold">142</span>
+                    <span className="text-green-400 font-semibold">
+                      {showPoliceAllocation ? '10,142' : '142'}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-300">Coverage</span>
-                    <span className="text-blue-400 font-semibold">68%</span>
+                    <span className="text-blue-400 font-semibold">
+                      {showPoliceAllocation ? '98%' : '68%'}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-300">Risk Level</span>
-                    <span className="text-yellow-400 font-semibold">Medium</span>
+                    <span className={`font-semibold ${showPoliceAllocation ? 'text-green-400' : 'text-yellow-400'}`}>
+                      {showPoliceAllocation ? 'Low' : 'Medium'}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-300">Response Time</span>
-                    <span className="text-purple-400 font-semibold">12.5 min</span>
+                    <span className="text-purple-400 font-semibold">
+                      {showPoliceAllocation ? '2.1 min' : '12.5 min'}
+                    </span>
                   </div>
                 </div>
               </div>
