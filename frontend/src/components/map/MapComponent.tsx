@@ -637,27 +637,27 @@ const MapComponent = ({
     }
   }, [dateRange]);
 
-  // Style function for LSOA boundaries - Color-blind friendly palette
+  // Style function for LSOA boundaries - Grayscale scheme
   const lsoaStyle = useCallback((feature: any) => {
     const properties = feature.properties;
     const riskLevel = properties.risk_level || 'Medium';
     const burglaryCount = properties.burglary_count || 0;
     const isSelected = selectedLSOA === properties['LSOA code'];
     
-    // Color-blind friendly scheme - using distinct colors that work for all types of color blindness
-    let fillColor = '#0173B2'; // Blue for low risk (safe for all color blindness types)
-    if (riskLevel === 'Very High') fillColor = '#CC78BC'; // Pink/Purple (distinguishable from other colors)
-    else if (riskLevel === 'High') fillColor = '#DE8F05'; // Orange (safe alternative to red)
-    else if (riskLevel === 'Medium') fillColor = '#029E73'; // Teal/Green (distinguishable from blue)
-    else if (riskLevel === 'Low') fillColor = '#0173B2'; // Blue
+    // Grayscale scheme - different shades of gray for risk levels
+    let fillColor = '#e5e7eb'; // Light gray for low risk
+    if (riskLevel === 'Very High') fillColor = '#374151'; // Dark gray
+    else if (riskLevel === 'High') fillColor = '#6b7280'; // Medium-dark gray
+    else if (riskLevel === 'Medium') fillColor = '#9ca3af'; // Medium gray
+    else if (riskLevel === 'Low') fillColor = '#d1d5db'; // Light-medium gray
     
     return {
       fillColor,
       weight: isSelected ? 3 : 1,
       opacity: 1,
-      color: isSelected ? '#000000' : '#ffffff', // White borders for LSOA divisions
+      color: isSelected ? '#000000' : '#6b7280', // Gray borders for LSOA divisions
       dashArray: isSelected ? '8,4' : undefined,
-      fillOpacity: isSelected ? 0.8 : 0.6, // Good opacity to see both boundaries and data
+      fillOpacity: isSelected ? 0.8 : 0.5, // Lower opacity for better visibility of data points
     };
   }, [selectedLSOA]);
 
