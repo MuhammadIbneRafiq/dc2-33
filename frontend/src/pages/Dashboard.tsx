@@ -30,7 +30,7 @@ const Dashboard = () => {
   const [loadingMessage, setLoadingMessage] = useState('Initializing application...');
   const [activeView, setActiveView] = useState('dashboard');
   const [showChatNotification, setShowChatNotification] = useState(true);
-  const [showTermsDialog, setShowTermsDialog] = useState(true);
+  const [showTermsDialog, setShowTermsDialog] = useState(false);
   
   // Prediction state
   const [predictionModel, setPredictionModel] = useState('sdgcn');
@@ -117,14 +117,13 @@ const Dashboard = () => {
         setTimeout(() => {
           setIsLoading(false);
           
-          // Always show terms dialog - no condition check needed anymore
-          // const termsAccepted = localStorage.getItem('termsAccepted');
-          // if (!termsAccepted) {
-          //   setShowTermsDialog(true);
-          // }
-          
-          // Force terms dialog to show
-          setShowTermsDialog(true);
+          // Check if terms already accepted to prevent duplicate popups
+          const termsAccepted = localStorage.getItem('termsAccepted');
+          if (!termsAccepted) {
+            setShowTermsDialog(true);
+          } else {
+            setShowTermsDialog(false);
+          }
           
         }, 1000);
       }

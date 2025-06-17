@@ -144,13 +144,13 @@ const DynamicMarker = ({ position, patrolType, children }: Omit<DynamicMarkerPro
   return <ZoomAwareMarker position={position} patrolType={patrolType}>{children}</ZoomAwareMarker>;
 };
 
-// Custom icon creation for police officers
+// Custom icon creation for police officers - LARGER and MORE VISIBLE
 const createPoliceIcon = (zoom = 11) => {
-  const iconSize = getZoomDependentSize(20, zoom);
+  const iconSize = getZoomDependentSize(30, zoom); // Increased base size from 20 to 30
   return L.divIcon({
-    html: `<div style="background-color: #dc2626; width: ${iconSize}px; height: ${iconSize}px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; border: 2px solid #fbbf24; box-shadow: 0 2px 8px rgba(220,38,38,0.6); position: relative;">
+    html: `<div style="background-color: #dc2626; width: ${iconSize}px; height: ${iconSize}px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; border: 3px solid #fbbf24; box-shadow: 0 4px 12px rgba(220,38,38,0.8); position: relative; z-index: 1000;">
       <span style="font-size: ${iconSize * 0.6}px;">👮</span>
-      <div style="position: absolute; top: -2px; right: -2px; font-size: ${iconSize * 0.3}px;">🚨</div>
+      <div style="position: absolute; top: -3px; right: -3px; font-size: ${iconSize * 0.4}px;">🚨</div>
     </div>`,
     className: 'police-icon-alert',
     iconSize: [iconSize, iconSize],
@@ -158,13 +158,13 @@ const createPoliceIcon = (zoom = 11) => {
   });
 };
 
-// Custom icon creation for police vehicles
+// Custom icon creation for police vehicles - LARGER and MORE VISIBLE
 const createVehicleIcon = (zoom = 11) => {
-  const iconSize = getZoomDependentSize(24, zoom);
+  const iconSize = getZoomDependentSize(35, zoom); // Increased base size from 24 to 35
   return L.divIcon({
-    html: `<div style="background-color: #dc2626; width: ${iconSize}px; height: ${iconSize}px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; border: 2px solid #fbbf24; box-shadow: 0 2px 8px rgba(220,38,38,0.6); position: relative;">
+    html: `<div style="background-color: #dc2626; width: ${iconSize}px; height: ${iconSize}px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; border: 3px solid #fbbf24; box-shadow: 0 4px 12px rgba(220,38,38,0.8); position: relative; z-index: 1000;">
       <span style="font-size: ${iconSize * 0.6}px;">🚓</span>
-      <div style="position: absolute; top: -2px; right: -2px; font-size: ${iconSize * 0.3}px;">🚨</div>
+      <div style="position: absolute; top: -3px; right: -3px; font-size: ${iconSize * 0.4}px;">🚨</div>
     </div>`,
     className: 'vehicle-icon-alert',
     iconSize: [iconSize, iconSize],
@@ -316,22 +316,25 @@ const MapComponent = ({
   // Load real LSOA data from ONS API
   const loadRealLSOAData = async () => {
     try {
-      console.log('🗺️ Fetching real London LSOA boundaries from ONS...');
+      console.log('🗺️ Fetching LIMITED London LSOA boundaries from ONS...');
       
-      // All London boroughs for comprehensive coverage
-      const allLondonBoroughs = [
-        'Westminster%', 'Camden%', 'City of London%', 'Hackney%', 'Tower Hamlets%',
-        'Southwark%', 'Lambeth%', 'Kensington and Chelsea%', 'Islington%',
-        'Greenwich%', 'Lewisham%', 'Wandsworth%', 'Hammersmith and Fulham%',
-        'Newham%', 'Barking and Dagenham%', 'Redbridge%', 'Havering%',
-        'Waltham Forest%', 'Enfield%', 'Haringey%', 'Barnet%', 'Harrow%',
-        'Brent%', 'Ealing%', 'Hillingdon%', 'Hounslow%', 'Richmond upon Thames%',
-        'Kingston upon Thames%', 'Merton%', 'Sutton%', 'Croydon%', 'Bromley%', 'Bexley%'
+      // FASTER: Only load Westminster and Camden for speed (limit to ~470 LSOAs)
+      const limitedBoroughs = [
+        'Westminster%', 'Camden%'
       ];
 
-      const allFeatures: any[] = [];
+      console.log(`⚡ Loading ${limitedBoroughs.length} boroughs with 470 LSOA limit...`);
 
-      for (const borough of allLondonBoroughs) {
+      const allFeatures: any[] = [];
+      let totalFetched = 0;
+      const MAX_LSOAS = 470;
+
+      for (const borough of limitedBoroughs) {
+        if (totalFetched >= MAX_LSOAS) {
+          console.log(`🛑 Reached limit of ${MAX_LSOAS} LSOAs, stopping fetch`);
+          break;
+        }
+
         try {
           const params = new URLSearchParams({
             where: `LSOA21NM like '${borough}'`,
@@ -350,28 +353,20 @@ const MapComponent = ({
           const data = await response.json();
           
           if (data.features && data.features.length > 0) {
-            // Add mock crime data
-            const enrichedFeatures = data.features.map((feature: any) => {
+            // Limit features to not exceed MAX_LSOAS
+            const remainingSlots = MAX_LSOAS - totalFetched;
+            const featuresToAdd = data.features.slice(0, remainingSlots);
+            
+            // Add ONLY boundary data - NO external API calls
+            const enrichedFeatures = featuresToAdd.map((feature: any) => {
               const boroughName = borough.replace('%', '');
-              let baseCount = 20;
               
-              // Realistic burglary counts by borough
-              if (['Westminster', 'Camden', 'Hackney', 'Tower Hamlets'].includes(boroughName)) {
-                baseCount = 45;
-              } else if (['Southwark', 'Lambeth', 'Islington', 'Newham'].includes(boroughName)) {
-                baseCount = 35;
-              } else if (['Kensington and Chelsea', 'Richmond upon Thames', 'Kingston upon Thames'].includes(boroughName)) {
-                baseCount = 15;
-              } else if (['City of London'].includes(boroughName)) {
-                baseCount = 5; // Very small area
-              }
-              
-              const burglaryCount = Math.round(baseCount + (Math.random() - 0.5) * 20);
+              // Generate simple mock data locally - NO API CALLS
+              const burglaryCount = Math.round(20 + Math.random() * 30);
               let riskLevel = 'Medium';
               
-              if (burglaryCount > 50) riskLevel = 'Very High';
-              else if (burglaryCount > 35) riskLevel = 'High';
-              else if (burglaryCount < 20) riskLevel = 'Low';
+              if (burglaryCount > 35) riskLevel = 'High';
+              else if (burglaryCount < 25) riskLevel = 'Low';
 
               return {
                 ...feature,
@@ -386,11 +381,9 @@ const MapComponent = ({
             });
 
             allFeatures.push(...enrichedFeatures);
-            console.log(`✅ Fetched ${data.features.length} LSOAs for ${borough.replace('%', '')}`);
+            totalFetched += enrichedFeatures.length;
+            console.log(`✅ Fetched ${enrichedFeatures.length} LSOAs for ${borough.replace('%', '')} (Total: ${totalFetched})`);
           }
-
-          // Small delay to prevent overwhelming the API
-          await new Promise(resolve => setTimeout(resolve, 50));
 
         } catch (error) {
           console.warn(`Error fetching ${borough}:`, error);
@@ -408,153 +401,63 @@ const MapComponent = ({
       };
 
       setLsoaBoundaries(lsoaCollection);
-      setLoading(false); // ✅ FIX: Set loading to false when data is loaded
+      setLoading(false); // ✅ CRITICAL: Set loading to false when data is loaded
       onBoundariesLoaded?.(); // ✅ Notify parent that boundaries are loaded
-      console.log(`🎉 Successfully loaded ${allFeatures.length} real London LSOAs from all ${allLondonBoroughs.length} boroughs`);
+      console.log(`🎉 LIMITED LOAD: Successfully loaded ${allFeatures.length} London LSOAs (limit: ${MAX_LSOAS})`);
 
     } catch (error) {
       console.error('❌ Failed to fetch London LSOA boundaries:', error);
       setError(error instanceof Error ? error.message : 'Failed to load LSOA data');
-      setLoading(false); // Also set loading to false on error
+      setLoading(false); // ✅ CRITICAL: Also set loading to false on error
+      onBoundariesLoaded?.(); // ✅ Still notify parent even on error
     }
   };
 
-  // Load real borough data using Ward boundaries from ONS
-  const loadRealBoroughData = async () => {
-    try {
-      console.log('🏛️ Loading real borough boundaries from ONS...');
-      
-      // ONS Ward boundaries endpoint (larger than LSOA)
-      const wardEndpoint = 'https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/Wards_December_2021_UK_BFC_V2/FeatureServer/0/query';
-      
-      const londonBoroughs = [
-        'Westminster', 'Camden', 'Islington', 'Hackney', 'Tower Hamlets',
-        'Southwark', 'Lambeth', 'Kensington and Chelsea', 'City of London',
-        'Greenwich', 'Lewisham', 'Wandsworth', 'Hammersmith and Fulham'
-      ];
-
-      const allFeatures: any[] = [];
-
-      for (const borough of londonBoroughs) {
-        try {
-          const params = new URLSearchParams({
-            where: `WD21NM like '%${borough}%'`,
-            outSR: '4326',
-            f: 'geoJSON',
-            outFields: 'WD21CD,WD21NM,LAT,LONG'
-          });
-
-          const response = await fetch(`${wardEndpoint}?${params}`);
-          
-          if (!response.ok) {
-            console.warn(`Failed to fetch ${borough} wards: ${response.status}`);
-            continue;
+  // Load simple mock borough data - NO EXTERNAL API CALLS
+  const loadMockBoroughData = () => {
+    console.log('🏛️ Loading mock borough boundaries (NO API CALLS)...');
+    
+    // Simple mock borough boundaries - NO API CALLS
+    const mockBoroughBoundaries = {
+      type: "FeatureCollection" as const,
+      features: [
+        {
+          type: "Feature" as const, 
+          properties: {
+            "Borough": "Westminster",
+            "risk_level": "High",
+            "burglary_count": Math.round(200 + Math.random() * 100)
+          },
+          geometry: {
+            type: "Polygon",
+            coordinates: [[
+              [-0.15, 51.49], [-0.12, 51.49], [-0.12, 51.52], [-0.15, 51.52], [-0.15, 51.49]
+            ]]
           }
-
-          const data = await response.json();
-          
-          if (data.features && data.features.length > 0) {
-            // Aggregate ward data into borough and add real crime data
-            const totalBurglaries = await fetchBoroughCrimeData(borough);
-            
-            const boroughFeature = {
-              type: 'Feature' as const,
-              properties: {
-                Borough: borough,
-                burglary_count: totalBurglaries,
-                risk_level: totalBurglaries > 500 ? 'Very High' : 
-                           totalBurglaries > 300 ? 'High' :
-                           totalBurglaries > 150 ? 'Medium' : 'Low',
-                ward_count: data.features.length
-              },
-              geometry: {
-                type: 'MultiPolygon' as const,
-                coordinates: data.features.map((f: any) => f.geometry.coordinates)
-              }
-            };
-
-            allFeatures.push(boroughFeature);
-            console.log(`✅ Fetched ${data.features.length} wards for ${borough} (${totalBurglaries} burglaries)`);
+        },
+        {
+          type: "Feature" as const,
+          properties: {
+            "Borough": "Camden", 
+            "risk_level": "Medium",
+            "burglary_count": Math.round(150 + Math.random() * 80)
+          },
+          geometry: {
+            type: "Polygon",
+            coordinates: [[
+              [-0.15, 51.52], [-0.12, 51.52], [-0.12, 51.55], [-0.15, 51.55], [-0.15, 51.52]
+            ]]
           }
-
-          await new Promise(resolve => setTimeout(resolve, 300));
-
-        } catch (error) {
-          console.warn(`Error fetching ${borough}:`, error);
-          continue;
         }
-      }
-
-      const boroughCollection = {
-        type: 'FeatureCollection' as const,
-        features: allFeatures
-      };
-
-      setBoroughBoundaries(boroughCollection);
-      console.log(`🎉 Successfully loaded ${allFeatures.length} real London boroughs`);
-
-    } catch (error) {
-      console.error('❌ Failed to load borough boundaries:', error);
-      setError(error instanceof Error ? error.message : 'Failed to load borough data');
-    }
+      ]
+    };
+    
+    setBoroughBoundaries(mockBoroughBoundaries);
+    setLoading(false);
+    console.log('✅ Loaded mock borough boundaries (NO API CALLS)');
   };
 
-  // Fetch real burglary data from UK Police API
-  const fetchBoroughCrimeData = async (borough: string): Promise<number> => {
-    try {
-      // Use UK Police API for real burglary data
-      const policeApiEndpoint = 'https://data.police.uk/api/crimes-street/burglary';
-      
-      // Define borough center coordinates for API call
-      const boroughCoords: { [key: string]: [number, number] } = {
-        'Westminster': [51.4975, -0.1357],
-        'Camden': [51.5290, -0.1255],
-        'Islington': [51.5362, -0.1034],
-        'Hackney': [51.5450, -0.0553],
-        'Tower Hamlets': [51.5203, -0.0293],
-        'Southwark': [51.5032, -0.0851],
-        'Lambeth': [51.4607, -0.1163],
-        'Kensington and Chelsea': [51.4990, -0.1938],
-        'City of London': [51.5156, -0.0919],
-        'Greenwich': [51.4892, 0.0648],
-        'Lewisham': [51.4513, -0.0180],
-        'Wandsworth': [51.4571, -0.1967],
-        'Hammersmith and Fulham': [51.4927, -0.2339]
-      };
-
-      const coords = boroughCoords[borough];
-      if (!coords) return Math.floor(Math.random() * 300) + 100; // Fallback
-
-      const [lat, lng] = coords;
-      const params = new URLSearchParams({
-        lat: lat.toString(),
-        lng: lng.toString(),
-        date: '2024-09' // Recent month
-      });
-
-      const response = await fetch(`${policeApiEndpoint}?${params}`);
-      
-      if (!response.ok) {
-        console.warn(`Failed to fetch crime data for ${borough}: ${response.status}`);
-        return Math.floor(Math.random() * 300) + 100;
-      }
-
-      const crimeData = await response.json();
-      
-      // Count burglary crimes in the area
-      const burglaryCount = Array.isArray(crimeData) ? crimeData.length : 0;
-      
-      // Scale up as this is just 1-mile radius data
-      const scaledCount = Math.round(burglaryCount * 3.5 + Math.random() * 50);
-      
-      console.log(`📊 ${borough}: ${burglaryCount} crimes in radius → scaled to ${scaledCount}`);
-      return scaledCount;
-
-    } catch (error) {
-      console.warn(`Error fetching crime data for ${borough}:`, error);
-      return Math.floor(Math.random() * 300) + 100; // Fallback random data
-    }
-  };
+  // REMOVED: No external API calls for crime data
 
   // mapLevel is now controlled by parent component
 
@@ -575,93 +478,48 @@ const MapComponent = ({
     setBurglaryPoints(prev => [...prev, newPoint]);
   };
 
-  // Simplified boundary loading - NO HEAVY API CALLS
+  // Load boundaries ONLY ONCE - prevent reloading when burglary data changes
+  const [boundariesLoadedOnce, setBoundariesLoadedOnce] = useState(false);
+  
   useEffect(() => {
+    // Only load boundaries if not already loaded
+    if (boundariesLoadedOnce) {
+      console.log('🚫 Boundaries already loaded, skipping reload');
+      return;
+    }
+    
     const loadMapData = () => {
       setLoading(true);
       setError(null);
       
-      console.log(`🗺️ Loading simple boundaries for level: ${mapLevel} (NO API CALLS)`);
+      console.log(`🗺️ Loading boundaries for level: ${mapLevel} (ONCE ONLY)`);
       
       // Load ONLY LSOA boundaries from ONS API - nothing else
       if (mapLevel === 'lsoa') {
         console.log('📡 Loading LSOA boundaries from ONS API...');
         loadRealLSOAData(); // Only load LSOA boundaries
       } else {
-        // For borough view, just create simple mock data
-        const mockBoroughBoundaries = {
-          type: "FeatureCollection",
-          features: [
-            {
-              type: "Feature", 
-              properties: {
-                "Borough": "Westminster",
-                "risk_level": "High",
-                "burglary_count": 25
-              },
-              geometry: {
-                type: "Polygon",
-                coordinates: [[
-                  [-0.15, 51.49], [-0.12, 51.49], [-0.12, 51.52], [-0.15, 51.52], [-0.15, 51.49]
-                ]]
-              }
-            },
-            {
-              type: "Feature",
-              properties: {
-                "Borough": "Camden", 
-                "risk_level": "Medium",
-                "burglary_count": 15
-              },
-              geometry: {
-                type: "Polygon",
-                coordinates: [[
-                  [-0.15, 51.52], [-0.12, 51.52], [-0.12, 51.55], [-0.15, 51.55], [-0.15, 51.52]
-                ]]
-              }
-            }
-          ]
-        };
-        setBoroughBoundaries(mockBoroughBoundaries);
-        setLoading(false);
-        console.log('✅ Loaded mock borough boundaries');
+        // For borough view, use mock data - NO API CALLS
+        loadMockBoroughData();
       }
-
-      // Police allocation is now handled by parent component via props
-      // No need to fetch police allocation data here
-
-      // Load prediction data if requested
-      if (showPredictions) {
-        console.log('Loading hardcoded prediction data...');
-        // Mock prediction data for demonstration
-        const mockPredictions = [
-          { lat: 51.5074, lon: -0.1278, intensity: 0.85 },
-          { lat: 51.5155, lon: -0.0922, intensity: 0.72 },
-          { lat: 51.4994, lon: -0.1270, intensity: 0.68 },
-          { lat: 51.4895, lon: -0.1423, intensity: 0.45 }
-        ];
-        setPredictions(mockPredictions);
-      } else {
-        setPredictions([]);
+      
+      // Mark boundaries as loaded to prevent future reloads
+      setBoundariesLoadedOnce(true);
+      
+      // CRITICAL: Always call onBoundariesLoaded to stop loading indicator
+      if (onBoundariesLoaded) {
+        onBoundariesLoaded();
+        console.log('✅ Notified parent that boundaries loading is complete');
       }
-
-      // Burglary points are now received as props from parent
-      console.log(`🎯 Using ${burglaryData.length} burglary points from parent component`);
-
     };
 
-    // Listen for date range changes from Dashboard
+    // Listen for date range changes from Dashboard - NO API CALLS
     const handleDateRangeChange = (event: CustomEvent) => {
       const { startDate, endDate, days } = event.detail;
       console.log(`📅 MapComponent received date range change: ${days} days (${startDate} to ${endDate})`);
       
-      // Fetch crime data and burglary points for the new date range
-      fetchCrimeDataForDateRange(startDate, endDate).then((data) => {
-        console.log('📊 New crime data fetched for date range:', data);
-      });
-      
-      // Burglary points are handled by parent component
-      console.log(`📅 Date range changed, parent will update burglary data`);
+      // NO EXTERNAL API CALLS - burglary points are handled by parent component
+      console.log(`📅 Date range changed, parent will update burglary data (NO API CALLS)`);
     };
 
     window.addEventListener('dateRangeChanged', handleDateRangeChange as EventListener);
@@ -670,7 +528,24 @@ const MapComponent = ({
     return () => {
       window.removeEventListener('dateRangeChanged', handleDateRangeChange as EventListener);
     };
-  }, [showPredictions, mapLevel]); // Simplified dependencies to prevent loops
+  }, [mapLevel]); // Remove showPredictions dependency to prevent reloads
+  
+  // Handle predictions separately without reloading boundaries
+  useEffect(() => {
+    if (showPredictions) {
+      console.log('Loading hardcoded prediction data...');
+      // Mock prediction data for demonstration
+      const mockPredictions = [
+        { lat: 51.5074, lon: -0.1278, intensity: 0.85 },
+        { lat: 51.5155, lon: -0.0922, intensity: 0.72 },
+        { lat: 51.4994, lon: -0.1270, intensity: 0.68 },
+        { lat: 51.4895, lon: -0.1423, intensity: 0.45 }
+      ];
+      setPredictions(mockPredictions);
+    } else {
+      setPredictions([]);
+    }
+  }, [showPredictions]); // Separate useEffect for predictions only
 
   // Load historical data based on date range
   const loadHistoricalData = async () => {
@@ -692,21 +567,10 @@ const MapComponent = ({
       
       console.log(`Fetching data from ${startDateStr} to ${endDateStr}`);
       
-      // Fetch real crime data for the date range
-      const crimeData = await fetchCrimeDataForDateRange(startDateStr, endDateStr, 'Westminster');
-      
-      if (crimeData.monthlyData.length > 0) {
-        setHistoricalData(crimeData.monthlyData.map(month => ({
-          month: month.month,
-          burglary_count: month.crimes
-        })));
-        console.log(`✅ Loaded ${crimeData.monthlyData.length} months of real data`);
-      } else {
-        // Fallback to mock data if API fails
-        const mockData = generateMockHistoricalData(days);
-        setHistoricalData(mockData);
-        console.log(`⚠️ Using mock data (${mockData.length} months)`);
-      }
+      // NO EXTERNAL API CALLS - use mock data only
+      const mockData = generateMockHistoricalData(days);
+      setHistoricalData(mockData);
+      console.log(`✅ Using mock historical data (${mockData.length} months) - NO API CALLS`);
       
     } catch (error) {
       console.error('Failed to load historical data:', error);
@@ -747,123 +611,55 @@ const MapComponent = ({
     }
   }, [dateRange]);
 
-  // Style function for LSOA boundaries - Colorful and vibrant
+  // Style function for LSOA boundaries - Grayscale for better visibility of data points
   const lsoaStyle = useCallback((feature: any) => {
     const properties = feature.properties;
     const riskLevel = properties.risk_level || 'Medium';
     const burglaryCount = properties.burglary_count || 0;
     const isSelected = selectedLSOA === properties['LSOA code'];
     
-    // Vibrant color scheme based on risk level
-    let fillColor = '#10b981'; // Bright green for low
-    if (riskLevel === 'Very High') fillColor = '#dc2626'; // Bright red
-    else if (riskLevel === 'High') fillColor = '#ea580c'; // Bright orange  
-    else if (riskLevel === 'Medium') fillColor = '#ca8a04'; // Bright yellow
-    else if (riskLevel === 'Low') fillColor = '#0891b2'; // Bright cyan
+    // Grayscale color scheme - darkest for highest risk
+    let fillColor = '#e5e7eb'; // Light gray for low risk
+    if (riskLevel === 'Very High') fillColor = '#374151'; // Dark gray
+    else if (riskLevel === 'High') fillColor = '#6b7280'; // Medium-dark gray  
+    else if (riskLevel === 'Medium') fillColor = '#9ca3af'; // Medium gray
+    else if (riskLevel === 'Low') fillColor = '#d1d5db'; // Light-medium gray
     
     return {
       fillColor,
-      weight: isSelected ? 4 : 2,
+      weight: isSelected ? 3 : 1,
       opacity: 1,
-      color: isSelected ? '#000000' : '#ffffff', // White borders for LSOA divisions
-      dashArray: isSelected ? '8,4' : '2,2', // Subtle dash pattern
-      fillOpacity: isSelected ? 0.9 : 0.7, // High visibility
+      color: isSelected ? '#000000' : '#6b7280', // Gray borders for LSOA divisions
+      dashArray: isSelected ? '8,4' : undefined, // Solid lines for cleaner look
+      fillOpacity: isSelected ? 0.8 : 0.4, // Lower opacity to see data points better
     };
   }, [selectedLSOA]);
 
-  // Style function for borough boundaries - Colorful and distinct
+  // Style function for borough boundaries - Grayscale for better data visibility
   const boroughStyle = useCallback((feature: any) => {
     const properties = feature.properties;
     const riskLevel = properties.risk_level || 'Medium';
     const burglaryCount = properties.burglary_count || 0;
     const isSelected = selectedBorough === properties.Borough;
     
-    // Vibrant colors for boroughs - more saturated than LSOA
-    let fillColor = '#059669'; // Deep green for low
-    if (riskLevel === 'Very High') fillColor = '#b91c1c'; // Deep red
-    else if (riskLevel === 'High') fillColor = '#c2410c'; // Deep orange  
-    else if (riskLevel === 'Medium') fillColor = '#a16207'; // Deep yellow
-    else if (riskLevel === 'Low') fillColor = '#0e7490'; // Deep cyan
+    // Grayscale colors for boroughs - slightly darker than LSOA
+    let fillColor = '#f3f4f6'; // Very light gray for low
+    if (riskLevel === 'Very High') fillColor = '#4b5563'; // Dark gray
+    else if (riskLevel === 'High') fillColor = '#6b7280'; // Medium-dark gray  
+    else if (riskLevel === 'Medium') fillColor = '#9ca3af'; // Medium gray
+    else if (riskLevel === 'Low') fillColor = '#d1d5db'; // Light-medium gray
     
     return {
       fillColor,
-      weight: isSelected ? 6 : 4, // Thick borders for borough divisions
+      weight: isSelected ? 4 : 2, // Thinner borders for cleaner look
       opacity: 1,
-      color: isSelected ? '#000000' : '#1f2937', // Dark borders for borough separation
-      dashArray: isSelected ? '12,6' : undefined, // No dash for solid borough borders
-      fillOpacity: isSelected ? 0.9 : 0.5, // Lower opacity to see underlying streets
+      color: isSelected ? '#000000' : '#374151', // Dark gray borders for borough separation
+      dashArray: isSelected ? '8,4' : undefined, // Solid borders for simplicity
+      fillOpacity: isSelected ? 0.7 : 0.3, // Very low opacity to see data points clearly
     };
   }, [selectedBorough]);
 
-  // Fetch crime data for specific date range
-  const fetchCrimeDataForDateRange = async (startDate: string, endDate: string, borough?: string) => {
-    try {
-      console.log(`📅 Fetching crime data from ${startDate} to ${endDate} for ${borough || 'London'}`);
-      
-      // Convert date range to months for API calls
-      const months = getMonthsBetweenDates(startDate, endDate);
-      const allCrimeData: any[] = [];
-      
-      const boroughCoords: { [key: string]: [number, number] } = {
-        'Westminster': [51.4975, -0.1357],
-        'Camden': [51.5290, -0.1255],
-        'Islington': [51.5362, -0.1034],
-        'Hackney': [51.5450, -0.0553],
-        'Tower Hamlets': [51.5203, -0.0293],
-        'Southwark': [51.5032, -0.0851],
-        'Lambeth': [51.4607, -0.1163],
-        'Kensington and Chelsea': [51.4990, -0.1938],
-        'City of London': [51.5156, -0.0919]
-      };
-
-      const coords = borough ? boroughCoords[borough] : [51.5074, -0.1278]; // Default to London center
-      if (!coords) return { totalCrimes: 0, monthlyData: [] };
-
-      for (const month of months) {
-        try {
-          const policeApiEndpoint = 'https://data.police.uk/api/crimes-street/burglary';
-          const [lat, lng] = coords;
-          
-          const params = new URLSearchParams({
-            lat: lat.toString(),
-            lng: lng.toString(),
-            date: month
-          });
-
-          const response = await fetch(`${policeApiEndpoint}?${params}`);
-          
-          if (response.ok) {
-            const crimeData = await response.json();
-            if (Array.isArray(crimeData)) {
-              allCrimeData.push({
-                month,
-                crimes: crimeData.length,
-                data: crimeData.slice(0, 5) // Keep sample data
-              });
-            }
-          }
-          
-          // Respectful delay
-          await new Promise(resolve => setTimeout(resolve, 300));
-          
-        } catch (error) {
-          console.warn(`Error fetching data for ${month}:`, error);
-        }
-      }
-
-      const totalCrimes = allCrimeData.reduce((sum, month) => sum + month.crimes, 0);
-      
-      return {
-        totalCrimes: Math.round(totalCrimes * 2.5), // Scale for borough coverage
-        monthlyData: allCrimeData,
-        dateRange: `${startDate} to ${endDate}`
-      };
-
-    } catch (error) {
-      console.error('Error fetching crime data for date range:', error);
-      return { totalCrimes: 0, monthlyData: [] };
-    }
-  };
+  // REMOVED: No external crime data API calls
 
   // Helper function to get months between dates
   const getMonthsBetweenDates = (startDate: string, endDate: string): string[] => {
@@ -1245,38 +1041,41 @@ const MapComponent = ({
               </LayersControl.Overlay>
             )}
 
-            {/* Police Units Layer */}
+            {/* Police Units Layer - DEBUG VERSION */}
             {showPoliceAllocation && policeUnits && policeUnits.length > 0 && (
-              <LayersControl.Overlay checked={showPoliceAllocation} name="Police Units">
+              <LayersControl.Overlay checked={true} name={`🚨 Police Units (${policeUnits.length})`}>
                 <FeatureGroup>
                   <ZoomDependentMarkers>
-                    {policeUnits.map((unit, index) => (
-                      <ZoomAwareMarker
-                        key={unit.id || index}
-                        position={[unit.lat, unit.lng]}
-                        patrolType={unit.type || 'officer'}
-                      >
-                        <Popup>
-                          <div className="text-center">
-                            <h4 className="font-semibold text-sm mb-1 text-red-600">🚨 POLICE UNIT - RED ALERT</h4>
-                            <div className="bg-red-100 border border-red-300 rounded p-2 mb-2">
-                              <p className="text-xs font-bold text-red-800">{unit.alert_level || 'RED ALERT'}</p>
+                    {policeUnits.map((unit, index) => {
+                      console.log(`🚔 Rendering police unit ${index}: ${unit.lat}, ${unit.lng}, type: ${unit.type}`);
+                      return (
+                        <ZoomAwareMarker
+                          key={unit.id || index}
+                          position={[unit.lat, unit.lng]}
+                          patrolType={unit.type || 'officer'}
+                        >
+                          <Popup>
+                            <div className="text-center">
+                              <h4 className="font-semibold text-sm mb-1 text-red-600">🚨 POLICE UNIT - RED ALERT</h4>
+                              <div className="bg-red-100 border border-red-300 rounded p-2 mb-2">
+                                <p className="text-xs font-bold text-red-800">{unit.alert_level || 'RED ALERT'}</p>
+                              </div>
+                              <p className="text-xs mb-1"><strong>Type:</strong> {unit.type === 'vehicle' ? '🚓 Vehicle Patrol' : '👮 Foot Patrol'}</p>
+                              <p className="text-xs mb-1"><strong>Unit Type:</strong> {unit.unit_type || 'Patrol Unit'}</p>
+                              <p className="text-xs mb-1"><strong>Area:</strong> {unit.assignedArea || 'Central London'}</p>
+                              <p className="text-xs mb-1"><strong>Status:</strong> <span className="text-red-600 font-bold">{unit.status || 'ACTIVE PATROL'}</span></p>
+                              <p className="text-xs mb-1"><strong>Response Time:</strong> {unit.response_time || '5 mins'}</p>
+                              <p className="text-xs text-gray-600">
+                                <strong>Unit ID:</strong> {unit.id}
+                              </p>
+                              <div className="mt-2 text-xs text-red-700 font-bold">
+                                {unit.alert_emoji || '🚨'} IMMEDIATE RESPONSE READY
+                              </div>
                             </div>
-                            <p className="text-xs mb-1"><strong>Type:</strong> {unit.type === 'vehicle' ? '🚓 Vehicle Patrol' : '👮 Foot Patrol'}</p>
-                            <p className="text-xs mb-1"><strong>Unit Type:</strong> {unit.unit_type || 'Patrol Unit'}</p>
-                            <p className="text-xs mb-1"><strong>Area:</strong> {unit.assignedArea || 'Central London'}</p>
-                            <p className="text-xs mb-1"><strong>Status:</strong> <span className="text-red-600 font-bold">{unit.status || 'ACTIVE PATROL'}</span></p>
-                            <p className="text-xs mb-1"><strong>Response Time:</strong> {unit.response_time || '5 mins'}</p>
-                            <p className="text-xs text-gray-600">
-                              <strong>Unit ID:</strong> {unit.id}
-                            </p>
-                            <div className="mt-2 text-xs text-red-700 font-bold">
-                              {unit.alert_emoji || '🚨'} IMMEDIATE RESPONSE READY
-                            </div>
-                          </div>
-                        </Popup>
-                      </ZoomAwareMarker>
-                    ))}
+                          </Popup>
+                        </ZoomAwareMarker>
+                      );
+                    })}
                   </ZoomDependentMarkers>
                 </FeatureGroup>
               </LayersControl.Overlay>
@@ -1352,6 +1151,35 @@ const MapComponent = ({
             )}
           </LayersControl>
 
+          {/* DIRECT Police Units Rendering - Outside LayersControl for guaranteed visibility */}
+          {showPoliceAllocation && policeUnits && policeUnits.length > 0 && (
+            <FeatureGroup>
+              {policeUnits.slice(0, 100).map((unit, index) => {
+                console.log(`🚨 DIRECT RENDER: Police unit ${index} at ${unit.lat}, ${unit.lng}`);
+                return (
+                  <ZoomAwareMarker
+                    key={`direct-${unit.id || index}`}
+                    position={[unit.lat, unit.lng]}
+                    patrolType={unit.type || 'officer'}
+                  >
+                    <Popup>
+                      <div className="text-center">
+                        <h4 className="font-semibold text-sm mb-1 text-red-600">🚨 DIRECT RENDER POLICE UNIT</h4>
+                        <div className="bg-red-100 border border-red-300 rounded p-2 mb-2">
+                          <p className="text-xs font-bold text-red-800">EMERGENCY RESPONSE UNIT</p>
+                        </div>
+                        <p className="text-xs mb-1"><strong>Type:</strong> {unit.type === 'vehicle' ? '🚓 Vehicle' : '👮 Officer'}</p>
+                        <p className="text-xs mb-1"><strong>Area:</strong> {unit.assignedArea || 'Central London'}</p>
+                        <p className="text-xs mb-1"><strong>Status:</strong> <span className="text-red-600 font-bold">ACTIVE PATROL</span></p>
+                        <p className="text-xs text-gray-600">Unit #{index + 1}</p>
+                      </div>
+                    </Popup>
+                  </ZoomAwareMarker>
+                );
+              })}
+            </FeatureGroup>
+          )}
+
           {/* Map Legend */}
           <MapLegend />
 
@@ -1360,6 +1188,15 @@ const MapComponent = ({
             <div className="leaflet-top leaflet-left" style={{ marginTop: '200px', marginLeft: '10px' }}>
               <div className="bg-green-600 text-white px-3 py-2 rounded shadow-lg text-sm font-medium animate-pulse">
                 🖱️ Click on map to add burglary points
+              </div>
+            </div>
+          )}
+
+          {/* Police Units Debug Info */}
+          {showPoliceAllocation && (
+            <div className="leaflet-top leaflet-left" style={{ marginTop: '250px', marginLeft: '10px' }}>
+              <div className="bg-red-600 text-white px-3 py-2 rounded shadow-lg text-sm font-medium">
+                🚨 Police Units: {policeUnits.length} deployed
               </div>
             </div>
           )}

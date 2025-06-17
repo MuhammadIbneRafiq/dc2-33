@@ -70,13 +70,13 @@ const MapDashboard: React.FC<MapDashboardProps> = ({ onLSOASelect, selectedLSOA 
     setIsGeneratingForecast(false);
   };
 
-  // Generate INSTANT random dots - no delays, no complex processing
+  // Generate MASSIVE number of random dots - no delays, no complex processing
   const generateDummyForecastData = (): any[] => {
     const dummyData = [];
     const londonCenter = { lat: 51.5074, lng: -0.1278 };
     
-    // Generate 4000 burglary points all over London with red alert emojis 🚨
-    for (let i = 0; i < 4000; i++) {
+    // Generate 8000 burglary points all over London with red alert emojis 🚨
+    for (let i = 0; i < 8000; i++) {
       const lat = londonCenter.lat + (Math.random() - 0.5) * 0.3; // ~15km spread
       const lng = londonCenter.lng + (Math.random() - 0.5) * 0.4; // ~20km spread
       
@@ -121,15 +121,15 @@ const MapDashboard: React.FC<MapDashboardProps> = ({ onLSOASelect, selectedLSOA 
     return minimalData;
   };
 
-  // Step 4: INSTANT police allocation with random placement
+  // Step 4: INSTANT police allocation with MASSIVE random placement
   const handlePoliceAllocation = () => {
     setPoliceAllocationEnabled(true);
-    console.log('👮 Placing 4000 police units instantly across London...');
+    console.log('👮 Placing 6000 police units instantly across London...');
     
-    // Generate 4000 instant police units all over London with red alert emojis 🚨
+    // Generate 6000 instant police units all over London with red alert emojis 🚨
     const randomPoliceUnits = [];
     const londonCenter = { lat: 51.5074, lng: -0.1278 };
-    const numUnits = 4000; // Fixed number
+    const numUnits = 6000; // Increased number
     
     for (let i = 0; i < numUnits; i++) {
       const lat = londonCenter.lat + (Math.random() - 0.5) * 0.3;
@@ -152,6 +152,8 @@ const MapDashboard: React.FC<MapDashboardProps> = ({ onLSOASelect, selectedLSOA 
     setPoliceUnits([...randomPoliceUnits]);
     setShowPoliceAllocation(true);
     console.log(`🚨 Deployed ${randomPoliceUnits.length} police units across London with RED ALERT status!`);
+    console.log('🔍 First 3 police units:', randomPoliceUnits.slice(0, 3));
+    console.log('🗺️ Police allocation state:', { showPoliceAllocation: true, unitsCount: randomPoliceUnits.length });
   };
 
   // Generate some high-risk areas if no burglary data exists
@@ -298,7 +300,7 @@ const MapDashboard: React.FC<MapDashboardProps> = ({ onLSOASelect, selectedLSOA 
             selectedLSOA={selectedLSOA}
             showPoliceAllocation={showPoliceAllocation}
             showPredictions={showPredictions}
-            mapLevel={activeView}
+            mapLevel={mapLevel}
             burglaryData={burglaryData}
             policeUnits={policeUnits}
             isLoadingBurglaryData={isLoadingBurglaryData}
@@ -400,7 +402,7 @@ const MapDashboard: React.FC<MapDashboardProps> = ({ onLSOASelect, selectedLSOA 
         selectedLSOA={selectedLSOA}
       />
 
-      {/* Main Content - Remove unused view conditions */}
+      {/* Main Content - Removed duplicate PoliceAllocation component */}
       <div className="flex-1 ml-[280px]">
         <Header />
         
@@ -414,14 +416,7 @@ const MapDashboard: React.FC<MapDashboardProps> = ({ onLSOASelect, selectedLSOA 
                 onSelectLSOA={handleSelectLSOA}
               />
             </div>
-            <div className="lg:col-span-1">
-              <PoliceAllocation
-                showPoliceAllocation={showPoliceAllocation}
-                onTogglePoliceAllocation={handleTogglePoliceAllocation}
-                onPoliceDataLoaded={handlePoliceDataLoaded}
-                onMetricsUpdate={handleMetricsUpdate}
-              />
-            </div>
+            {/* Removed duplicate PoliceAllocation component to prevent double popups */}
           </div>
         </div>
       </div>
