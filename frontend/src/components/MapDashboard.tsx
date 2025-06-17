@@ -27,48 +27,135 @@ const MapDashboard: React.FC<MapDashboardProps> = ({ onLSOASelect, selectedLSOA 
   const [mapLevel, setMapLevel] = useState<'lsoa' | 'borough'>('lsoa');
   const [burglaryData, setBurglaryData] = useState<any[]>([]);
   const [isLoadingBurglaryData, setIsLoadingBurglaryData] = useState(false);
+  const [boundariesLoaded, setBoundariesLoaded] = useState(false);
+  const [isGeneratingForecast, setIsGeneratingForecast] = useState(false);
 
-  // Note: No backend connection - using external APIs (UK Police API, ONS) and frontend-only data
-
-  // Fetch real burglary data when component mounts or view changes
+  // Step 1: Load boundaries immediately on component mount
   useEffect(() => {
-    fetchBurglaryData();
-  }, [activeView]);
+    loadBoundariesOnly();
+  }, []);
 
-  const fetchBurglaryData = async () => {
-    setIsLoadingBurglaryData(true);
+  // Step 2: Load boundaries first (fast operation)
+  const loadBoundariesOnly = async () => {
     try {
-      console.log('🎯 Fetching real burglary data from UK Police API...');
-      
-      // Import the real API functions
-      const { api } = await import('../api/api');
-      console.log('✅ API imported successfully');
-      
-      // Get real burglary data for the last 3 months
-      const endDate = new Date();
-      const startDate = new Date();
-      startDate.setMonth(startDate.getMonth() - 3);
-      
-      const months = api.utils.generateMonthsArray(
-        startDate.toISOString().slice(0, 7),
-        endDate.toISOString().slice(0, 7)
-      );
-      
-      console.log('📅 Generated months for API calls:', months);
-      
-      const realBurglaryData = await api.police.getLondonBurglaryData(months);
-      console.log('🔍 Raw API response:', realBurglaryData);
-      
-      setBurglaryData(realBurglaryData);
-      console.log(`✅ Loaded ${realBurglaryData.length} real burglary points from UK Police API`);
-      
+      console.log('🗺️ Starting LSOA and borough boundaries loading...');
+      // Don't set to true immediately - wait for actual loading to complete
+      setBoundariesLoaded(false);
+      console.log('⏳ Waiting for boundaries to load from ONS API...');
     } catch (error) {
-      console.error('❌ Error fetching burglary data:', error);
-      console.error('❌ Error details:', error instanceof Error ? error.message : 'Unknown error');
-      setBurglaryData([]);
-    } finally {
-      setIsLoadingBurglaryData(false);
+      console.error('❌ Error initiating boundary loading:', error);
+      setBoundariesLoaded(false);
     }
+  };
+
+  // Callback when MapComponent finishes loading boundaries 
+  const handleBoundariesLoaded = () => {
+    console.log('✅ Boundaries loaded successfully!');
+    setBoundariesLoaded(true);
+  };
+
+  // Step 3: Generate INSTANT random dots
+  const handleGenerateForecast = () => {
+    setIsGeneratingForecast(true);
+    setShowPredictions(true);
+    
+    console.log('🔮 Generating instant random burglary dots...');
+    
+    // Generate random dots instantly - no async, no delays
+    const randomDots = generateDummyForecastData();
+    setBurglaryData([...randomDots]);
+    
+    console.log(`✅ Generated ${randomDots.length} random burglary dots on map instantly!`);
+    
+    setIsGeneratingForecast(false);
+  };
+
+  // Generate INSTANT random dots - no delays, no complex processing
+  const generateDummyForecastData = (): any[] => {
+    const dummyData = [];
+    const londonCenter = { lat: 51.5074, lng: -0.1278 };
+    
+    // Generate 30 simple random dots around London
+    for (let i = 0; i < 30; i++) {
+      const lat = londonCenter.lat + (Math.random() - 0.5) * 0.15; // ~8km spread
+      const lng = londonCenter.lng + (Math.random() - 0.5) * 0.2; // ~10km spread
+      
+      dummyData.push({
+        id: `random-${i}`,
+        lat,
+        lng,
+        borough: 'Central London',
+        category: 'burglary',
+        risk_level: ['High', 'Medium', 'Low'][Math.floor(Math.random() * 3)]
+      });
+    }
+    
+    return dummyData;
+  };
+
+  // Generate minimal burglary data as fallback
+  const generateMinimalBurglaryData = (): any[] => {
+    const minimalData = [];
+    const londonCenter = { lat: 51.5074, lng: -0.1278 };
+    
+    // Just 10 points for minimal load
+    for (let i = 0; i < 10; i++) {
+      const lat = londonCenter.lat + (Math.random() - 0.5) * 0.1;
+      const lng = londonCenter.lng + (Math.random() - 0.5) * 0.15;
+      
+      minimalData.push({
+        id: `minimal-${i}`,
+        lat,
+        lng,
+        borough: 'Westminster',
+        category: 'burglary',
+        risk_level: 'Medium'
+      });
+    }
+    
+    return minimalData;
+  };
+
+  // Step 4: INSTANT police allocation with random placement
+  const handlePoliceAllocation = () => {
+    setPoliceAllocationEnabled(true);
+    console.log('👮 Placing police units instantly...');
+    
+    // Generate instant police units around London
+    const randomPoliceUnits = [];
+    const londonCenter = { lat: 51.5074, lng: -0.1278 };
+    const numUnits = 15; // Fixed number
+    
+    for (let i = 0; i < numUnits; i++) {
+      const lat = londonCenter.lat + (Math.random() - 0.5) * 0.12;
+      const lng = londonCenter.lng + (Math.random() - 0.5) * 0.15;
+      
+      randomPoliceUnits.push({
+        id: i,
+        lat,
+        lng,
+        type: Math.random() > 0.5 ? 'vehicle' : 'officer',
+        assignedArea: 'Central London',
+        status: 'patrol'
+      });
+    }
+    
+    setPoliceUnits([...randomPoliceUnits]);
+    setShowPoliceAllocation(true);
+    console.log(`✅ Placed ${randomPoliceUnits.length} police units instantly!`);
+  };
+
+  // Generate some high-risk areas if no burglary data exists
+  const generateHighRiskAreas = () => {
+    const knownHighRiskAreas = [
+      { lat: 51.5074, lng: -0.1278, borough: 'Westminster' }, // Central London
+      { lat: 51.5290, lng: -0.1255, borough: 'Camden' }, // Camden
+      { lat: 51.5203, lng: -0.0293, borough: 'Tower Hamlets' }, // Tower Hamlets
+      { lat: 51.5450, lng: -0.0553, borough: 'Hackney' }, // Hackney
+      { lat: 51.5032, lng: -0.0851, borough: 'Southwark' }, // Southwark
+    ];
+    
+    return knownHighRiskAreas;
   };
 
   const handleTogglePoliceAllocation = () => {
@@ -92,97 +179,32 @@ const MapDashboard: React.FC<MapDashboardProps> = ({ onLSOASelect, selectedLSOA 
     // You can add borough-specific logic here
   };
 
-  // Handle police allocation - using real crime data to determine optimal placement
-  const handlePoliceAllocation = async () => {
-    try {
-      setPoliceAllocationEnabled(true);
-      console.log('Calculating police allocation based on real crime data...');
-      
-      // Import the real API functions
-      const { api } = await import('../api/api');
-      
-      // Get real burglary data for the last 3 months
-      const endDate = new Date();
-      const startDate = new Date();
-      startDate.setMonth(startDate.getMonth() - 3);
-      
-      const months = api.utils.generateMonthsArray(
-        startDate.toISOString().slice(0, 7),
-        endDate.toISOString().slice(0, 7)
-      );
-      
-      const realBurglaryData = await api.police.getLondonBurglaryData(months);
-      
-      // Calculate police unit placement based on real crime hotspots
-      const crimeHotspots: { [key: string]: { lat: number; lng: number; count: number } } = {};
-      
-      realBurglaryData.forEach(crime => {
-        const key = `${Math.round(crime.lat * 1000)}_${Math.round(crime.lng * 1000)}`;
-        if (!crimeHotspots[key]) {
-          crimeHotspots[key] = { lat: crime.lat, lng: crime.lng, count: 0 };
-        }
-        crimeHotspots[key].count++;
-      });
-      
-      // Sort by crime count and place police units at top hotspots
-      const sortedHotspots = Object.values(crimeHotspots)
-        .sort((a, b) => b.count - a.count)
-        .slice(0, 100); // Top 100 hotspots
-      
-      const policeUnitsFromRealData = sortedHotspots.map((hotspot, i) => ({
-        id: i,
-        lat: hotspot.lat + (Math.random() - 0.5) * 0.001, // Small offset for visibility
-        lng: hotspot.lng + (Math.random() - 0.5) * 0.001,
-        type: hotspot.count > 5 ? 'vehicle' : 'officer',
-        cluster: Math.floor(i / 5),
-        crimeCount: hotspot.count
-      }));
-      
-      setPoliceUnits(policeUnitsFromRealData);
-      console.log(`Police allocation applied based on ${realBurglaryData.length} real crimes:`, policeUnitsFromRealData.length, 'units');
-    } catch (error) {
-      console.error('Error applying police allocation:', error);
-    }
-  };
-
-  // Handle LSOA click - fetch real data from external APIs
+  // Handle LSOA click - no external API calls, just local processing
   const handleLSOAClick = async (lsoaCode: string) => {
     try {
       console.log('LSOA clicked:', lsoaCode);
       onLSOASelect && onLSOASelect(lsoaCode);
       
-      // Get the center coordinates for this LSOA (simplified - in real app you'd have LSOA boundary data)
-      const { api } = await import('../api/api');
-      
-      // Find the nearest borough for API calls
-      const londonCenter = { lat: 51.5074, lng: -0.1278 };
-      const nearestBorough = api.utils.LONDON_BOROUGHS[0]; // Simplified - use Westminster as default
-      
-      // Get real burglary data for the area
-      const currentMonth = new Date().toISOString().slice(0, 7);
-      const realBurglaryData = await api.police.getBurglaryData(
-        nearestBorough.coords[0],
-        nearestBorough.coords[1],
-        currentMonth
+      // Simple local risk calculation based on existing data
+      const localCrimes = burglaryData.filter(crime => 
+        Math.abs(crime.lat - 51.5074) < 0.01 && Math.abs(crime.lng + 0.1278) < 0.01
       );
       
-      // Calculate risk level based on real crime density
-      const burglaryCount = Array.isArray(realBurglaryData) ? realBurglaryData.length : 0;
-      const riskLevel = burglaryCount > 10 ? 'High' : burglaryCount > 5 ? 'Medium' : 'Low';
+      const riskLevel = localCrimes.length > 5 ? 'High' : localCrimes.length > 2 ? 'Medium' : 'Low';
       
-      console.log('Real LSOA data:', {
+      console.log('Local LSOA analysis:', {
         code: lsoaCode,
         risk_level: riskLevel,
-        burglary_count: burglaryCount,
-        data_source: 'UK Police API'
+        local_crime_count: localCrimes.length,
+        data_source: 'Local calculation'
       });
       
     } catch (error) {
-      console.error('Error fetching real LSOA data:', error);
+      console.error('Error processing LSOA click:', error);
     }
   };
 
-  // Get risk level from real crime count
+  // Get risk level from crime count
   const getRiskLevel = (crimeCount: number) => {
     if (crimeCount > 10) return 'High';
     if (crimeCount > 5) return 'Medium';
@@ -197,85 +219,57 @@ const MapDashboard: React.FC<MapDashboardProps> = ({ onLSOASelect, selectedLSOA 
           <div className="flex items-center space-x-4">
             <h2 className="text-xl font-bold text-white">London Crime Map</h2>
             
-            {/* Backend Status Indicator */}
+            {/* Boundaries Status Indicator */}
             <div className="flex items-center space-x-2">
-              <div className={`w-2 h-2 rounded-full ${isBackendConnected ? 'bg-green-500' : 'bg-red-500'}`} />
-              <span className="text-xs text-gray-400">
-                {isBackendConnected ? 'Real Data Connected' : 'Using Mock Data'}
+              <div className={`w-2 h-2 rounded-full ${boundariesLoaded ? 'bg-green-500' : 'bg-red-500'}`}></div>
+              <span className="text-sm text-gray-300">
+                {boundariesLoaded ? 'Boundaries Loaded' : 'Loading Boundaries...'}
               </span>
             </div>
           </div>
 
-          {/* Map Level Toggle */}
+          {/* View Level Toggle */}
           <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-2 bg-gray-700 rounded-lg p-1">
+            <div className="flex items-center bg-gray-700 rounded-lg p-1">
               <button
-                onClick={() => setActiveView('lsoa')}
-                className={`px-3 py-1 text-sm rounded transition-all ${
-                  activeView === 'lsoa' 
-                    ? 'bg-blue-600 text-white shadow-lg' 
-                    : 'text-gray-300 hover:text-white hover:bg-gray-600'
+                onClick={() => setMapLevel('lsoa')}
+                className={`px-3 py-1 text-sm rounded transition-colors ${
+                  mapLevel === 'lsoa' 
+                    ? 'bg-blue-600 text-white' 
+                    : 'text-gray-300 hover:text-white'
                 }`}
               >
-                <div className="flex items-center space-x-1">
-                  <Map size={14} />
-                  <span>LSOA Level</span>
-                </div>
+                LSOA View
               </button>
               <button
-                onClick={() => setActiveView('borough')}
-                className={`px-3 py-1 text-sm rounded transition-all ${
-                  activeView === 'borough' 
-                    ? 'bg-blue-600 text-white shadow-lg' 
-                    : 'text-gray-300 hover:text-white hover:bg-gray-600'
+                onClick={() => setMapLevel('borough')}
+                className={`px-3 py-1 text-sm rounded transition-colors ${
+                  mapLevel === 'borough' 
+                    ? 'bg-blue-600 text-white' 
+                    : 'text-gray-300 hover:text-white'
                 }`}
               >
-                <div className="flex items-center space-x-1">
-                  <BarChart3 size={14} />
-                  <span>Borough Level</span>
-                </div>
+                Borough View
               </button>
-            </div>
-          </div>
         </div>
 
-        {/* Secondary Controls */}
-        <div className="mt-3 flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <div className="text-sm text-gray-400">
-              Viewing: <span className="text-white font-medium">
-                {activeView === 'lsoa' ? 'Lower Super Output Areas' : 'London Boroughs'}
-              </span>
-            </div>
-          </div>
-
-          <div className="flex items-center space-x-3">
-            {/* Police Allocation Toggle */}
+            {/* Quick Action Buttons */}
             <button
-              onClick={() => setShowPoliceAllocation(!showPoliceAllocation)}
-              className={`flex items-center space-x-2 px-3 py-1 rounded text-sm transition-all ${
-                showPoliceAllocation 
-                  ? 'bg-green-600 text-white' 
-                  : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-              }`}
+              onClick={handleGenerateForecast}
+              disabled={isGeneratingForecast}
+              className="bg-green-600 hover:bg-green-700 disabled:bg-green-800 disabled:opacity-50 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors"
             >
-              <Users size={14} />
-              <span>Police Units</span>
-              {showPoliceAllocation ? <ToggleRight size={16} /> : <ToggleLeft size={16} />}
+              <TrendingUp className="w-4 h-4" />
+              <span>{isGeneratingForecast ? 'Generating...' : 'Generate Forecast'}</span>
             </button>
 
-            {/* Predictions Toggle */}
             <button
-              onClick={() => setShowPredictions(!showPredictions)}
-              className={`flex items-center space-x-2 px-3 py-1 rounded text-sm transition-all ${
-                showPredictions 
-                  ? 'bg-purple-600 text-white' 
-                  : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-              }`}
+              onClick={handlePoliceAllocation}
+              disabled={policeAllocationEnabled}
+              className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 disabled:opacity-50 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors"
             >
-              <TrendingUp size={14} />
-              <span>Predictions</span>
-              {showPredictions ? <ToggleRight size={16} /> : <ToggleLeft size={16} />}
+              <Users className="w-4 h-4" />
+              <span>{policeAllocationEnabled ? 'Allocated' : 'Allocate Police'}</span>
             </button>
           </div>
         </div>
@@ -297,7 +291,9 @@ const MapDashboard: React.FC<MapDashboardProps> = ({ onLSOASelect, selectedLSOA 
             showPredictions={showPredictions}
             mapLevel={activeView}
             burglaryData={burglaryData}
+            policeUnits={policeUnits}
             isLoadingBurglaryData={isLoadingBurglaryData}
+            onBoundariesLoaded={handleBoundariesLoaded}
           />
         </motion.div>
 

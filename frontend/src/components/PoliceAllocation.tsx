@@ -74,17 +74,8 @@ const PoliceAllocation: React.FC<PoliceAllocationProps> = ({
     }
   };
   
-  // Load initial data
-  useEffect(() => {
-    loadPoliceData(policeUnits);
-  }, []);
-  
-  // Reload data when deployment parameters change
-  useEffect(() => {
-    if (!isLoading) {
-      loadPoliceData(policeUnits);
-    }
-  }, [deploymentHours, deploymentTime]);
+  // Simplified: No automatic data loading to prevent hook order issues
+  // Police allocation is now handled by parent component
   
   // Calculate summary metrics from police data
   const calculateMetrics = () => {

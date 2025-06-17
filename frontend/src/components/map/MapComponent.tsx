@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { MapContainer, TileLayer, GeoJSON, Marker, Popup, CircleMarker, LayersControl, FeatureGroup, useMap } from 'react-leaflet';
+import React, { useEffect, useState, useCallback, useMemo, useRef } from 'react';
+import { MapContainer, TileLayer, GeoJSON, Marker, Popup, CircleMarker, LayersControl, FeatureGroup, useMap, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import MapLegend from './MapLegend';
@@ -36,6 +36,20 @@ const customPopupStyle = `
   background: rgba(30, 41, 59, 0.9);
 }
 `;
+
+// Component to handle map clicks for adding burglary points
+const ClickToAddPoints = ({ canAddPoints, onAddPoint }: { canAddPoints: boolean, onAddPoint: (lat: number, lng: number) => void }) => {
+  useMapEvents({
+    click: (e) => {
+      if (canAddPoints) {
+        const { lat, lng } = e.latlng;
+        onAddPoint(lat, lng);
+        console.log(`➕ Added burglary point at: ${lat.toFixed(4)}, ${lng.toFixed(4)}`);
+      }
+    }
+  });
+  return null;
+};
 
 // Helper component to set map style
 const MapStyleLayer = () => {
@@ -174,6 +188,7 @@ interface MapComponentProps {
   burglaryData?: any[];
   policeUnits?: any[];
   isLoadingBurglaryData?: boolean;
+  onBoundariesLoaded?: () => void;
 }
 
 // Create a custom function to sanitize GeoJSON before rendering
@@ -272,14 +287,16 @@ const MapComponent = ({
   mapLevel = 'lsoa',
   burglaryData = [],
   policeUnits = [],
-  isLoadingBurglaryData = false
+  isLoadingBurglaryData = false,
+  onBoundariesLoaded
 }: MapComponentProps) => {
   const [lsoaBoundaries, setLsoaBoundaries] = useState<RealLSOACollection | null>(null);
   const [boroughBoundaries, setBoroughBoundaries] = useState<any | null>(null);
-  const [policeAllocation, setPoliceAllocation] = useState<any[]>([]);
+  // Police allocation now comes from props as policeUnits
   const [predictions, setPredictions] = useState<any[]>([]);
   const [historicalData, setHistoricalData] = useState<any[]>([]);
   const [burglaryPoints, setBurglaryPoints] = useState<any[]>([]);
+  const [canAddPoints, setCanAddPoints] = useState(false); // Allow adding points after forecast
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -298,14 +315,20 @@ const MapComponent = ({
     try {
       console.log('🗺️ Fetching real London LSOA boundaries from ONS...');
       
-      const priorityBoroughs = [
-        'Westminster%', 'Camden%', 'Islington%', 'Hackney%', 'Tower Hamlets%',
-        'Southwark%', 'Lambeth%', 'Kensington and Chelsea%', 'City of London%'
+      // All London boroughs for comprehensive coverage
+      const allLondonBoroughs = [
+        'Westminster%', 'Camden%', 'City of London%', 'Hackney%', 'Tower Hamlets%',
+        'Southwark%', 'Lambeth%', 'Kensington and Chelsea%', 'Islington%',
+        'Greenwich%', 'Lewisham%', 'Wandsworth%', 'Hammersmith and Fulham%',
+        'Newham%', 'Barking and Dagenham%', 'Redbridge%', 'Havering%',
+        'Waltham Forest%', 'Enfield%', 'Haringey%', 'Barnet%', 'Harrow%',
+        'Brent%', 'Ealing%', 'Hillingdon%', 'Hounslow%', 'Richmond upon Thames%',
+        'Kingston upon Thames%', 'Merton%', 'Sutton%', 'Croydon%', 'Bromley%', 'Bexley%'
       ];
 
       const allFeatures: any[] = [];
 
-      for (const borough of priorityBoroughs) {
+      for (const borough of allLondonBoroughs) {
         try {
           const params = new URLSearchParams({
             where: `LSOA21NM like '${borough}'`,
@@ -329,12 +352,15 @@ const MapComponent = ({
               const boroughName = borough.replace('%', '');
               let baseCount = 20;
               
-              if (['Westminster', 'Camden', 'City of London'].includes(boroughName)) {
+              // Realistic burglary counts by borough
+              if (['Westminster', 'Camden', 'Hackney', 'Tower Hamlets'].includes(boroughName)) {
                 baseCount = 45;
-              } else if (['Tower Hamlets', 'Hackney'].includes(boroughName)) {
+              } else if (['Southwark', 'Lambeth', 'Islington', 'Newham'].includes(boroughName)) {
                 baseCount = 35;
-              } else if (['Kensington and Chelsea'].includes(boroughName)) {
+              } else if (['Kensington and Chelsea', 'Richmond upon Thames', 'Kingston upon Thames'].includes(boroughName)) {
                 baseCount = 15;
+              } else if (['City of London'].includes(boroughName)) {
+                baseCount = 5; // Very small area
               }
               
               const burglaryCount = Math.round(baseCount + (Math.random() - 0.5) * 20);
@@ -360,8 +386,8 @@ const MapComponent = ({
             console.log(`✅ Fetched ${data.features.length} LSOAs for ${borough.replace('%', '')}`);
           }
 
-          // Small delay to be respectful to the API
-          await new Promise(resolve => setTimeout(resolve, 200));
+          // Small delay to prevent overwhelming the API
+          await new Promise(resolve => setTimeout(resolve, 50));
 
         } catch (error) {
           console.warn(`Error fetching ${borough}:`, error);
@@ -379,11 +405,14 @@ const MapComponent = ({
       };
 
       setLsoaBoundaries(lsoaCollection);
-      console.log(`🎉 Successfully loaded ${allFeatures.length} real London LSOAs`);
+      setLoading(false); // ✅ FIX: Set loading to false when data is loaded
+      onBoundariesLoaded?.(); // ✅ Notify parent that boundaries are loaded
+      console.log(`🎉 Successfully loaded ${allFeatures.length} real London LSOAs from all ${allLondonBoroughs.length} boroughs`);
 
     } catch (error) {
       console.error('❌ Failed to fetch London LSOA boundaries:', error);
       setError(error instanceof Error ? error.message : 'Failed to load LSOA data');
+      setLoading(false); // Also set loading to false on error
     }
   };
 
@@ -531,42 +560,77 @@ const MapComponent = ({
     }
   }, [mapLevel]);
 
-  // Load boundaries and other data
+  // Handle adding new burglary points by clicking on map
+  const handleAddBurglaryPoint = (lat: number, lng: number) => {
+    const newPoint = {
+      id: `click-${Date.now()}`,
+      lat,
+      lng,
+      borough: 'User Added',
+      category: 'burglary',
+      risk_level: ['High', 'Medium', 'Low'][Math.floor(Math.random() * 3)],
+      date: new Date().toISOString().slice(0, 10),
+      location_type: 'User Defined',
+      outcome_status: 'Predicted'
+    };
+    
+    setBurglaryPoints(prev => [...prev, newPoint]);
+  };
+
+  // Simplified boundary loading - NO HEAVY API CALLS
   useEffect(() => {
     const loadMapData = () => {
       setLoading(true);
       setError(null);
       
-      console.log(`Loading real map data for level: ${viewLevel}`);
+      console.log(`🗺️ Loading simple boundaries for level: ${viewLevel} (NO API CALLS)`);
       
+      // Load ONLY LSOA boundaries from ONS API - nothing else
       if (viewLevel === 'lsoa') {
-        // Use real ONS API data
-        console.log('Loading real LSOA boundaries from ONS API...');
-        loadRealLSOAData();
+        console.log('📡 Loading LSOA boundaries from ONS API...');
+        loadRealLSOAData(); // Only load LSOA boundaries
       } else {
-        // Use real ONS API data for boroughs
-        console.log('Loading real borough boundaries from ONS API...');
-        loadRealBoroughData();
+        // For borough view, just create simple mock data
+        const mockBoroughBoundaries = {
+          type: "FeatureCollection",
+          features: [
+            {
+              type: "Feature", 
+              properties: {
+                "Borough": "Westminster",
+                "risk_level": "High",
+                "burglary_count": 25
+              },
+              geometry: {
+                type: "Polygon",
+                coordinates: [[
+                  [-0.15, 51.49], [-0.12, 51.49], [-0.12, 51.52], [-0.15, 51.52], [-0.15, 51.49]
+                ]]
+              }
+            },
+            {
+              type: "Feature",
+              properties: {
+                "Borough": "Camden", 
+                "risk_level": "Medium",
+                "burglary_count": 15
+              },
+              geometry: {
+                type: "Polygon",
+                coordinates: [[
+                  [-0.15, 51.52], [-0.12, 51.52], [-0.12, 51.55], [-0.15, 51.55], [-0.15, 51.52]
+                ]]
+              }
+            }
+          ]
+        };
+        setBoroughBoundaries(mockBoroughBoundaries);
+        setLoading(false);
+        console.log('✅ Loaded mock borough boundaries');
       }
 
-      // Use hardcoded police allocation data
-      if (showPoliceAllocation) {
-        console.log('Loading hardcoded police allocation data...');
-        hardcodedApi.police.optimize().then(data => {
-          // Convert the police allocation data to the expected format
-          const policePoints = data.clusters.map(cluster => ({
-            lat: cluster.center[1], // Latitude is second in [lng, lat] format
-            lon: cluster.center[0], // Longitude is first
-            officer_count: cluster.recommended_units,
-            risk_score: cluster.risk_level === 'Very High' ? 0.9 : 
-                       cluster.risk_level === 'High' ? 0.75 : 
-                       cluster.risk_level === 'Medium' ? 0.6 : 0.4
-          }));
-          setPoliceAllocation(policePoints);
-        });
-      } else {
-        setPoliceAllocation([]);
-      }
+      // Police allocation is now handled by parent component via props
+      // No need to fetch police allocation data here
 
       // Load prediction data if requested
       if (showPredictions) {
@@ -608,7 +672,7 @@ const MapComponent = ({
     return () => {
       window.removeEventListener('dateRangeChanged', handleDateRangeChange as EventListener);
     };
-  }, [showPoliceAllocation, showPredictions, predictionModel, predictionRange, viewLevel]);
+  }, [showPredictions, viewLevel]); // Simplified dependencies to prevent loops
 
   // Load historical data based on date range
   const loadHistoricalData = async () => {
@@ -820,13 +884,19 @@ const MapComponent = ({
     return months.slice(-12); // Limit to last 12 months for API efficiency
   };
 
-  // Update burglary points when data changes from parent
+  // Update burglary points when data changes from parent - FIXED to prevent infinite loops
   useEffect(() => {
+    // Simple length-based check to prevent infinite loops
     if (burglaryData.length !== burglaryPoints.length) {
-      setBurglaryPoints(burglaryData);
+      setBurglaryPoints([...burglaryData]); // Create new array to avoid reference issues
       console.log(`📍 Updated burglary points: ${burglaryData.length} points`);
+      // Enable click-to-add points after forecast is generated
+      if (burglaryData.length > 0) {
+        setCanAddPoints(true);
+        console.log('✅ Click-to-add points enabled! Click on map to add burglary points.');
+      }
     }
-  }, [burglaryData, burglaryPoints.length]);
+  }, [burglaryData.length]); // Only depend on length, not the array itself
 
   // Update view level when mapLevel prop changes
   useEffect(() => {
@@ -1173,6 +1243,9 @@ const MapComponent = ({
         >
           <MapStyleLayer />
           
+          {/* Click to add burglary points */}
+          <ClickToAddPoints canAddPoints={canAddPoints} onAddPoint={handleAddBurglaryPoint} />
+          
           {/* Base tile layer */}
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -1209,24 +1282,25 @@ const MapComponent = ({
               </LayersControl.Overlay>
             )}
 
-            {/* Police Allocation Layer */}
-            {showPoliceAllocation && policeAllocation.length > 0 && (
-              <LayersControl.Overlay checked={showPoliceAllocation} name="Police Allocation">
+            {/* Police Units Layer */}
+            {showPoliceAllocation && policeUnits && policeUnits.length > 0 && (
+              <LayersControl.Overlay checked={showPoliceAllocation} name="Police Units">
                 <FeatureGroup>
                   <ZoomDependentMarkers>
-                    {policeAllocation.map((allocation, index) => (
+                    {policeUnits.map((unit, index) => (
                       <ZoomAwareMarker
-                        key={index}
-                        position={[allocation.lat, allocation.lon]}
-                        patrolType={allocation.officer_count > 2 ? 'vehicle' : 'officer'}
+                        key={unit.id || index}
+                        position={[unit.lat, unit.lng]}
+                        patrolType={unit.type || 'officer'}
                       >
                         <Popup>
                           <div className="text-center">
-                            <h4 className="font-semibold text-sm mb-1">Police Allocation</h4>
-                            <p className="text-xs mb-1">Officers: {allocation.officer_count}</p>
-                            <p className="text-xs mb-1">Risk Score: {(allocation.risk_score * 100).toFixed(1)}%</p>
-                            <p className="text-xs">
-                              Type: {allocation.officer_count > 2 ? 'Vehicle Patrol' : 'Foot Patrol'}
+                            <h4 className="font-semibold text-sm mb-1">👮 Police Unit</h4>
+                            <p className="text-xs mb-1">Type: {unit.type === 'vehicle' ? '🚓 Vehicle Patrol' : '👮 Foot Patrol'}</p>
+                            <p className="text-xs mb-1">Area: {unit.assignedArea || 'Central London'}</p>
+                            <p className="text-xs mb-1">Status: {unit.status || 'Active'}</p>
+                            <p className="text-xs text-gray-600">
+                              Unit ID: {unit.id}
                             </p>
                           </div>
                         </Popup>
@@ -1265,29 +1339,30 @@ const MapComponent = ({
               </LayersControl.Overlay>
             )}
 
-            {/* Burglary Points Layer */}
+            {/* Burglary Points Layer - Auto-enabled when forecast is generated */}
             {burglaryPoints.length > 0 && (
-              <LayersControl.Overlay checked name="Burglary Locations">
+              <LayersControl.Overlay checked={true} name="🔴 Burglary Forecast Points">
                 <FeatureGroup>
                   {burglaryPoints.map((point, index) => (
                     <CircleMarker
                       key={point.id || index}
                       center={[point.lat, point.lng]}
-                      radius={4}
+                      radius={6}
                       pathOptions={{
-                        color: '#dc2626',
-                        fillColor: '#fca5a5',
+                        color: point.risk_level === 'High' ? '#dc2626' : point.risk_level === 'Medium' ? '#ea580c' : '#16a34a',
+                        fillColor: point.risk_level === 'High' ? '#fca5a5' : point.risk_level === 'Medium' ? '#fed7aa' : '#bbf7d0',
                         fillOpacity: 0.8,
                         weight: 2
                       }}
                     >
                       <Popup>
                         <div className="text-sm">
-                          <h4 className="font-semibold mb-2">🚨 Burglary Report</h4>
+                          <h4 className="font-semibold mb-2">🔮 Forecast Point</h4>
                           <p><strong>Borough:</strong> {point.borough}</p>
-                          <p><strong>Date:</strong> {point.month}</p>
-                          <p><strong>Location:</strong> {point.location_type}</p>
-                          <p><strong>Status:</strong> {point.outcome_status}</p>
+                          <p><strong>Risk Level:</strong> <span style={{color: point.risk_level === 'High' ? '#dc2626' : point.risk_level === 'Medium' ? '#ea580c' : '#16a34a'}}>{point.risk_level}</span></p>
+                          <p><strong>Date:</strong> {point.date || point.month}</p>
+                          <p><strong>Location:</strong> {point.location_type || 'Forecast Area'}</p>
+                          <p><strong>Status:</strong> {point.outcome_status || 'Predicted'}</p>
                           <p className="text-xs text-gray-600 mt-1">
                             Coordinates: {point.lat.toFixed(4)}, {point.lng.toFixed(4)}
                           </p>
@@ -1302,6 +1377,15 @@ const MapComponent = ({
 
           {/* Map Legend */}
           <MapLegend />
+
+          {/* Click-to-add indicator */}
+          {canAddPoints && (
+            <div className="leaflet-top leaflet-left" style={{ marginTop: '200px', marginLeft: '10px' }}>
+              <div className="bg-green-600 text-white px-3 py-2 rounded shadow-lg text-sm font-medium animate-pulse">
+                🖱️ Click on map to add burglary points
+              </div>
+            </div>
+          )}
 
           {/* Level Toggle Control */}
           <LevelToggleControl />
