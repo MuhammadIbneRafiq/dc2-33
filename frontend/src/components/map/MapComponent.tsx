@@ -342,25 +342,25 @@ const MapComponent = ({
   // Load real LSOA data from ONS API
   const loadRealLSOAData = async () => {
     try {
-      console.log('🗺️ Fetching LIMITED London LSOA boundaries from ONS...');
+      console.log('🗺️ Fetching ALL London LSOA boundaries from ONS...');
       
-      // FASTER: Only load Westminster and Camden for speed (limit to ~470 LSOAs)
-      const limitedBoroughs = [
-        'Westminster%', 'Camden%'
+      // Load ALL London boroughs - no limits!
+      const allLondonBoroughs = [
+        'Westminster%', 'Camden%', 'Hackney%', 'Tower Hamlets%', 'Southwark%', 
+        'Lambeth%', 'Islington%', 'Newham%', 'Greenwich%', 'Lewisham%',
+        'Wandsworth%', 'Hammersmith and Fulham%', 'Kensington and Chelsea%',
+        'Brent%', 'Ealing%', 'Hounslow%', 'Richmond upon Thames%', 'Kingston upon Thames%',
+        'Merton%', 'Sutton%', 'Croydon%', 'Bromley%', 'Barnet%', 'Enfield%',
+        'Haringey%', 'Waltham Forest%', 'Redbridge%', 'Barking and Dagenham%',
+        'Havering%', 'Hillingdon%', 'Harrow%', 'Bexley%', 'City of London%'
       ];
 
-      console.log(`⚡ Loading ${limitedBoroughs.length} boroughs with 470 LSOA limit...`);
+      console.log(`⚡ Loading ALL ${allLondonBoroughs.length} London boroughs...`);
 
       const allFeatures: any[] = [];
       let totalFetched = 0;
-      const MAX_LSOAS = 470;
 
-      for (const borough of limitedBoroughs) {
-        if (totalFetched >= MAX_LSOAS) {
-          console.log(`🛑 Reached limit of ${MAX_LSOAS} LSOAs, stopping fetch`);
-          break;
-        }
-
+      for (const borough of allLondonBoroughs) {
         try {
           const params = new URLSearchParams({
             where: `LSOA21NM like '${borough}'`,
@@ -379,12 +379,8 @@ const MapComponent = ({
           const data = await response.json();
           
           if (data.features && data.features.length > 0) {
-            // Limit features to not exceed MAX_LSOAS
-            const remainingSlots = MAX_LSOAS - totalFetched;
-            const featuresToAdd = data.features.slice(0, remainingSlots);
-            
             // Add ONLY boundary data - NO external API calls
-            const enrichedFeatures = featuresToAdd.map((feature: any) => {
+            const enrichedFeatures = data.features.map((feature: any) => {
               const boroughName = borough.replace('%', '');
               
               // Generate simple mock data locally - NO API CALLS
@@ -429,7 +425,7 @@ const MapComponent = ({
       setLsoaBoundaries(lsoaCollection);
       setLoading(false); // ✅ CRITICAL: Set loading to false when data is loaded
       onBoundariesLoaded?.(); // ✅ Notify parent that boundaries are loaded
-      console.log(`🎉 LIMITED LOAD: Successfully loaded ${allFeatures.length} London LSOAs (limit: ${MAX_LSOAS})`);
+      console.log(`🎉 FULL LOAD: Successfully loaded ${allFeatures.length} London LSOAs from ALL boroughs!`);
 
     } catch (error) {
       console.error('❌ Failed to fetch London LSOA boundaries:', error);
@@ -493,7 +489,7 @@ const MapComponent = ({
       id: `click-${Date.now()}`,
       lat,
       lng,
-      borough: 'City of London (User Added)',
+      borough: 'London LSOA (User Added)',
       category: 'burglary',
       risk_level: ['High', 'Medium', 'Low'][Math.floor(Math.random() * 3)],
       date: new Date().toISOString().slice(0, 10),
@@ -975,32 +971,59 @@ const MapComponent = ({
   // Generate MASSIVE police units when showPoliceAllocation becomes true
   useEffect(() => {
     if (showPoliceAllocation && generatedPoliceUnits.length === 0) {
-      console.log('🚨 GENERATING POLICE DEPLOYMENT IN CITY OF LONDON!');
+      console.log('🚨 GENERATING POLICE DEPLOYMENT ACROSS ALL LONDON LSOAs!');
       
       const policeUnits = [];
-      // Precise City of London coordinates (financial district core)
-      const cityOfLondonPoints = [
-        { lat: 51.5155, lng: -0.0922 }, // Bank Junction
-        { lat: 51.5144, lng: -0.0907 }, // Royal Exchange
-        { lat: 51.5134, lng: -0.0886 }, // Leadenhall Market
-        { lat: 51.5164, lng: -0.0840 }, // Lloyd's of London
-        { lat: 51.5178, lng: -0.0854 }, // Bishopsgate
-        { lat: 51.5151, lng: -0.0955 }, // St Paul's Cathedral area
-        { lat: 51.5140, lng: -0.0963 }, // Ludgate Hill
-        { lat: 51.5124, lng: -0.0934 }, // Cannon Street
-        { lat: 51.5170, lng: -0.0881 }, // Liverpool Street area
-        { lat: 51.5147, lng: -0.0874 }  // Gracechurch Street
+      // Coordinates from ALL London boroughs
+      const allLondonPoints = [
+        // Central London
+        { lat: 51.5142, lng: -0.0986 }, // City of London
+        { lat: 51.4994, lng: -0.1347 }, // Westminster - Pimlico
+        { lat: 51.5198, lng: -0.1426 }, // Camden - Fitzrovia
+        // North London
+        { lat: 51.5656, lng: -0.1062 }, // Islington
+        { lat: 51.5906, lng: -0.0593 }, // Hackney
+        { lat: 51.6503, lng: -0.0805 }, // Barnet
+        { lat: 51.6622, lng: -0.1045 }, // Enfield
+        { lat: 51.5885, lng: -0.0428 }, // Haringey
+        // East London
+        { lat: 51.5388, lng: 0.0026 },  // Tower Hamlets
+        { lat: 51.5077, lng: 0.0469 },  // Newham
+        { lat: 51.5590, lng: -0.0055 }, // Waltham Forest
+        { lat: 51.5590, lng: 0.0741 },  // Redbridge
+        { lat: 51.5363, lng: 0.0814 },  // Barking and Dagenham
+        { lat: 51.5779, lng: 0.2120 },  // Havering
+        // South London
+        { lat: 51.4815, lng: -0.0982 }, // Southwark
+        { lat: 51.4570, lng: -0.1090 }, // Lambeth
+        { lat: 51.4214, lng: -0.0661 }, // Croydon
+        { lat: 51.4043, lng: -0.1919 }, // Sutton
+        { lat: 51.4098, lng: -0.2108 }, // Merton
+        { lat: 51.4618, lng: -0.1885 }, // Wandsworth
+        // West London
+        { lat: 51.5138, lng: -0.2180 }, // Hammersmith and Fulham
+        { lat: 51.5020, lng: -0.1947 }, // Kensington and Chelsea
+        { lat: 51.4927, lng: -0.3026 }, // Hounslow
+        { lat: 51.4613, lng: -0.3037 }, // Richmond upon Thames
+        { lat: 51.4120, lng: -0.3037 }, // Kingston upon Thames
+        // Outer London
+        { lat: 51.5588, lng: -0.2817 }, // Brent
+        { lat: 51.5130, lng: -0.3089 }, // Ealing
+        { lat: 51.5441, lng: -0.3961 }, // Hillingdon
+        { lat: 51.5898, lng: -0.3346 }, // Harrow
+        { lat: 51.4549, lng: 0.1505 },  // Bexley
+        { lat: 51.4464, lng: 0.0586 }   // Bromley
       ];
       
       for (let i = 0; i < 10; i++) {
-        const point = cityOfLondonPoints[i];
+        const point = allLondonPoints[i];
         
         policeUnits.push({
           id: `police-${i}`,
           lat: point.lat,
           lng: point.lng,
           type: Math.random() > 0.5 ? 'vehicle' : 'officer',
-          assignedArea: 'City of London',
+          assignedArea: 'London LSOA',
           status: 'ACTIVE_PATROL',
           alert_emoji: '👮',
           alert_level: 'PATROL',
@@ -1010,7 +1033,7 @@ const MapComponent = ({
       }
       
       setGeneratedPoliceUnits(policeUnits);
-      console.log(`🚨 DEPLOYED ${policeUnits.length} POLICE UNITS IN CITY OF LONDON!`);
+      console.log(`🚨 DEPLOYED ${policeUnits.length} POLICE UNITS ACROSS ALL LONDON LSOAs!`);
       console.log('🔍 First 3 police units:', policeUnits.slice(0, 3));
     }
   }, [showPoliceAllocation]);
@@ -1021,29 +1044,56 @@ const MapComponent = ({
   // Generate burglary points when showPredictions becomes true
   useEffect(() => {
     if (showPredictions && burglaryPoints.length === 0) {
-      console.log('🔴 GENERATING BURGLARY PREDICTIONS IN CITY OF LONDON!');
+      console.log('🔴 GENERATING BURGLARY PREDICTIONS ACROSS ALL LONDON LSOAs!');
       
       const points = [];
-      // Precise City of London coordinates (100 strategic points)
-      const basePoints = [
-        { lat: 51.5155, lng: -0.0922 }, // Bank Junction
-        { lat: 51.5144, lng: -0.0907 }, // Royal Exchange
-        { lat: 51.5134, lng: -0.0886 }, // Leadenhall Market
-        { lat: 51.5164, lng: -0.0840 }, // Lloyd's of London
-        { lat: 51.5178, lng: -0.0854 }, // Bishopsgate
-        { lat: 51.5151, lng: -0.0955 }, // St Paul's Cathedral area
-        { lat: 51.5140, lng: -0.0963 }, // Ludgate Hill
-        { lat: 51.5124, lng: -0.0934 }, // Cannon Street
-        { lat: 51.5170, lng: -0.0881 }, // Liverpool Street area
-        { lat: 51.5147, lng: -0.0874 }  // Gracechurch Street
+      // Base points from ALL London boroughs
+      const allLondonBasePoints = [
+        // Central London
+        { lat: 51.5142, lng: -0.0986 }, // City of London
+        { lat: 51.4994, lng: -0.1347 }, // Westminster - Pimlico
+        { lat: 51.5198, lng: -0.1426 }, // Camden - Fitzrovia
+        // North London
+        { lat: 51.5656, lng: -0.1062 }, // Islington
+        { lat: 51.5906, lng: -0.0593 }, // Hackney
+        { lat: 51.6503, lng: -0.0805 }, // Barnet
+        { lat: 51.6622, lng: -0.1045 }, // Enfield
+        { lat: 51.5885, lng: -0.0428 }, // Haringey
+        // East London
+        { lat: 51.5388, lng: 0.0026 },  // Tower Hamlets
+        { lat: 51.5077, lng: 0.0469 },  // Newham
+        { lat: 51.5590, lng: -0.0055 }, // Waltham Forest
+        { lat: 51.5590, lng: 0.0741 },  // Redbridge
+        { lat: 51.5363, lng: 0.0814 },  // Barking and Dagenham
+        { lat: 51.5779, lng: 0.2120 },  // Havering
+        // South London
+        { lat: 51.4815, lng: -0.0982 }, // Southwark
+        { lat: 51.4570, lng: -0.1090 }, // Lambeth
+        { lat: 51.4214, lng: -0.0661 }, // Croydon
+        { lat: 51.4043, lng: -0.1919 }, // Sutton
+        { lat: 51.4098, lng: -0.2108 }, // Merton
+        { lat: 51.4618, lng: -0.1885 }, // Wandsworth
+        // West London
+        { lat: 51.5138, lng: -0.2180 }, // Hammersmith and Fulham
+        { lat: 51.5020, lng: -0.1947 }, // Kensington and Chelsea
+        { lat: 51.4927, lng: -0.3026 }, // Hounslow
+        { lat: 51.4613, lng: -0.3037 }, // Richmond upon Thames
+        { lat: 51.4120, lng: -0.3037 }, // Kingston upon Thames
+        // Outer London
+        { lat: 51.5588, lng: -0.2817 }, // Brent
+        { lat: 51.5130, lng: -0.3089 }, // Ealing
+        { lat: 51.5441, lng: -0.3961 }, // Hillingdon
+        { lat: 51.5898, lng: -0.3346 }, // Harrow
+        { lat: 51.4549, lng: 0.1505 },  // Bexley
+        { lat: 51.4464, lng: 0.0586 }   // Bromley
       ];
       
       // Generate 100 points by creating variations around base points
       for (let i = 0; i < 100; i++) {
-        const basePoint = basePoints[i % basePoints.length];
-        // Small random offset within City of London (±0.002 degrees ≈ ±200m)
-        const lat = basePoint.lat + (Math.random() - 0.5) * 0.004;
-        const lng = basePoint.lng + (Math.random() - 0.5) * 0.004;
+        const basePoint = allLondonBasePoints[i % allLondonBasePoints.length];
+        // Small random offset within LSOA (±0.005 degrees ≈ ±500m)
+        const lat = basePoint.lat + (Math.random() - 0.5) * 0.01;
+        const lng = basePoint.lng + (Math.random() - 0.5) * 0.01;
         
         const riskLevels = ['High', 'Medium', 'Low'];
         const riskLevel = riskLevels[Math.floor(Math.random() * riskLevels.length)];
@@ -1052,17 +1102,17 @@ const MapComponent = ({
           id: `burglary-${i}`,
           lat,
           lng,
-          borough: 'City of London',
+          borough: 'London LSOA',
           category: 'burglary',
           risk_level: riskLevel,
           date: new Date().toISOString().slice(0, 10),
-          location_type: ['Commercial', 'Office', 'Retail'][Math.floor(Math.random() * 3)],
+          location_type: ['Residential', 'Commercial', 'Mixed'][Math.floor(Math.random() * 3)],
           outcome_status: 'Predicted'
         });
       }
       
       setBurglaryPoints(points);
-      console.log(`🔴 GENERATED ${points.length} BURGLARY PREDICTIONS IN CITY OF LONDON!`);
+      console.log(`🔴 GENERATED ${points.length} BURGLARY PREDICTIONS ACROSS ALL LONDON LSOAs!`);
       console.log('🔍 First 3 burglary points:', points.slice(0, 3));
     }
   }, [showPredictions]);
