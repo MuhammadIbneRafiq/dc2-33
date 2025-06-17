@@ -189,9 +189,9 @@ const DataAnalytics: React.FC<DataAnalyticsProps> = ({
   ];
 
   const riskDistributionData = [
-    { name: 'High Risk', value: 12, color: '#ef4444' },
-    { name: 'Medium Risk', value: 35, color: '#f59e0b' },
-    { name: 'Low Risk', value: 53, color: '#10b981' },
+    { name: 'High Risk', value: 12, color: '#DE8F05' },
+    { name: 'Medium Risk', value: 35, color: '#029E73' },
+    { name: 'Low Risk', value: 53, color: '#0173B2' },
   ];
 
   const correlationData = [

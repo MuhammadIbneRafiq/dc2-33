@@ -150,8 +150,8 @@ const createPoliceIcon = (zoom = 11) => {
   return L.divIcon({
     html: `
       <div style="
-        background: #3b82f6;
-        border: 2px solid #1e40af;
+        background: #0173B2;
+        border: 2px solid #004D7A;
         border-radius: 50%;
         width: ${size}px;
         height: ${size}px;
@@ -176,8 +176,8 @@ const createVehicleIcon = (zoom = 11) => {
   return L.divIcon({
     html: `
       <div style="
-        background: #059669;
-        border: 2px solid #047857;
+        background: #029E73;
+        border: 2px solid #026B4F;
         border-radius: 50%;
         width: ${size}px;
         height: ${size}px;
@@ -637,19 +637,19 @@ const MapComponent = ({
     }
   }, [dateRange]);
 
-  // Style function for LSOA boundaries - Colorful for better visual appeal
+  // Style function for LSOA boundaries - Color-blind friendly palette
   const lsoaStyle = useCallback((feature: any) => {
     const properties = feature.properties;
     const riskLevel = properties.risk_level || 'Medium';
     const burglaryCount = properties.burglary_count || 0;
     const isSelected = selectedLSOA === properties['LSOA code'];
     
-    // Colorful scheme - vibrant colors for different risk levels
-    let fillColor = '#3b82f6'; // Blue for low risk
-    if (riskLevel === 'Very High') fillColor = '#dc2626'; // Red
-    else if (riskLevel === 'High') fillColor = '#ea580c'; // Orange  
-    else if (riskLevel === 'Medium') fillColor = '#eab308'; // Yellow
-    else if (riskLevel === 'Low') fillColor = '#16a34a'; // Green
+    // Color-blind friendly scheme - using distinct colors that work for all types of color blindness
+    let fillColor = '#0173B2'; // Blue for low risk (safe for all color blindness types)
+    if (riskLevel === 'Very High') fillColor = '#CC78BC'; // Pink/Purple (distinguishable from other colors)
+    else if (riskLevel === 'High') fillColor = '#DE8F05'; // Orange (safe alternative to red)
+    else if (riskLevel === 'Medium') fillColor = '#029E73'; // Teal/Green (distinguishable from blue)
+    else if (riskLevel === 'Low') fillColor = '#0173B2'; // Blue
     
     return {
       fillColor,
@@ -1295,8 +1295,8 @@ const MapComponent = ({
                       center={[point.lat, point.lng]}
                       radius={6}
                       pathOptions={{
-                        color: point.risk_level === 'High' ? '#dc2626' : point.risk_level === 'Medium' ? '#ea580c' : '#16a34a',
-                        fillColor: point.risk_level === 'High' ? '#fca5a5' : point.risk_level === 'Medium' ? '#fed7aa' : '#bbf7d0',
+                        color: point.risk_level === 'High' ? '#DE8F05' : point.risk_level === 'Medium' ? '#029E73' : '#0173B2',
+                        fillColor: point.risk_level === 'High' ? '#FED7AA' : point.risk_level === 'Medium' ? '#A7F3D0' : '#BFDBFE',
                         fillOpacity: 0.8,
                         weight: 2
                       }}
@@ -1308,7 +1308,7 @@ const MapComponent = ({
                             <p className="text-xs font-bold text-red-800">{point.alert_emoji || '🚨'} HIGH PRIORITY INCIDENT</p>
                           </div>
                           <p><strong>Borough:</strong> {point.borough}</p>
-                          <p><strong>Risk Level:</strong> <span style={{color: point.risk_level === 'High' ? '#dc2626' : point.risk_level === 'Medium' ? '#ea580c' : '#16a34a'}}>{point.risk_level}</span></p>
+                          <p><strong>Risk Level:</strong> <span style={{color: point.risk_level === 'High' ? '#DE8F05' : point.risk_level === 'Medium' ? '#029E73' : '#0173B2'}}>{point.risk_level}</span></p>
                           <p><strong>Date:</strong> {point.date || point.month}</p>
                           <p><strong>Location:</strong> {point.location_type || 'High Risk Area'}</p>
                           <p><strong>Status:</strong> <span className="text-red-600 font-bold">{point.outcome_status || 'ACTIVE ALERT'}</span></p>
@@ -1368,10 +1368,10 @@ const MapComponent = ({
                     center={[point.lat, point.lng]}
                     radius={8}
                     pathOptions={{
-                      color: point.risk_level === 'High' || point.risk === 'high' ? '#dc2626' : 
-                             point.risk_level === 'Medium' || point.risk === 'medium' ? '#ea580c' : '#16a34a',
-                      fillColor: point.risk_level === 'High' || point.risk === 'high' ? '#dc2626' : 
-                                point.risk_level === 'Medium' || point.risk === 'medium' ? '#ea580c' : '#16a34a',
+                      color: point.risk_level === 'High' || point.risk === 'high' ? '#DE8F05' : 
+                             point.risk_level === 'Medium' || point.risk === 'medium' ? '#029E73' : '#0173B2',
+                      fillColor: point.risk_level === 'High' || point.risk === 'high' ? '#FED7AA' : 
+                                point.risk_level === 'Medium' || point.risk === 'medium' ? '#A7F3D0' : '#BFDBFE',
                       fillOpacity: 0.8,
                       weight: 3
                     }}
@@ -1433,7 +1433,7 @@ const MapComponent = ({
                     key={`simple-police-${index}`}
                     center={[unit.lat, unit.lng]}
                     radius={8}
-                    fillColor={unit.type === 'vehicle' ? '#059669' : '#3b82f6'}
+                    fillColor={unit.type === 'vehicle' ? '#029E73' : '#0173B2'}
                     color="#ffffff"
                     weight={2}
                     opacity={1}
@@ -1464,8 +1464,8 @@ const MapComponent = ({
                     center={[point.lat, point.lng]}
                     radius={6}
                     pathOptions={{
-                      color: point.risk_level === 'High' ? '#dc2626' : point.risk_level === 'Medium' ? '#ea580c' : '#16a34a',
-                      fillColor: point.risk_level === 'High' ? '#dc2626' : point.risk_level === 'Medium' ? '#ea580c' : '#16a34a',
+                      color: point.risk_level === 'High' ? '#DE8F05' : point.risk_level === 'Medium' ? '#029E73' : '#0173B2',
+                      fillColor: point.risk_level === 'High' ? '#FED7AA' : point.risk_level === 'Medium' ? '#A7F3D0' : '#BFDBFE',
                       fillOpacity: 0.8,
                       weight: 2
                     }}

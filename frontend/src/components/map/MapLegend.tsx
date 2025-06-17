@@ -25,15 +25,15 @@ const MapLegend: React.FC<MapLegendProps> = ({
         <h4 className="text-xs font-semibold mb-1">Risk Levels</h4>
         <div className="space-y-1">
           <div className="flex items-center">
-            <div className="w-3 h-3 rounded-full bg-red-500 mr-2"></div>
+            <div className="w-3 h-3 rounded-full mr-2" style={{backgroundColor: '#DE8F05'}}></div>
             <span className="text-xs">High Risk</span>
           </div>
           <div className="flex items-center">
-            <div className="w-3 h-3 rounded-full bg-yellow-500 mr-2"></div>
+            <div className="w-3 h-3 rounded-full mr-2" style={{backgroundColor: '#029E73'}}></div>
             <span className="text-xs">Medium Risk</span>
           </div>
           <div className="flex items-center">
-            <div className="w-3 h-3 rounded-full bg-green-500 mr-2"></div>
+            <div className="w-3 h-3 rounded-full mr-2" style={{backgroundColor: '#0173B2'}}></div>
             <span className="text-xs">Low Risk</span>
           </div>
         </div>
@@ -43,11 +43,11 @@ const MapLegend: React.FC<MapLegendProps> = ({
         <h4 className="text-xs font-semibold mb-1">Police Units</h4>
         <div className="space-y-1">
           <div className="flex items-center">
-            <div className="mr-2 bg-blue-500 text-xs w-4 h-4 rounded-full flex items-center justify-center text-white">🚓</div>
+            <div className="mr-2 text-xs w-4 h-4 rounded-full flex items-center justify-center text-white" style={{backgroundColor: '#029E73'}}>🚓</div>
             <span className="text-xs">Vehicle Patrol</span>
           </div>
           <div className="flex items-center">
-            <div className="mr-2 bg-blue-800 text-xs w-4 h-4 rounded-full flex items-center justify-center text-white">👮</div>
+            <div className="mr-2 text-xs w-4 h-4 rounded-full flex items-center justify-center text-white" style={{backgroundColor: '#0173B2'}}>👮</div>
             <span className="text-xs">Foot Patrol</span>
           </div>
         </div>
